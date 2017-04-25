@@ -1,0 +1,46 @@
+html {
+  font-size: 20px;
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  overflow:hidden;
+}
+
+@media only screen and (min-width:320px) {
+  html {
+    font-size: 18px !important
+  }
+}
+
+@media only screen and (min-width:375px) {
+  html {
+    font-size: 21px !important
+  }
+}
+
+@media only screen and (min-width:410px) {
+  html {
+    font-size: 24px !important
+  }
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  font-size: .8rem;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-backface-visibility: hidden;
+  background: #fff;
+  overflow:hidden;
+}
+
+body, ul, p, dl, dd{
+  margin:0;
+  padding:0;
+}
+
+li{
+  list-style-type:none;
+}
+
+
