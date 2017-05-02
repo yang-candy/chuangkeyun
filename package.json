@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "autofe-scripts": "0.6.2"
+    "autofe-scripts": "0.6.2",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^2.1.2"
   },
   "dependencies": {},
   "scripts": {
