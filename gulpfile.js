@@ -3,7 +3,7 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 
 gulp.task('jsconcat', function() {
-  gulp.src(['src/cgc/js/zepto.js', 'src/cgc/js/fastclick.js', 'src/cgc/js/unit.js']) //多个文件以数组形式传入
+  gulp.src(['src/cgc/js/zepto.js', 'src/cgc/js/fastclick.js', 'src/cgc/js/kerkee.js', 'src/cgc/js/unit.js']) //多个文件以数组形式传入
     .pipe(concat('dist.js'))
     .pipe(gulp.dest('build/cgc/js'))
 });

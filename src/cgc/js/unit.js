@@ -1,4 +1,5 @@
-;var vm = {
+;
+var vm = {
   fastclick: (function() {
     if ('addEventListener' in document) {
       document.addEventListener('DOMContentLoaded', function() {
@@ -22,16 +23,16 @@
     }
     //接收 - 第三步
     xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        var status = xhr.status;
-        if (status >= 200 && status < 300) {
-          options.success && options.success(xhr.responseText, xhr.responseXML);
-        } else {
-          options.fail && options.fail(status);
+        if (xhr.readyState == 4) {
+          var status = xhr.status;
+          if (status >= 200 && status < 300) {
+            options.success && options.success(xhr.responseText, xhr.responseXML);
+          } else {
+            options.fail && options.fail(status);
+          }
         }
       }
-    }
-    //连接 和 发送 - 第二步
+      //连接 和 发送 - 第二步
     if (options.type == "GET") {
 
       xhr.open("GET", options.url + "?" + params, true);
@@ -80,5 +81,23 @@
     var regex = new RegExp(regexS);
     var results = regex.exec(url);
     return results == null ? null : results[1];
+  },
+
+  //tab
+  tab: function(td, tb) {
+    var $td = $(td);
+    var $tb = $(tb);
+    var $index = 0;
+
+    $tb.find('ul').hide();
+    $tb.find('ul').eq(0).show();
+    $td.on('click', 'li', function(e) {
+      e.stopPropagation();
+      $index = $(this).index();
+
+      $(this).addClass('on').siblings().removeClass('on');
+      $tb.find('ul').eq($index).show().siblings().hide();
+    })
   }
 };
+vm.tab('.js-td', '.js-tb')

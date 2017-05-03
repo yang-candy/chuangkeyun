@@ -61,12 +61,21 @@ li{
   line-height:2.3;
 }
 .c-att-ul{
+  position:fixed;
+  left:5rem;
+  top:0;
+  bottom:0;
+  right:0;
+  z-index:33;
+  overflow:scroll;
   .c-att-time{
     float:right;
     font-size:.6rem;
     color:#c3c3c3;
   }
   &.att-more{
+    position:relative;
+    left:0;
     border-top:1px solid #f6f6f6;
     .c-att-title{
       margin-top:.2rem;
@@ -346,9 +355,6 @@ li{
     }
   }
 }
-.c-att-ul{
-  margin-left:5rem;
-} 
 
 .c-tab-ue{
   float:right;
@@ -541,4 +547,8 @@ li{
       }
     }
   }
+}
+.no-fix{
+  position:relative;
+  left:0;
 }
