@@ -388,3 +388,157 @@ li{
   }
 }
   
+.c-art{
+  padding:.7rem;
+  .c-art-title{
+    margin:0;
+    font-size:1.2rem;
+    color:#333;
+    font-weight:normal;
+  }
+  .c-art-info{
+    margin-top:1rem; 
+  }
+  .c-art-img{
+    display:inline-block;
+    float:left;
+    position:relative;
+    z-index:12;
+    .c-art-v{
+      position:absolute;
+      left:.8rem;
+      bottom:0;
+      z-index:22;
+      width:.7rem;
+      height:.7rem;
+      border:2px solid #fff;
+      line-height:1.1;
+      font-size:.6rem;
+      color:#fff;
+      text-align:center;
+      border-radius:50px;
+      background:#F9712C;
+    }
+    img{
+      width:1.5rem;
+      height:1.5rem;
+      margin-right:.3rem;
+      border-radius:100%;
+    }
+  } 
+  .c-att{
+    float:right;
+  }
+  .c-art-name{
+    .c-name{
+      font-size:.7rem;
+      color:#666;
+    }
+    .c-jd{
+      font-size:.6rem;
+      color:#666;
+    }
+  }
+  .c-art-cp{
+    line-height:1;
+    span{
+      color:#c3c3c3;
+      font-size:.6rem;
+    }
+  }
+  .c-att{
+    padding:.2rem .4rem;
+    text-decoration:none;
+    color:#333;
+    border:1px solid #ccc;
+    font-size:.5rem;
+    line-height:1.5;
+  } 
+  .c-art-jj{
+    margin-top:1rem;
+    font-size:.86rem;
+    color:#999;
+    line-height:1.5;
+    &:before{
+      position:relative;
+      top:.1rem;
+      display:inline-block;
+      content:'';
+      width:4px;
+      height:.86rem;
+      background:#eee;
+    }
+  }
+  .c-art-page{
+    margin-top:1.5rem;
+    line-height:1.5;
+    color:#151515;
+    font-size:.86rem;
+    img{
+      width:100%;
+      margin:1rem 0;
+    }
+  }
+}
+.c-art-tag{
+  padding:.7rem;
+  span{
+    display:inline-block;
+    padding:.3rem .4rem;
+    margin-right:.4rem;
+    border:1px solid #ccc;
+    color:#333;
+    font-size:.64rem;
+  }
+}
+.c-art-share{
+  .c-art-share-title{
+    font-weight:100;
+    text-align:center;
+    color:#333;
+  }
+  .c-art-share-ul{
+    display:flex;
+    margin:0 .8rem;
+    li{
+      flex:1;
+      text-align:center;
+      span{
+        display:inline-block;
+      }
+      .c-zan{
+        width:2.5rem;
+        height:2.5rem;
+        background:url(../image/zans.png) center no-repeat;
+        background-size:100%;
+      }
+      .c-wx{
+        width:2.5rem;
+        height:2.5rem;
+        background:url(../image/wx.png) center no-repeat;
+        background-size:100%;
+      }
+      .c-wb{
+        width:2.5rem;
+        height:2.5rem;
+        background:url(../image/wb.png) center no-repeat;
+        background-size:100%;
+      }
+      .c-fr{
+        width:2.5rem;
+        height:2.5rem;
+        background:url(../image/friend.png) center no-repeat;
+        background-size:100%;
+      }
+      a{
+        text-decoration:none;
+        font-size:.5rem;
+        color:#333;
+      }
+      .c-share-info{
+        display:block;
+        margin-top:.3rem;
+      }
+    }
+  }
+}
