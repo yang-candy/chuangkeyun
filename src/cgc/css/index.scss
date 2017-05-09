@@ -52,6 +52,9 @@ li{
 }
 
 //我的关注
+.js-follow-more,.js-follow-v{
+  //display:none;
+}
 .c-att-tit{
   padding-left:1rem;
   margin:0;
@@ -459,6 +462,10 @@ li{
     border:1px solid #ccc;
     font-size:.5rem;
     line-height:1.5;
+    &.on{
+      border:1px solid #eee;
+      color:#ccc;
+    }
   } 
   .c-art-jj{
     margin-top:1rem;
