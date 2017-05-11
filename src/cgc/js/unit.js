@@ -77,8 +77,6 @@ var vm = {
     $target.find('.c-num').html(num);
 
     $target.addClass('on')
-      //to do
-      //点赞ajax
     vm.ajax({
       url: 'https://reply.autohome.com.cn/api/like/set.json',
       type: "POST",
@@ -140,6 +138,7 @@ var vm = {
       vm.followToggle($($followTarget).attr('userid'), $type, $info, $($followTarget));
       return;
     }
+    //跳转到作者客页
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: 7,
       animationtype: 1,
@@ -653,7 +652,7 @@ var vm = {
       }
 
       //联网
-      if (Number(vm.data.isNet)) {
+      if (!!Number(vm.data.isNet)) {
         ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
 
           if (Number(user.userId)) {
@@ -672,10 +671,9 @@ var vm = {
                   ids.push(v.userId);
                 })
                 vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
-                    dt: 1,
-                    vids: ids.toString()
-                  })
-                  //vm.followList(follow.result, 1);
+                  dt: 1,
+                  vids: ids.toString()
+                })
                 $('.js-follow-more').show();
                 $('.js-follow-v').hide();
               } else {
@@ -737,6 +735,7 @@ var vm = {
   getTagContent: function(e) {
     e.stopPropagation();
     $target = $(e.target);
+    vm.data.tagListIndex = $target.index();
     if ($('.c-tab-bd ul').eq($target.index()).html() == '') {
       vm.tagList($target.index());
     }
@@ -744,98 +743,6 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    var res = {
-      "message": "",
-      "result": {
-        "isloadmore": true,
-        "lastid": "2017-05-10 13:52:08247|100112",
-        "newslist": [{
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g11/M04/98/E4/autohomecar__wKgH0lkTz3iAHr29AAFQYzWEEz4983.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "",
-          "mediatype": 1,
-          "newsid": 100251,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 0,
-          "publishtime": "2017-05-11",
-          "replycount": "0",
-          "seriesids": "",
-          "session_id": "0ab92236c6dc4226b7a2a21c77ad79ac",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g11/M04/98/E4/autohomecar__wKgH0lkTz3iAHr29AAFQYzWEEz4983.jpg?imageView2/1/w/400/h/225"],
-          "title": "这是比缸内直喷更好的引擎技术?",
-          "userid": 26459902,
-          "username": "CLauto酷乐汽车",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g8/M07/BE/EC/autohomecar__wKgHz1hKfReAbtwLAACQ18qIPGc329.JPG?imageView2/1/w/120/h/120"
-        }, {
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g19/M03/72/E5/autohomecar__wKgFU1kSq6SAUQ8MAAGZQVgzY10917.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "",
-          "mediatype": 1,
-          "newsid": 100113,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 2,
-          "publishtime": "2017-05-10",
-          "replycount": "2",
-          "seriesids": "",
-          "session_id": "50ba8bd244964a14a665e3a59b2bf519",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g19/M03/72/E5/autohomecar__wKgFU1kSq6SAUQ8MAAGZQVgzY10917.jpg?imageView2/1/w/400/h/225"],
-          "title": "速度与激情8莱蒂姐的战斗机",
-          "userid": 28402669,
-          "username": "第九车道",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g9/M0A/81/BF/autohomecar__wKgH31j-7wyAfHr2AAce2W4iTVA803.jpg?imageView2/1/w/120/h/120"
-        }, {
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g19/M07/72/E1/autohomecar__wKgFU1kSqeSAMQnkAB9MVa-ekO0287.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "",
-          "mediatype": 1,
-          "newsid": 100112,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 0,
-          "publishtime": "2017-05-10",
-          "replycount": "0",
-          "seriesids": "",
-          "session_id": "b8894f0d80c346d3b3d5fc1e0cd03392",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g19/M07/72/E1/autohomecar__wKgFU1kSqeSAMQnkAB9MVa-ekO0287.jpg?imageView2/1/w/400/h/225"],
-          "title": "福特 福克斯 RS v 日产 GT-R | 冠军杀手（六）",
-          "userid": 25682175,
-          "username": "汽车与运动evo",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g16/M0E/00/AE/autohomecar__wKjBx1iZPTWAM2HJAALWRcM5dJs218.jpg?imageView2/1/w/120/h/120"
-        }]
-      },
-      "returncode": 0
-    }
-    vm.renderNews(res.result.newslist, index);
-    return;
     vm.ajax({
       url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.ashx',
       type: "GET",
@@ -850,6 +757,9 @@ var vm = {
       dataType: "json",
       success: function(res, xml) {
         res = JSON.parse(res);
+        vm.data.isloadmore = res.result.isloadmore || '';
+        vm.data.lastpageid = res.result.lastid || '';
+
         if (!!res.result.newslist.length) {
           vm.renderNews(res.result.newslist, index);
         } else {
@@ -865,17 +775,24 @@ var vm = {
     });
   },
 
-  //渲染new列表
+  //渲染标签详情列表
   renderNews: function(data, index) {
     index = index || 0;
     if (!!data.length) {
       var html = '';
       data.map(function(v) {
         html +=
-          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj">' + v['praisenum'] + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">500 浏览</span>' + '</li>'
+          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + Math.random() + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + (v['mediatype'] == (3 || 4) ? v['title'] : v['description']) + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>'
       })
-      $('.c-tab-bd ul').eq(index).html(html);
+
+      if (!vm.data.isLoad) {
+        $('.c-tab-bd ul').eq(index).append(html);
+      } else {
+        $('.c-tab-bd ul').eq(index).html(html);
+      }
     }
+    vm.data.isLoad = true;
+
     //下拉刷新
     vm.reFresh.init({
       container: '.container',
@@ -886,6 +803,7 @@ var vm = {
         console.log('onRefresh')
       },
       afterPull: function() {
+        vm.tagList(vm.data.tagListIndex);
         console.log('afterPulll')
       },
     })
@@ -897,6 +815,7 @@ vm.bindEvent();
 //本地数据页码
 vm.data.localNextIndex = 0;
 
+//滚动默认为true;
 vm.data.isLoad = true;
 if (/my-follow/.test(window.location.href)) {
   ApiBridge.log(window.location.href)
@@ -918,12 +837,11 @@ if (/follow-more-tab/.test(window.location.href)) {
 if (/tag-name/.test(window.location.href)) {
   vm.data.likes = [];
 
-
   //上拉加载
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
       vm.data.isLoad = false;
-      vm.followMore();
+      vm.tagList();
     }
   });
 

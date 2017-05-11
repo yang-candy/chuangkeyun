@@ -308,6 +308,20 @@ li{
   .c-tab-jj{
     margin-top:.5rem;
     line-height:1.4;
+    &.long{
+      overflow:hidden; 
+      text-overflow:ellipsis;
+      display:-webkit-box; 
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:5; 
+    }
+    &.short{
+      overflow:hidden; 
+      text-overflow:ellipsis;
+      display:-webkit-box; 
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2; 
+    }
   } 
   .c-auth-info-img{
     width:100%;
