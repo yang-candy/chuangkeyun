@@ -31,6 +31,19 @@ var vm = {
     //跳转关注更多
     $('.c-att-more').on('click', vm.followV);
   },
+
+  //保存到localStorage
+  //localStorage.clear();
+  setLs: function(key, value) {
+    if (!key) return;
+    value = (typeof value == 'string') ? value : JSON.stringify(value);
+    window.localStorage.setItem(key, value);
+  },
+  getLs: function(key) {
+    if (!key) return;
+    var value = window.localStorage.getItem(key);
+    return JSON.parse(value);
+  },
   upScroll: function(fn) {
     //上拉加载
     window.addEventListener('scroll', function() {
@@ -77,6 +90,8 @@ var vm = {
     $target.find('.c-num').html(num);
 
     $target.addClass('on')
+
+
     vm.ajax({
       url: 'https://reply.autohome.com.cn/api/like/set.json',
       type: "POST",
@@ -510,7 +525,7 @@ var vm = {
       var html = '';
       data.map(function(v) {
         if (!!net) {
-          html += '<li userid=' + v['userid'] + '> <img src=' + v['userpic'] + ' alt=""> <span class="c-att-time">' + v['time'] + '</span> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
+          html += '<li userid=' + v['userid'] + '> <img src=' + v['userpic'] + ' alt=""> <span class="c-att-time">' + v['createtime'] + '</span> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
         } else {
           html += '<li userId=' + v['userId'] + '> <img src=' + v['imgurl'] + ' alt=""> <span class="c-att-time">' + v['time'] + '</span> <h3 class="c-att-title">' + v['userName'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
         }
@@ -534,7 +549,7 @@ var vm = {
     if (!isType && !!data.length) {
       var html = '';
       data.map(function(v) {
-        html += '<li > <a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['createtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;">＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+        html += '<li > <a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
       })
 
       $('.js-follow-v-list').html(html);
@@ -583,10 +598,16 @@ var vm = {
       fail: function(status) {
         $('.js-follow-more').hide();
         $('.js-follow-v').hide();
-        ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
-          ApiBridge.callNative('ClientViewManager', 'showLoadingView')
-          vm.init();
-        })
+        if (!!vm.data.localData.length) {
+          $('.js-follow-more').show();
+          //本地有数据，无网络
+          vm.followList(vm.data.localData, 1, '', vm.data);
+        } else {
+          ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
+            ApiBridge.callNative('ClientViewManager', 'showLoadingView')
+            vm.init();
+          })
+        }
       }
     });
   },
@@ -662,11 +683,14 @@ var vm = {
               au: user.userAuth
             })
           } else {
+            //init 本地关注数据
+            vm.data.localData = [];
             //未登录
             ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
               //本地数据有
               if (!!follow.result.length) {
                 var ids = [];
+                vm.data.localData = follow.result;
                 follow.result.map(function(v) {
                   ids.push(v.userId);
                 })
@@ -700,35 +724,46 @@ var vm = {
 
   //关注上拉翻页
   followMore: function() {
-    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      //已登录
-      if (Number(user.userId)) {
-        //取网络数据
-        //传lastpageid分页
-        if (!!vm.data.isloadmore) {
-          vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
-            dt: 1,
-            au: user.userAuth
+    //判断是否联网
+    ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
+      vm.data.isNet = state.result;
+      if (!Number(vm.data.isNet)) {
+        ApiBridge.callNative("ClientViewManager", "showErrorTipsViewForNoNetWork", {
+          top: 'topNavTop'
+        })
+        return;
+      }
+
+      ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+        //已登录
+        if (Number(user.userId)) {
+          //取网络数据
+          //传lastpageid分页
+          if (!!vm.data.isloadmore) {
+            vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
+              dt: 1,
+              au: user.userAuth
+            })
+          }
+        } else {
+          ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
+            //本地数据有
+            if (!!follow.result.length) {
+              //to do
+              var ids = [];
+              follow.result.map(function(v) {
+                ids.push(v.userId);
+              })
+              vm.data.localDataLength = ids.length;
+              ApiBridge.log(vm.data.localDataLength)
+              if (vm.data.localDataLength < 20) {
+                return;
+              }
+              vm.localNextPage();
+            }
           })
         }
-      } else {
-        ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
-          //本地数据有
-          if (!!follow.result.length) {
-            //to do
-            var ids = [];
-            follow.result.map(function(v) {
-              ids.push(v.userId);
-            })
-            vm.data.localDataLength = ids.length;
-            ApiBridge.log(vm.data.localDataLength)
-            if (vm.data.localDataLength < 20) {
-              return;
-            }
-            vm.localNextPage();
-          }
-        })
-      }
+      })
     })
   },
 
@@ -761,7 +796,7 @@ var vm = {
         vm.data.lastpageid = res.result.lastid || '';
 
         if (!!res.result.newslist.length) {
-          vm.renderNews(res.result.newslist, index);
+          vm.renderTagList(res.result.newslist, index);
         } else {
           console.log('暂无数据')
         }
@@ -776,13 +811,13 @@ var vm = {
   },
 
   //渲染标签详情列表
-  renderNews: function(data, index) {
+  renderTagList: function(data, index) {
     index = index || 0;
     if (!!data.length) {
       var html = '';
       data.map(function(v) {
         html +=
-          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + Math.random() + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + (v['mediatype'] == (3 || 4) ? v['title'] : v['description']) + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>'
+          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + (v['mediatype'] == (3 || 4) ? v['title'] : v['description']) + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>'
       })
 
       if (!vm.data.isLoad) {
@@ -818,7 +853,6 @@ vm.data.localNextIndex = 0;
 //滚动默认为true;
 vm.data.isLoad = true;
 if (/my-follow/.test(window.location.href)) {
-  ApiBridge.log(window.location.href)
   vm.init();
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
