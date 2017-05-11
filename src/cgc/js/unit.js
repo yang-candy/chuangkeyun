@@ -13,16 +13,19 @@ var vm = {
     //标签列表评论跳转到评论页
     $('.c-tab-ul').on('click', '.c-common', vm.tagCommon);
 
+    //点赞动作
+    $('.c-tab-ul').on('click', '.c-zan', vm.likeZan);
+
     //点击Tag获得TagId对应的News列表
     $('.js-td').on('click', 'li', vm.getTagContent);
 
-    //跳转大V
+    //跳转关注更多
     $('.c-att-more').on('click', vm.followV);
   },
   upScroll:function (fn){
     //上拉加载
     window.addEventListener('scroll', function(){
-      var preLoadDis = '0.2';
+      var preLoadDis = '0.01';
       var offsetHeight = window.innerHeight,
         scrollHeight = document.body.scrollHeight,
           scrollTop = document.body.scrollTop;
@@ -34,6 +37,13 @@ var vm = {
             fn();
           }
     });
+  },
+  likeZan: function(e){
+    e.stopPropagation();
+    $target = $($(e.currentTarget));  
+
+    //to do
+
   },
   followV:function(e){
     e.stopPropagation();
@@ -112,9 +122,11 @@ var vm = {
               if(!type){
                 target.addClass('on'); 
                 target.html('已关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {type:1, msg:'关注成功!'})
               }else{
                 target.removeClass('on'); 
                 target.html('+  关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {type:1, msg:'取消关注成功!'})
               }
             }
           },
@@ -134,9 +146,11 @@ var vm = {
               if(!type){
                 target.addClass('on'); 
                 target.html('已关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {type:1, msg:'关注成功!'})
               }else{
                 target.removeClass('on'); 
                 target.html('+  关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {type:1, msg:'取消关注成功!'})
               }
           }
         })
