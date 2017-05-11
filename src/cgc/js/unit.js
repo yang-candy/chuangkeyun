@@ -554,7 +554,6 @@ var vm = {
 
       $('.js-follow-v-list').html(html);
     }
-    $('.c-loading').hide();
     vm.data.isLoad = true;
   },
 
@@ -725,6 +724,7 @@ var vm = {
 
   //关注上拉翻页
   followMore: function() {
+    $('.c-loading').hide();
     //判断是否联网
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
@@ -827,6 +827,7 @@ var vm = {
         $('.c-tab-bd ul').eq(index).html(html);
       }
     }
+    $('.c-loading').hide();
     vm.data.isLoad = true;
 
     //下拉刷新
@@ -877,6 +878,7 @@ if (/tag-name/.test(window.location.href)) {
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
       vm.data.isLoad = false;
+      $('.c-loading').show();
       vm.tagList();
     }
   });
