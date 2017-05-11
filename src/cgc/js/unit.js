@@ -543,7 +543,6 @@ var vm = {
 
   //关注初始化
   init: function() {
-    ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
     ApiBridge.callNative('ClientViewManager', 'setNavigationTabBarTitle', {
       title: '我的关注'
     });
@@ -737,12 +736,10 @@ if(/my-follow/.test(window.location.href)){
 
 //加载更多
 if(/follow-more-tab/.test(window.location.href)){
-  ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
 }
 
 //标签列表
 if(/tag-name/.test(window.location.href)){
-  ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
   //下拉刷新
   vm.reFresh.init({
     container: '.container',
@@ -771,3 +768,4 @@ if(/tag-name/.test(window.location.href)){
 
 //tab切换
 vm.tab('.js-td', '.js-tb')
+ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
