@@ -53,7 +53,7 @@ li{
 
 //我的关注
 .js-follow-more,.js-follow-v{
-  //display:none;
+  display:none;
 }
 .c-att-tit{
   padding-left:1rem;
@@ -292,8 +292,8 @@ li{
   }
 }
 .c-tab-ul{
-  position:relative;
   li{
+    position:relative;
     padding:.8rem;
     overflow:hidden;
     border-bottom:1px solid #f6f6f6;
@@ -335,6 +335,10 @@ li{
     color:#333;
     border:1px solid #999;
     text-decoration:none;
+    &.on{
+      border-left:4px solid #333;
+      background:#fff;
+    }
   }
 }
 
@@ -558,4 +562,40 @@ li{
 .no-fix{
   position:relative;
   left:0;
+}
+.tag-name{
+  .c-tab-title{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:11;
+    background:#fff;
+  }
+  .c-tab-bd{
+    margin-top:2.3rem;
+  }
+}
+
+//下拉刷新
+.pull-down-content {
+  display: block!important;
+  margin-top: -50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 14px;
+  background-color: #f8f8f8;
+}
+.pull-down-content #arrowIcon {
+  width: 10px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-bottom: 3px;
+}
+.pull-down-content .spinner {
+  display: inline-block;
+  margin-right: 8px;
 }
