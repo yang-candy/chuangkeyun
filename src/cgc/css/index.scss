@@ -336,8 +336,8 @@ li{
     border:1px solid #999;
     text-decoration:none;
     &.on{
-      border-left:4px solid #333;
-      background:#fff;
+      border:1px solid #eee;
+      color:#ccc;
     }
   }
 }
@@ -574,6 +574,8 @@ li{
   }
   .c-tab-bd{
     margin-top:2.3rem;
+    transition: 330ms; 
+    transform: translate3d(0px, 0px, 0px);
   }
 }
 

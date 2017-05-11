@@ -8,16 +8,25 @@ var vm = {
     //点击关注 或者 跳转作者客页
     $('.js-follow-v-list').on('click', 'li', vm.author2);
     $('.js-follow-list').on('click', 'li', vm.author2);
-    $('.c-tab-ul').on('click', '.c-att-t', vm.tagFollow);
 
-    //标签列表评论跳转到评论页
-    $('.c-tab-ul').on('click', '.c-common', vm.tagCommon);
+    //通用关注
+    $('.js-tag-list').on('click', '.c-att-t', vm.tagFollow);
 
-    //点赞动作
-    $('.c-tab-ul').on('click', '.c-zan', vm.likeZan);
+    //标签列表 --评论跳转到评论页
+    $('.js-tag-list').on('click', '.c-common', vm.tagCommon);
+
+    //标签列表 --跳转文章最终页
+    $('.js-tag-list').on('click', 'li', vm.artical);
+
+    //标签列表 --点击头像或名字跳转个人主页
+    $('.js-tag-list').on('click', '.c-auth-img', vm.author2);
+    $('.js-tag-list').on('click', '.c-auth-title', vm.author2);
+
+    //标签列表 --点赞动作
+    $('.js-tag-list').on('click', '.c-zan', vm.likeZan);
 
     //点击Tag获得TagId对应的News列表
-    $('.js-td').on('click', 'li', vm.getTagContent);
+    $('.js-tag-title').on('click', 'li', vm.getTagContent);
 
     //跳转关注更多
     $('.c-att-more').on('click', vm.followV);
@@ -38,14 +47,38 @@ var vm = {
       }
     });
   },
+  artical: function(e) {
+    e.stopPropagation();
+    if (e.target.tagName != 'LI') {
+      return;
+    }
+    console.log('li')
+    $target = $($(e.currentTarget));
+
+    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
+      pagetype: 2,
+      animationtype: 2,
+      param: {
+        newsid: $target.attr('newsid'),
+        type: $target.attr('mediatype'),
+        autoscrolltocomment: 0
+      }
+    });
+  },
   likeZan: function(e) {
     e.stopPropagation();
     $target = $($(e.currentTarget));
 
-    var num = Number($target.find('.c-num').text());
-    $target.find('span').text(num++);
-    //to do
-    //点赞ajax
+    if ($target.hasClass('on')) {
+      return
+    };
+    var num = Number($target.find('.c-num').html());
+    num++;
+    $target.find('.c-num').html(num);
+
+    $target.addClass('on')
+      //to do
+      //点赞ajax
     vm.ajax({
       url: 'https://reply.autohome.com.cn/api/like/set.json',
       type: "POST",
@@ -87,6 +120,7 @@ var vm = {
   },
   author2: function(e) {
     e.stopPropagation();
+    console.log('author2')
     $target = $($(e.currentTarget));
 
     $followTarget = e.target;
@@ -298,9 +332,9 @@ var vm = {
   reFresh: {
     init: function(opt) {
 
-      var dragThreshold = opt.dragThreshold || 0.3; // 临界值
+      var dragThreshold = opt.dragThreshold || 0.1; // 临界值
 
-      var moveCount = opt.moveCount || 200; // 位移系数
+      var moveCount = opt.moveCount || 600; // 位移系数
 
       var dragStart = null; // 开始抓取标志位
 
@@ -322,12 +356,10 @@ var vm = {
 
       dom.on('touchstart', function(event) {
 
-
         if (refreshFlag) {
           event.preventDefault();
           return;
         }
-
 
         event = event.touches[0];
         dragStart = event.clientY;
@@ -349,9 +381,7 @@ var vm = {
           return;
         }
 
-
         var target = event.touches[0];
-
         percentage = (dragStart - target.clientY) / window.screen.height;
 
         // 当且紧当scrolltop是0且往下滚动时才触发
@@ -362,11 +392,9 @@ var vm = {
               pullArrow.show();
               opt.beforePull && opt.beforePull();
               changeOneTimeFlag = 1;
-
             }
 
             var translateX = -percentage * moveCount;
-
             joinRefreshFlag = true;
 
             if (Math.abs(percentage) > dragThreshold) {
@@ -379,52 +407,38 @@ var vm = {
               pullArrow.addClass('down');
             }
 
-
             if (percentage > 0) {
-
               dom.css('-webkit-transform', 'translate3d(0,' + translateX + 'px,0)');
             } else {
               dom.css('-webkit-transform', 'translate3d(0,' + translateX + 'px,0)');
             }
           } else {
-
             if (joinRefreshFlag == null) {
               joinRefreshFlag = false;
             }
           }
         } else {
-
           if (joinRefreshFlag == null) {
             joinRefreshFlag = false;
           }
         }
-
-
       });
       dom.on('touchend', function(event) {
-
         if (percentage === 0) {
           return;
         }
-
 
         if (refreshFlag) {
           event.preventDefault();
           return;
         }
 
-
         if (Math.abs(percentage) > dragThreshold && joinRefreshFlag) {
-
-
           opt.onRefresh && opt.onRefresh();
-
-
           dom.css('-webkit-transition', '330ms');
           pullText.text('正在刷新..');
           pullIcon.show();
           pullArrow.hide();
-
           dom.css('-webkit-transform', 'translate3d(0,' + 43 + 'px,0)');
 
           // 进入下拉刷新状态
@@ -445,7 +459,6 @@ var vm = {
 
           }, 700);
         } else {
-
           if (joinRefreshFlag) {
             refreshFlag = 1;
             dom.css('-webkit-transition', '330ms');
@@ -731,42 +744,125 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      //已登录
-      if (Number(user.userId)) {
-        vm.ajax({
-          url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.ashx',
-          type: "GET",
-          data: {
-            pm: vm.mobileType() == 'iOS' ? 1 : 2,
-            tagid: vm.getParam('tagid'),
-            pid: vm.data.lastpageid || '',
-            pagesize: 20,
-            otype: 0,
-            itype: index || 1,
-            au: user.userAuth
-          },
-          dataType: "json",
-          success: function(res, xml) {
-            res = JSON.parse(res);
-            if (!!res.result.vuserlist.length) {
-              vm.renderNews(res.result.vuserlist, index);
-            } else {
-              console.log('暂无数据')
-            }
-          },
-          fail: function(status) {
-            ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
-              ApiBridge.callNative('ClientViewManager', 'showLoadingView')
-              vm.init();
-            })
-          }
-        });
-
-      } else {
-
+    var res = {
+      "message": "",
+      "result": {
+        "isloadmore": true,
+        "lastid": "2017-05-10 13:52:08247|100112",
+        "newslist": [{
+          "content": "",
+          "description": "",
+          "identifiertype": "",
+          "imageheight": 0,
+          "imagewidth": 0,
+          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g11/M04/98/E4/autohomecar__wKgH0lkTz3iAHr29AAFQYzWEEz4983.jpg?imageView2/2/w/640"],
+          "isattention": 0,
+          "iscandelete": 0,
+          "mediaid": "",
+          "mediatype": 1,
+          "newsid": 100251,
+          "pics": [],
+          "playtime": "",
+          "praisenum": 0,
+          "publishtime": "2017-05-11",
+          "replycount": "0",
+          "seriesids": "",
+          "session_id": "0ab92236c6dc4226b7a2a21c77ad79ac",
+          "status": 0,
+          "statusNote": "",
+          "statusStr": "",
+          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g11/M04/98/E4/autohomecar__wKgH0lkTz3iAHr29AAFQYzWEEz4983.jpg?imageView2/1/w/400/h/225"],
+          "title": "这是比缸内直喷更好的引擎技术?",
+          "userid": 26459902,
+          "username": "CLauto酷乐汽车",
+          "userpic": "https://qnwww2.autoimg.cn/youchuang/g8/M07/BE/EC/autohomecar__wKgHz1hKfReAbtwLAACQ18qIPGc329.JPG?imageView2/1/w/120/h/120"
+        }, {
+          "content": "",
+          "description": "",
+          "identifiertype": "",
+          "imageheight": 0,
+          "imagewidth": 0,
+          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g19/M03/72/E5/autohomecar__wKgFU1kSq6SAUQ8MAAGZQVgzY10917.jpg?imageView2/2/w/640"],
+          "isattention": 0,
+          "iscandelete": 0,
+          "mediaid": "",
+          "mediatype": 1,
+          "newsid": 100113,
+          "pics": [],
+          "playtime": "",
+          "praisenum": 2,
+          "publishtime": "2017-05-10",
+          "replycount": "2",
+          "seriesids": "",
+          "session_id": "50ba8bd244964a14a665e3a59b2bf519",
+          "status": 0,
+          "statusNote": "",
+          "statusStr": "",
+          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g19/M03/72/E5/autohomecar__wKgFU1kSq6SAUQ8MAAGZQVgzY10917.jpg?imageView2/1/w/400/h/225"],
+          "title": "速度与激情8莱蒂姐的战斗机",
+          "userid": 28402669,
+          "username": "第九车道",
+          "userpic": "https://qnwww2.autoimg.cn/youchuang/g9/M0A/81/BF/autohomecar__wKgH31j-7wyAfHr2AAce2W4iTVA803.jpg?imageView2/1/w/120/h/120"
+        }, {
+          "content": "",
+          "description": "",
+          "identifiertype": "",
+          "imageheight": 0,
+          "imagewidth": 0,
+          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g19/M07/72/E1/autohomecar__wKgFU1kSqeSAMQnkAB9MVa-ekO0287.jpg?imageView2/2/w/640"],
+          "isattention": 0,
+          "iscandelete": 0,
+          "mediaid": "",
+          "mediatype": 1,
+          "newsid": 100112,
+          "pics": [],
+          "playtime": "",
+          "praisenum": 0,
+          "publishtime": "2017-05-10",
+          "replycount": "0",
+          "seriesids": "",
+          "session_id": "b8894f0d80c346d3b3d5fc1e0cd03392",
+          "status": 0,
+          "statusNote": "",
+          "statusStr": "",
+          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g19/M07/72/E1/autohomecar__wKgFU1kSqeSAMQnkAB9MVa-ekO0287.jpg?imageView2/1/w/400/h/225"],
+          "title": "福特 福克斯 RS v 日产 GT-R | 冠军杀手（六）",
+          "userid": 25682175,
+          "username": "汽车与运动evo",
+          "userpic": "https://qnwww2.autoimg.cn/youchuang/g16/M0E/00/AE/autohomecar__wKjBx1iZPTWAM2HJAALWRcM5dJs218.jpg?imageView2/1/w/120/h/120"
+        }]
+      },
+      "returncode": 0
+    }
+    vm.renderNews(res.result.newslist, index);
+    return;
+    vm.ajax({
+      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.ashx',
+      type: "GET",
+      data: {
+        pm: vm.mobileType() == 'iOS' ? 1 : 2,
+        tagid: vm.getParam('tagid'),
+        pid: vm.data.lastpageid || '',
+        pagesize: 20,
+        otype: 0,
+        itype: index + 1 || 1
+      },
+      dataType: "json",
+      success: function(res, xml) {
+        res = JSON.parse(res);
+        if (!!res.result.newslist.length) {
+          vm.renderNews(res.result.newslist, index);
+        } else {
+          console.log('暂无数据')
+        }
+      },
+      fail: function(status) {
+        ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
+          ApiBridge.callNative('ClientViewManager', 'showLoadingView')
+          vm.init();
+        })
       }
-    })
+    });
   },
 
   //渲染new列表
@@ -776,10 +872,23 @@ var vm = {
       var html = '';
       data.map(function(v) {
         html +=
-          '<li mediatype=' + v['mediatype'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p class="c-auth-title">' + v['title'] + '</p>' + '<p class="c-tab-jj">' + v['praisenum'] + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">500 浏览</span>' + '</li>'
+          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj">' + v['praisenum'] + '</p>' + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt="">' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">500 浏览</span>' + '</li>'
       })
       $('.c-tab-bd ul').eq(index).html(html);
     }
+    //下拉刷新
+    vm.reFresh.init({
+      container: '.container',
+      beforePull: function() {
+        console.log('beforePull')
+      },
+      onRefresh: function() {
+        console.log('onRefresh')
+      },
+      afterPull: function() {
+        console.log('afterPulll')
+      },
+    })
   }
 };
 vm.bindEvent();
@@ -807,19 +916,8 @@ if (/follow-more-tab/.test(window.location.href)) {
 
 //标签列表
 if (/tag-name/.test(window.location.href)) {
-  //下拉刷新
-  vm.reFresh.init({
-    container: '.container',
-    beforePull: function() {
-      console.log('beforePull')
-    },
-    onRefresh: function() {
-      console.log('onRefresh')
-    },
-    afterPull: function() {
-      console.log('afterPulll')
-    },
-  })
+  vm.data.likes = [];
+
 
   //上拉加载
   vm.upScroll(function() {
