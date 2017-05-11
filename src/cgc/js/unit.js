@@ -47,7 +47,7 @@ var vm = {
   upScroll: function(fn) {
     //上拉加载
     window.addEventListener('scroll', function() {
-      var preLoadDis = '0.01';
+      var preLoadDis = '0.0001';
       var offsetHeight = window.innerHeight,
         scrollHeight = document.body.scrollHeight,
         scrollTop = document.body.scrollTop;
@@ -554,6 +554,7 @@ var vm = {
 
       $('.js-follow-v-list').html(html);
     }
+    $('.c-loading').hide();
     vm.data.isLoad = true;
   },
 
@@ -779,7 +780,7 @@ var vm = {
   //标签列表
   tagList: function(index) {
     vm.ajax({
-      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.ashx',
+      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.json',
       type: "GET",
       data: {
         pm: vm.mobileType() == 'iOS' ? 1 : 2,
@@ -857,6 +858,7 @@ if (/my-follow/.test(window.location.href)) {
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
       vm.data.isLoad = false;
+      $('.c-loading').show();
       vm.followMore();
     }
   });
