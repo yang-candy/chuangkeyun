@@ -796,7 +796,7 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    var res = {
+    /*var res = {
       "message": "",
       "result": {
         "isloadmore": true,
@@ -893,6 +893,7 @@ var vm = {
     };
     vm.renderTagList(res.result.newslist, index);
     return;
+    */
     vm.ajax({
       url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.json',
       type: "GET",
