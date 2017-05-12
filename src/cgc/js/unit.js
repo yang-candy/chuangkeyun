@@ -927,24 +927,7 @@ var vm = {
     $('.c-loading').hide();
     vm.data.isLoad = true;
 
-    //下拉刷新
-    vm.reFresh.init({
-      container: '.container',
-      beforePull: function() {
-        console.log('beforePull')
-      },
-      onRefresh: function() {
-        console.log('beforePull')
-        $('.js-tag-list').addClass('on');
-        $('#pullIcon').addClass('anima')
-        $('.pull-ab').addClass('rotate')
-      },
-      afterPull: function() {
-        vm.tagList(vm.data.tagListIndex);
-        console.log('afterPulll')
-        $('.js-tag-list').removeClass('on');
-      },
-    })
+    
   }
 };
 vm.bindEvent();
@@ -986,6 +969,25 @@ if (/tag-name/.test(window.location.href)) {
 
   //默认请求数据
   vm.tagList();
+
+  //下拉刷新
+  vm.reFresh.init({
+    container: '.container',
+    beforePull: function() {
+      console.log('beforePull')
+    },
+    onRefresh: function() {
+      console.log('beforePull')
+      $('.js-tag-list').addClass('on');
+      $('#pullIcon').addClass('anima')
+      $('.pull-ab').addClass('rotate')
+    },
+    afterPull: function() {
+      vm.tagList(vm.data.tagListIndex);
+      console.log('afterPulll')
+      $('.js-tag-list').removeClass('on');
+    },
+  })
 }
 
 //tab切换
