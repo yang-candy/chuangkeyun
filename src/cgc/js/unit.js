@@ -986,13 +986,13 @@ if (/tag-name/.test(window.location.href)) {
       console.log('beforePull')
     },
     onRefresh: function() {
+      vm.tagList(vm.data.tagListIndex);
       console.log('beforePull')
       $('.js-tag-list').addClass('on');
       $('#pullIcon').addClass('anima')
       $('.pull-ab').addClass('rotate')
     },
     afterPull: function() {
-      vm.tagList(vm.data.tagListIndex);
       console.log('afterPulll')
       $('.js-tag-list').removeClass('on');
     },
