@@ -644,9 +644,12 @@ var vm = {
 
   //关注初始化
   init: function() {
-    ApiBridge.callNative('ClientViewManager', 'setNavigationTabBarTitle', {
-      title: '我的关注'
+    ApiBridge.callNative('ClientNavigationManager', 'setNavTitle', {
+      title: '我的关注',
+      navigationtype: 2
     });
+    
+    ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
 
     //判断是否联网
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
