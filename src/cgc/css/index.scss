@@ -616,27 +616,76 @@ li{
     margin-top:2.3rem;
     transition: 330ms; 
     transform: translate3d(0px, 0px, 0px);
+    &.on{
+      margin-top:2.7rem;
+    }
   }
 }
 
 //下拉刷新
 .pull-down-content {
   display: block!important;
-  margin-top: -50px;
-  height: 50px;
+  margin-top: -65px;
+  height: 65px;
   text-align: center;
-  line-height: 50px;
+  line-height: 55px;
   font-size: 14px;
   background-color: #f8f8f8;
+  overflow:hidden;
+}
+#pullIcon{
+  position:relative;
+  z-index:11;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  .pull-re{
+    position:absolute;
+    top:15px;
+    left:0;
+    z-index:12;
+  }
+  .pull-ab{
+    position:absolute;
+    top:15px;
+    left:0;
+    z-index:13;
+    &.rotate{
+      animation: rotate .8s steps(12) 1.3s infinite;
+    }
+  }
+}
+#pullIcon.anima{
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: dash 2s linear 1 forwards;
+  }
+
+.pull-down-content {
+  svg{
+    width:17px;
+    height:17px;
+    transform:rotate(45deg);
+  }
 }
 .pull-down-content #arrowIcon {
-  width: 10px;
-  height: 30px;
-  display: inline-block;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin:auto;
   vertical-align: middle;
-  margin-right: 8px;
-  margin-bottom: 3px;
 }
+  @keyframes dash {
+    from {
+          stroke-dashoffset:100;
+    }
+    to {
+          stroke-dashoffset:0;
+    }
+  }
+
 .pull-down-content .spinner {
   display: inline-block;
   margin-right: 8px;
