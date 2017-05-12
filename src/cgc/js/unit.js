@@ -30,6 +30,16 @@ var vm = {
 
     //跳转关注更多
     $('.c-att-more').on('click', vm.followV);
+
+    //点击关注更多左侧bar 获取右侧list
+    $('.js-follow-more-bar').on('click', 'li', vm.getFollowMore);
+
+  },
+  getFollowMore: function(e){
+    e.stopPropagation();
+    var $target = $(e.target);
+    
+    vm.getFollowMoreList($target.attr('ids'), $target.index());
   },
 
   //保存到localStorage
@@ -55,7 +65,7 @@ var vm = {
       //if (parseInt(preLoadDis) != preLoadDis) { // 如果是小数 则为百分比距离
       //  preLoadDis = scrollHeight * preLoadDis;
       //}
-      if ((scrollTop + offsetHeight) >= scrollHeight/* - preLoadDis */) {
+      if ((scrollTop + offsetHeight) >= scrollHeight /* - preLoadDis */ ) {
         fn();
       }
     });
@@ -66,7 +76,7 @@ var vm = {
       return;
     }
     console.log('li')
-    $target = $($(e.currentTarget));
+    $target = $(e.currentTarget);
 
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: 2,
@@ -80,7 +90,7 @@ var vm = {
   },
   likeZan: function(e) {
     e.stopPropagation();
-    $target = $($(e.currentTarget));
+    $target = $(e.currentTarget);
 
     if ($target.hasClass('on')) {
       return
@@ -91,9 +101,9 @@ var vm = {
     var html = '<span class="c-add1">+1</span>'
     $target.append(html);
 
-    setTimeout(function(){
+    setTimeout(function() {
       $('.c-add1').remove();
-    },1000)
+    }, 1000)
     $target.find('.zan-icon').addClass('on')
 
     vm.ajax({
@@ -123,7 +133,7 @@ var vm = {
   },
   tagCommon: function(e) {
     e.stopPropagation();
-    $target = $($(e.currentTarget));
+    $target = $(e.currentTarget);
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: 2,
       animationtype: 2,
@@ -138,7 +148,7 @@ var vm = {
   author2: function(e) {
     e.stopPropagation();
     console.log('author2')
-    $target = $($(e.currentTarget));
+    $target = $(e.currentTarget);
 
     $followTarget = e.target;
 
@@ -172,7 +182,7 @@ var vm = {
   },
   tagFollow: function(e) {
     e.stopPropagation();
-    $target = $($(e.currentTarget));
+    $target = $(e.currentTarget);
 
     $followTarget = e.target;
 
@@ -652,7 +662,7 @@ var vm = {
       title: '我的关注',
       navigationtype: 2
     });
-    
+
     ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
 
     //判断是否联网
@@ -786,7 +796,6 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    /*
     var res = {
       "message": "",
       "result": {
@@ -882,9 +891,8 @@ var vm = {
       "returncode": 0
 
     };
-          vm.renderTagList(res.result.newslist, index);
+    vm.renderTagList(res.result.newslist, index);
     return;
-    */
     vm.ajax({
       url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.json',
       type: "GET",
@@ -917,6 +925,71 @@ var vm = {
     });
   },
 
+  //获取关注更多左侧bar
+  getFollowMoreBar: function() {
+    vm.ajax({
+      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/getCategoryList.json',
+      type: "GET",
+      data: {},
+      dataType: "json",
+      success: function(res, xml) {
+        res = JSON.parse(res);
+        if (!!res.result.length) {
+          vm.renderFollowMoreBar(res.result);
+        }
+      },
+      fail: function(status) {}
+    });
+  },
+
+  //渲染关注更多左侧列表
+  renderFollowMoreBar: function(data) {
+    var html = '';
+    var htmlUl = '';
+    data.map(function(v) {
+      html += '<li ids=' + v['id'] + '>' + v['name'] + '</li>';
+      htmlUl += '<ul class="c-att-ul js-follow-v-list"></ul>'
+    })
+
+    $('.js-follow-more-bar').html(html);
+    $('.js-follow-more-list').html(html);
+
+    vm.getFollowMoreList($('.js-follow-more-bar li').eq(0).attr('ids'), $('.js-follow-more-bar').index());
+  },
+
+  //获取关注更多第一个的关注列表
+  getFollowMoreList: function(id, index) {
+    vm.ajax({
+      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/getUserPageByCategory.json',
+      type: "GET",
+      data: {
+        userCategoryId: id,
+        size: 20,
+        lastId: vm.data.lastId || ''
+      },
+      dataType: "json",
+      success: function(res, xml) {
+        res = JSON.parse(res);
+        if (!!res.result.length) {
+          vm.renderFollowMoreList(res.result, index);
+        }
+      },
+      fail: function(status) {}
+    });
+  },
+
+  //渲染关注更多list
+  renderFollowMoreList: function(data, index) {
+    index = index || 0;
+
+    var html = '';
+    data.map(function(v) {
+      html += '<li > <a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+    })
+
+    $('.js-follow-more-list ul').eq(index).html(html);
+  },
+
   //渲染标签详情列表
   renderTagList: function(data, index) {
     index = index || 0;
@@ -936,7 +1009,7 @@ var vm = {
     $('.c-loading').hide();
     vm.data.isLoad = true;
 
-    
+
   }
 };
 vm.bindEvent();
@@ -960,7 +1033,7 @@ if (/my-follow/.test(window.location.href)) {
 
 //加载更多
 if (/follow-more-tab/.test(window.location.href)) {
-
+  vm.getFollowMoreBar();
 }
 
 //标签列表
