@@ -18,10 +18,10 @@ var vm = {
     $('.js-follow-more-list').on('click', 'li', vm.author2);
 
     //通用关注
-    $('.js-tag-list').on('click', '.c-att-t', vm.tagFollow);
+    //$('.js-tag-list').on('click', '.c-att-t', vm.tagFollow);
 
     //关注更多 -->关注
-    $('.js-follow-more-list').on('click', '.c-att-href', vm.tagFollow);
+    //$('.js-follow-more-list').on('click', '.c-att-href', vm.tagFollow);
 
     //标签列表 -->评论跳转到评论页
     $('.js-tag-list').on('click', '.c-common', vm.tagCommon);
@@ -50,6 +50,9 @@ var vm = {
     e.stopPropagation();
     var $target = $(e.target);
 
+    if(vm.data.isFollowMore){
+      return;
+    }
     if ($('.js-follow-more-list ul').eq($target.index()).html() == '') {
       vm.getFollowMoreList($target.attr('ids'), $target.index());
     }
@@ -82,7 +85,7 @@ var vm = {
     vm.data.mediaWidth = $(e.currentTarget).find('img').width();
     vm.data.mediaHeight = $(e.currentTarget).find('img').height();
     vm.data.mediaX = $(e.currentTarget).find('img')[0].x;
-    vm.data.mediaY = $(e.currentTarget).find('img')[0].y;
+    vm.data.mediaY = $(e.currentTarget).find('img')[0].y - document.body.scrollTop;
 
     var postData = {
       mediaid: vm.data.mediaid,
@@ -94,10 +97,7 @@ var vm = {
       playtime: $target.attr('playtime'),
       thumbnailpics: $target.attr('thumbnailpics').split(',')
     }
-    console.log(postData);
     ApiBridge.callNative('ClientVideoManager', 'createById', postData);
-
-    console.log(vm.data.mediaid, vm.data.mediaWidth, vm.data.mediaHeight, vm.data.mediaX, vm.data.mediaY)
   },
 
   //保存到localStorage
@@ -205,7 +205,6 @@ var vm = {
   },
   author2: function(e) {
     e.stopPropagation();
-    console.log('author2')
     $target = $(e.currentTarget);
 
     $followTarget = e.target;
@@ -241,7 +240,7 @@ var vm = {
     e.stopPropagation();
     $target = $(e.currentTarget);
 
-    $followTarget = e.target;
+    var $followTarget = e.target;
 
     //点了关注
     if ($followTarget.tagName == 'A') {
@@ -713,9 +712,8 @@ var vm = {
   //关注初始化
   init: function() {
     ApiBridge.callNative('ClientNavigationManager', 'setNavTitle', {
-      title: '我的关注',
-      navigationtype: 2
-    });
+      title: '我的关注'
+    },function(){});
 
     ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
 
@@ -848,7 +846,6 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    /*
     var res = {
       "message": "",
       "result": {
@@ -946,7 +943,6 @@ var vm = {
     };
     vm.renderTagList(res.result.newslist, index);
     return;
-    */
     vm.ajax({
       url: vm.data.url + '/npnewlistfortagid.json',
       type: "GET",
@@ -982,7 +978,7 @@ var vm = {
   //获取关注更多左侧bar
   getFollowMoreBar: function() {
     /*
-    var res ={
+    var res = {
         "message": "",
         "result": [{
               "id": 2,
@@ -1001,8 +997,8 @@ var vm = {
 
     }
           vm.renderFollowMoreBar(res.result);
-          return;
-          */
+    return;
+    */
     vm.ajax({
       url: vm.data.url + '/getCategoryList.json',
       type: "GET",
@@ -1010,11 +1006,17 @@ var vm = {
       dataType: "json",
       success: function(res, xml) {
         res = JSON.parse(res);
+        ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
         if (!!res.result.length) {
           vm.renderFollowMoreBar(res.result);
         }
       },
-      fail: function(status) {}
+      fail: function(status) {
+        ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
+          ApiBridge.callNative('ClientViewManager', 'showLoadingView')
+          vm.getFollowMoreBar();
+        })
+      }
     });
   },
 
@@ -1093,28 +1095,50 @@ var vm = {
   //渲染关注更多list
   renderFollowMoreList: function(data, index) {
     index = index || 0;
-
     var html = '';
+      //data.map(function(v) {
+      //        html += '<li > <a class="c-att-href '+(v['isattention'] == 1 ? on : '')+'" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+      //      });
 
+    //      $('.js-follow-more-list ul').eq(index).html(html);
+    //$('.js-follow-more-list').on('click', '.c-att-href', vm.tagFollow);
+    //      return;
     //本地关注与线上数据判断已关注过滤
     //登录未登录 
-    ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
-      //本地数据有
-      if (!!follow.result.length) {
-        //to do
-        follow.result.map(function(v){
-          data.map(function(j){
-            if(v.userId == j.userid){
-              j.isattention = 1;
-            }
-          })
-        })
+    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      var html = '';
 
+      if (!Number(user.userId)) {
+        ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
+
+          //本地数据有
+          //to do
+          if (!!follow.result.length) {
+            //follow.result.map(function(v) {
+            //  data.map(function(j) {
+            //    if (v['userId'] === j['userid']) {
+            //      j['isattention'] = '1';
+            //    }
+            //  })
+            //})
+          }
+          data.map(function(v) {
+            html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? on : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          });
+
+          $('.js-follow-more-list ul').eq(index).html(html);
+        })
+      } else {
         data.map(function(v) {
-          html += '<li > <a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? on : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         })
 
+        ApiBridge.log(html)
         $('.js-follow-more-list ul').eq(index).html(html);
+      }
+      if(!!vm.data.isFollowMore){
+        $('.js-follow-more-bar li').eq(0).click();
+        vm.data.isFollowMore = false;
       }
     })
   },
@@ -1160,6 +1184,7 @@ if (/my-follow/.test(window.location.href)) {
 
 //关注更多
 if (/follow-more-tab/.test(window.location.href)) {
+  vm.data.isFollowMore = true;
   vm.getFollowMoreBar();
 }
 
@@ -1172,6 +1197,10 @@ if (/tag-name/.test(window.location.href)) {
     if (!!vm.data.isLoad) {
       vm.data.isLoad = false;
       $('.c-loading').show();
+      //删除视频 
+      ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+        mediaid: vm.data.mediaid,
+      });
       vm.tagList(vm.data.tagListIndex);
     }
   });
@@ -1187,6 +1216,10 @@ if (/tag-name/.test(window.location.href)) {
     container: '.container',
     beforePull: function() {
       console.log('beforePull')
+        //删除视频 
+      ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+        mediaid: vm.data.mediaid,
+      });
     },
     onRefresh: function() {
       vm.tagList(vm.data.tagListIndex);
