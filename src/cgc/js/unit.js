@@ -1,6 +1,8 @@
 ;
 var vm = {
-  data: {},
+  data: {
+    url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf'
+  },
 
   //绑定事件
   bindEvent: function() {
@@ -9,20 +11,26 @@ var vm = {
     $('.js-follow-v-list').on('click', 'li', vm.author2);
     $('.js-follow-list').on('click', 'li', vm.author2);
 
+    //关注更多 -->跳转作者客页
+    $('.js-follow-more-list').on('click', 'li', vm.author2);
+
     //通用关注
     $('.js-tag-list').on('click', '.c-att-t', vm.tagFollow);
 
-    //标签列表 --评论跳转到评论页
+    //关注更多 -->关注
+    $('.js-follow-more-list').on('click', '.c-att-href', vm.tagFollow);
+
+    //标签列表 -->评论跳转到评论页
     $('.js-tag-list').on('click', '.c-common', vm.tagCommon);
 
-    //标签列表 --跳转文章最终页
+    //标签列表 -->跳转文章最终页
     $('.js-tag-list').on('click', 'li', vm.artical);
 
-    //标签列表 --点击头像或名字跳转个人主页
+    //标签列表 -->点击头像或名字跳转个人主页
     $('.js-tag-list').on('click', '.c-auth-img', vm.author2);
     $('.js-tag-list').on('click', '.c-auth-title', vm.author2);
 
-    //标签列表 --点赞动作
+    //标签列表 -->点赞动作
     $('.js-tag-list').on('click', '.c-zan', vm.likeZan);
 
     //点击Tag获得TagId对应的News列表
@@ -35,10 +43,10 @@ var vm = {
     $('.js-follow-more-bar').on('click', 'li', vm.getFollowMore);
 
   },
-  getFollowMore: function(e){
+  getFollowMore: function(e) {
     e.stopPropagation();
     var $target = $(e.target);
-    
+
     vm.getFollowMoreList($target.attr('ids'), $target.index());
   },
 
@@ -695,7 +703,7 @@ var vm = {
 
           if (Number(user.userId)) {
             //已登录
-            vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
+            vm.followAjax(vm.data.url + "/npgetvuserlist.json", {
               dt: 1,
               au: user.userAuth
             })
@@ -711,14 +719,14 @@ var vm = {
                 follow.result.map(function(v) {
                   ids.push(v.userId);
                 })
-                vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
+                vm.followAjax(vm.data.url + "/npgetvuserlist.json", {
                   dt: 1,
                   vids: ids.toString()
                 })
                 $('.js-follow-more').show();
                 $('.js-follow-v').hide();
               } else {
-                vm.getV("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json");
+                vm.getV(vm.data.url + "/npgetvuserlist.json");
               }
             })
           }
@@ -758,7 +766,7 @@ var vm = {
           //取网络数据
           //传lastpageid分页
           if (!!vm.data.isloadmore) {
-            vm.followAjax("http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json", {
+            vm.followAjax(vm.data.url + "/npgetvuserlist.json", {
               dt: 1,
               au: user.userAuth
             })
@@ -895,7 +903,7 @@ var vm = {
     return;
     */
     vm.ajax({
-      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npnewlistfortagid.json',
+      url: vm.data.url + '/npnewlistfortagid.json',
       type: "GET",
       data: {
         pm: vm.mobileType() == 'iOS' ? 1 : 2,
@@ -929,7 +937,7 @@ var vm = {
   //获取关注更多左侧bar
   getFollowMoreBar: function() {
     vm.ajax({
-      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/getCategoryList.json',
+      url: vm.data.url + '/getCategoryList.json',
       type: "GET",
       data: {},
       dataType: "json",
@@ -961,7 +969,7 @@ var vm = {
   //获取关注更多第一个的关注列表
   getFollowMoreList: function(id, index) {
     vm.ajax({
-      url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/getUserPageByCategory.json',
+      url: vm.data.url + '/getUserPageByCategory.json',
       type: "GET",
       data: {
         userCategoryId: id,
