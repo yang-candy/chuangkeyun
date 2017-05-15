@@ -63,10 +63,10 @@ var vm = {
       if (!!vm.data.mediaStatus) {
         if ((vm.data.mediaHeight + vm.data.mediaY - $titleHeight) < scrollTop || (vm.data.mediaY - offsetHeight > scrollTop)) {
           vm.data.mediaStatus = false;
+          console.log('delete')
           ApiBridge.callNative('ClientVideoManager', 'deleteById', {
             mediaid: vm.data.mediaid,
           });
-          console.log('delete')
         }
       }
     });
@@ -81,26 +81,27 @@ var vm = {
     vm.data.mediatype = $(e.currentTarget).attr('mediatype');
     vm.data.mediatitle = $(e.currentTarget).attr('mediatitle');
     //vm.data.mediaWidth = $(e.currentTarget).find('img').width();
-    //vm.data.mediaHeight = $(e.currentTarget).find('img').height();
+    vm.data.mediaHeight = $(e.currentTarget).find('img').height();
     vm.data.mediaX = $(e.currentTarget).find('img')[0].x;
-    vm.data.mediaY = $(e.currentTarget).find('img')[0].y - document.body.scrollTop;
+    vm.data.mediaY = $(e.currentTarget).find('img')[0].y;
+    //- document.body.scrollTop;
 
     var postData = {
       mediaid: vm.data.mediaid,
       //width: vm.data.mediaWidth,
       //height: vm.data.mediaHeight,
-      title: vm.mediatitle,
+      title: vm.data.mediatitle,
       x: vm.data.mediaX,
       y: vm.data.mediaY,
       status: $target.attr('status'),
       playtime: $target.attr('playtime'),
       thumbnailpics: $target.attr('thumbnailpics').split(',')
     }
-    console.log(postData)
-    if(vm.data.mediatype == 3){
+
+    if (vm.data.mediatype == 3) {
       ApiBridge.callNative('ClientVideoManager', 'createById', postData);
     }
-    if(vm.data.mediatype == 4){
+    if (vm.data.mediatype == 4) {
       ApiBridge.callNative('ClientAudioManager', 'createById', postData);
     }
   },
@@ -133,7 +134,7 @@ var vm = {
       }
     });
   },
-  
+
   artical: function(e) {
     e.stopPropagation();
     if (e.target.tagName != 'LI') {
@@ -1157,54 +1158,52 @@ var vm = {
     index = index || 0;
     var html = '';
 
-    
 
 
 
 
-/*
-    try{
-          data.map(function(v) {
-            html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
-          })
-          if (!vm.data.isLoad) {
-            $('.js-follow-more-list ul').eq(index).append(html);
-          } else {
-            $('.js-follow-more-list ul').eq(index).html(html);
-          }
 
-          $('.c-loading').hide();
-          vm.data.isLoad = true;
-
-          if(!vm.data.registLoad){
-            return;
-          }
-          $('.js-follow-v-list').on('scroll',function(e){
-            vm.data.registLoad = false;
-
-            var $target = e.currentTarget;
-
-            var $scrollHeight = $($target)[0].scrollHeight;
-            var $height = $($target).height();
-            var $scrollTop = $target.scrollTop; 
-
-            if($height + $scrollTop >= $scrollHeight){
-              if(!!vm.data.isLoad){
-              vm.data.isLoad = false;
-                $('.c-loading').show();
-                ApiBridge.log(vm.data.registLoad)
-                if(!!vm.data.loadMore){
-                  vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
-                }else{
-                  $('.c-loading').hide();
-                }
+    /*
+        try{
+              data.map(function(v) {
+                html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+              })
+              if (!vm.data.isLoad) {
+                $('.js-follow-more-list ul').eq(index).append(html);
+              } else {
+                $('.js-follow-more-list ul').eq(index).html(html);
               }
+
+              $('.c-loading').hide();
+              vm.data.isLoad = true;
+
+              if(!vm.data.registLoad){
+                return;
+              }
+              $('.js-follow-v-list').on('scroll',function(e){
+                vm.data.registLoad = false;
+
+                var $target = e.currentTarget;
+
+                var $scrollHeight = $($target)[0].scrollHeight;
+                var $height = $($target).height();
+                var $scrollTop = $target.scrollTop; 
+
+                if($height + $scrollTop >= $scrollHeight){
+                  if(!!vm.data.isLoad){
+                  vm.data.isLoad = false;
+                    $('.c-loading').show();
+                    if(!!vm.data.loadMore){
+                      vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+                    }else{
+                      $('.c-loading').hide();
+                    }
+                  }
+                }
+              })
+              
+            }catch(e){
             }
-          })
-          
-        }catch(e){
-          ApiBridge.log(e);
-        }
 
 
 
@@ -1212,8 +1211,8 @@ var vm = {
 
 
 
-        return;
-        */
+            return;
+            */
     //本地关注与线上数据判断已关注过滤
     //登录未登录 
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
@@ -1245,25 +1244,25 @@ var vm = {
 
           $('.c-loading').hide();
           vm.data.isLoad = true;
-          if(!vm.data.registLoad){
+          if (!vm.data.registLoad) {
             return;
           }
-          $('.js-follow-v-list').on('scroll',function(e){
+          $('.js-follow-v-list').on('scroll', function(e) {
             vm.data.registLoad = false;
 
             var $target = e.currentTarget;
 
             var $scrollHeight = $($target)[0].scrollHeight;
             var $height = $($target).height();
-            var $scrollTop = $target.scrollTop; 
+            var $scrollTop = $target.scrollTop;
 
-            if($height + $scrollTop >= $scrollHeight){
-              if(!!vm.data.isLoad){
+            if ($height + $scrollTop >= $scrollHeight) {
+              if (!!vm.data.isLoad) {
                 vm.data.isLoad = false;
                 $('.c-loading').show();
-                if(!!vm.data.loadMore){
+                if (!!vm.data.loadMore) {
                   vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
-                }else{
+                } else {
                   $('.c-loading').hide();
                 }
               }
@@ -1271,7 +1270,7 @@ var vm = {
           })
         })
       } else {
-        try{
+        try {
           data.map(function(v) {
             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
           })
@@ -1284,34 +1283,32 @@ var vm = {
           $('.c-loading').hide();
           vm.data.isLoad = true;
 
-          if(!vm.data.registLoad){
+          if (!vm.data.registLoad) {
             return;
           }
-          $('.js-follow-v-list').on('scroll',function(e){
+          $('.js-follow-v-list').on('scroll', function(e) {
             vm.data.registLoad = false;
 
             var $target = e.currentTarget;
 
             var $scrollHeight = $($target)[0].scrollHeight;
             var $height = $($target).height();
-            var $scrollTop = $target.scrollTop; 
+            var $scrollTop = $target.scrollTop;
 
-            if($height + $scrollTop >= $scrollHeight){
-              if(!!vm.data.isLoad){
+            if ($height + $scrollTop >= $scrollHeight) {
+              if (!!vm.data.isLoad) {
                 vm.data.isLoad = false;
                 $('.c-loading').show();
-                ApiBridge.log(vm.data.registLoad)
-                if(!!vm.data.loadMore){
+                if (!!vm.data.loadMore) {
                   vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
-                }else{
+                } else {
                   $('.c-loading').hide();
                 }
               }
             }
           })
-          
-        }catch(e){
-          ApiBridge.log(e);
+
+        } catch (e) {
         }
       }
 
@@ -1329,10 +1326,10 @@ var vm = {
     if (!!data.length) {
       var html = '';
       data.map(function(v) {
-        if(v['mediatype'] == 4){
-          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<div class="c-media-audio">' + '<div mediatype='+v['mediatype']+' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
-        }else{
-          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</p>' + '<div mediatype='+v['mediatype']+' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+        if (v['mediatype'] == 4) {
+          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+        } else {
+          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
         }
       })
 
@@ -1388,6 +1385,9 @@ if (/follow-more-tab/.test(window.location.href)) {
 if (/tag-name/.test(window.location.href)) {
   //to do 本地存储点赞
   vm.data.likes = [];
+
+  //存储media id
+  vm.data.mediaId = [];
 
   //上拉翻页加载
   vm.upScroll(function() {
