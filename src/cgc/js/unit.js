@@ -236,6 +236,13 @@ var vm = {
       animationtype: 1,
       set: {
         modename: 'author',
+        ispagefullscreen: 1,
+        navigationalpha: 1,
+        navigationbacktype: 7,
+        navigationrighticon: {
+          icon1: 'articleplatform_icon_share',
+          icon1_p: 'articleplatform_icon_share_p'
+        },
         navigationtype: 2
       },
       param: {
@@ -1158,11 +1165,6 @@ var vm = {
     index = index || 0;
     var html = '';
 
-
-
-
-
-
     /*
         try{
               data.map(function(v) {
@@ -1204,12 +1206,6 @@ var vm = {
               
             }catch(e){
             }
-
-
-
-
-
-
 
             return;
             */
@@ -1308,8 +1304,7 @@ var vm = {
             }
           })
 
-        } catch (e) {
-        }
+        } catch (e) {}
       }
 
       //解决第一次加载不能点击问题, ps:具体原因不明,应该和事件委托无关
