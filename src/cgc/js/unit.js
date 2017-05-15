@@ -44,6 +44,8 @@ var vm = {
     e.stopPropagation();
     var $target = $(e.target);
 
+    //vm.data.lastId = '';
+
     if (vm.data.isFollowMore) {
       return;
     }
@@ -76,6 +78,7 @@ var vm = {
     var $target = $(e.currentTarget);
     vm.data.mediaStatus = true;
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+    vm.data.mediatype = $(e.currentTarget).attr('mediatype');
     vm.data.mediatitle = $(e.currentTarget).attr('mediatitle');
     //vm.data.mediaWidth = $(e.currentTarget).find('img').width();
     //vm.data.mediaHeight = $(e.currentTarget).find('img').height();
@@ -93,7 +96,13 @@ var vm = {
       playtime: $target.attr('playtime'),
       thumbnailpics: $target.attr('thumbnailpics').split(',')
     }
-    ApiBridge.callNative('ClientVideoManager', 'createById', postData);
+    console.log(postData)
+    if(vm.data.mediatype == 3){
+      ApiBridge.callNative('ClientVideoManager', 'createById', postData);
+    }
+    if(vm.data.mediatype == 4){
+      ApiBridge.callNative('ClientAudioManager', 'createById', postData);
+    }
   },
 
   //保存到localStorage
@@ -124,6 +133,7 @@ var vm = {
       }
     });
   },
+  
   artical: function(e) {
     e.stopPropagation();
     if (e.target.tagName != 'LI') {
@@ -862,11 +872,11 @@ var vm = {
     //      "identifiertype": "",
     //      "imageheight": 0,
     //      "imagewidth": 0,
-    //      "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g19/M03/72/E5/autohomecar__wKgFU1kSq6SAUQ8MAAGZQVgzY10917.jpg?imageView2/2/w/640"],
+    //      "indexdetail": ["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1494832393525&di=6f56f9013469111e8e2b46117f383fa8&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3D915d42037ed98d1076d40c39113eb807%2F8db1cb134954092362d4b7819058d109b2de4994.jpg"],
     //      "isattention": 0,
     //      "iscandelete": 0,
     //      "mediaid": "123",
-    //      "mediatype": 1,
+    //      "mediatype": 4,
     //      "newsid": 100113,
     //      "pics": [],
     //      "playtime": "44",
@@ -954,6 +964,7 @@ var vm = {
 
   //获取关注更多左侧bar
   getFollowMoreBar: function() {
+    vm.data.lastId = [];
     //var res = {
     //    "message": "",
     //    "result": [{
@@ -961,9 +972,7 @@ var vm = {
     //              "name": "全部",
     //                  "sortnum": 1,
     //                      "usercount": 59
-    //                        
-    //    }, {
-    //          "id": 9,
+    //    },{                  
     //              "name": "自媒体",
     //                  "sortnum": 2,
     //                      "usercount": 16
@@ -1010,11 +1019,15 @@ var vm = {
     $('.js-follow-more-list').html(htmlUl);
     $('.js-follow-more-list ul').eq(0).show();
 
+    //渲染右侧
     vm.getFollowMoreList($('.js-follow-more-bar li').eq(0).attr('ids'));
   },
 
   //获取关注更多第一个的关注列表
   getFollowMoreList: function(id, index) {
+    vm.data.followMoreId = id;
+    vm.data.followMoreIndex = index || 0;
+    index = index || 0;
     //var res = {
     //  "message": "",
     //  "result": {
@@ -1029,8 +1042,76 @@ var vm = {
     //      "userid": 6098853,
     //      "username": "无限试驾",
     //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "createtime": "2017-04-24 04:41:27",
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "createtime": "2017-04-24 04:41:27",
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "createtime": "2017-04-24 04:41:27",
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "createtime": "2017-04-24 04:41:27",
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "createtime": "2017-04-24 04:41:27",
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    //    },{
+    //      "fansnum": "",
+    //      "isattention": 1,
+    //      "title": "",
+    //      "userdesc": "",
+    //      "userid": 6098853,
+    //      "username": "无限试驾",
+    //      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
     //    },  {
-    //      "createtime": "2017-04-26 09:33:40",
     //      "fansnum": "",
     //      "isattention": 0,
     //      "title": "",
@@ -1044,6 +1125,9 @@ var vm = {
     //  },
     //  "returncode": 0
     //}
+    //vm.data.loadMore = res.result.loadMore;
+    //index = index || 0;
+    //vm.data.lastId[index] = res.result.lastId;
     //vm.renderFollowMoreList(res.result.users, index);
     //return;
     vm.ajax({
@@ -1051,13 +1135,16 @@ var vm = {
       type: "GET",
       data: {
         userCategoryId: id,
-        size: 20,
-        lastId: vm.data.lastId || ''
+        size: 30,
+        lastId: vm.data.lastId[index] || ''
       },
       dataType: "json",
       success: function(res, xml) {
         res = JSON.parse(res);
         if (!!res.result.users.length) {
+          vm.data.loadMore = res.result.loadMore;
+
+          vm.data.lastId[index] = res.result.lastId;
           vm.renderFollowMoreList(res.result.users, index);
         }
       },
@@ -1070,12 +1157,63 @@ var vm = {
     index = index || 0;
     var html = '';
 
-    //data.map(function(v) {
-    //  html += '<li > <a class="c-att-href '+(v['isattention'] == 1 ? 'on' : '')+'" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
-    //});
+    
 
-    //$('.js-follow-more-list ul').eq(index).html(html);
-    //return;
+
+
+
+/*
+    try{
+          data.map(function(v) {
+            html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          })
+          if (!vm.data.isLoad) {
+            $('.js-follow-more-list ul').eq(index).append(html);
+          } else {
+            $('.js-follow-more-list ul').eq(index).html(html);
+          }
+
+          $('.c-loading').hide();
+          vm.data.isLoad = true;
+
+          if(!vm.data.registLoad){
+            return;
+          }
+          $('.js-follow-v-list').on('scroll',function(e){
+            vm.data.registLoad = false;
+
+            var $target = e.currentTarget;
+
+            var $scrollHeight = $($target)[0].scrollHeight;
+            var $height = $($target).height();
+            var $scrollTop = $target.scrollTop; 
+
+            if($height + $scrollTop >= $scrollHeight){
+              if(!!vm.data.isLoad){
+              vm.data.isLoad = false;
+                $('.c-loading').show();
+                ApiBridge.log(vm.data.registLoad)
+                if(!!vm.data.loadMore){
+                  vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+                }else{
+                  $('.c-loading').hide();
+                }
+              }
+            }
+          })
+          
+        }catch(e){
+          ApiBridge.log(e);
+        }
+
+
+
+
+
+
+
+        return;
+        */
     //本地关注与线上数据判断已关注过滤
     //登录未登录 
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
@@ -1099,15 +1237,82 @@ var vm = {
             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
           });
 
-          $('.js-follow-more-list ul').eq(index).html(html);
+          if (!vm.data.isLoad) {
+            $('.js-follow-more-list ul').eq(index).append(html);
+          } else {
+            $('.js-follow-more-list ul').eq(index).html(html);
+          }
+
+          $('.c-loading').hide();
+          vm.data.isLoad = true;
+          if(!vm.data.registLoad){
+            return;
+          }
+          $('.js-follow-v-list').on('scroll',function(e){
+            vm.data.registLoad = false;
+
+            var $target = e.currentTarget;
+
+            var $scrollHeight = $($target)[0].scrollHeight;
+            var $height = $($target).height();
+            var $scrollTop = $target.scrollTop; 
+
+            if($height + $scrollTop >= $scrollHeight){
+              if(!!vm.data.isLoad){
+                vm.data.isLoad = false;
+                $('.c-loading').show();
+                if(!!vm.data.loadMore){
+                  vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+                }else{
+                  $('.c-loading').hide();
+                }
+              }
+            }
+          })
         })
       } else {
-        data.map(function(v) {
-          html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? on : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
-        })
+        try{
+          data.map(function(v) {
+            html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          })
+          if (!vm.data.isLoad) {
+            $('.js-follow-more-list ul').eq(index).append(html);
+          } else {
+            $('.js-follow-more-list ul').eq(index).html(html);
+          }
 
-        ApiBridge.log(html)
-        $('.js-follow-more-list ul').eq(index).html(html);
+          $('.c-loading').hide();
+          vm.data.isLoad = true;
+
+          if(!vm.data.registLoad){
+            return;
+          }
+          $('.js-follow-v-list').on('scroll',function(e){
+            vm.data.registLoad = false;
+
+            var $target = e.currentTarget;
+
+            var $scrollHeight = $($target)[0].scrollHeight;
+            var $height = $($target).height();
+            var $scrollTop = $target.scrollTop; 
+
+            if($height + $scrollTop >= $scrollHeight){
+              if(!!vm.data.isLoad){
+                vm.data.isLoad = false;
+                $('.c-loading').show();
+                ApiBridge.log(vm.data.registLoad)
+                if(!!vm.data.loadMore){
+                  vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+                }else{
+                  $('.c-loading').hide();
+                }
+              }
+            }
+          })
+          
+        }catch(e){
+          ApiBridge.log(e);
+        }
       }
 
       //解决第一次加载不能点击问题, ps:具体原因不明,应该和事件委托无关
@@ -1124,8 +1329,11 @@ var vm = {
     if (!!data.length) {
       var html = '';
       data.map(function(v) {
-        html +=
-          '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + '>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</p>' + '<div title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>'
+        if(v['mediatype'] == 4){
+          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<div class="c-media-audio">' + '<div mediatype='+v['mediatype']+' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+        }else{
+          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' href="javascript:;">' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</p>' + '<div mediatype='+v['mediatype']+' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+        }
       })
 
       if (!vm.data.isLoad) {
@@ -1160,7 +1368,20 @@ if (/my-follow/.test(window.location.href)) {
 //关注更多
 if (/follow-more-tab/.test(window.location.href)) {
   vm.data.isFollowMore = true;
+  vm.data.registLoad = true;
   vm.getFollowMoreBar();
+
+  vm.data.lastId = [];
+
+  //翻页
+
+  //vm.upScrollDom('.js-follow-more-list','.js-follow-v-list',function() {
+  //  if (!!vm.data.isLoad) {
+  //    vm.data.isLoad = false;
+  //    $('.c-loading').show();
+  //    vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+  //  }
+  //});
 }
 
 //标签列表
