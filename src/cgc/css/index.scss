@@ -810,10 +810,7 @@ li{
       position:relative;
       z-index:13;
       margin-right:-12px;
-      .c-qing-img-one{
-        width:100%;
-        max-height:400px;
-      }
+      
       .c-qing-num{
         position:absolute;
         right:1rem;
@@ -834,6 +831,12 @@ li{
         margin-right:5px;
       }
     }
+.c-qing-img-one{
+        img{
+          width:100%;
+          max-height:400px;
+        }
+      }
 .pull-down-content .spinner {
   display: inline-block;
   margin-right: 8px;
