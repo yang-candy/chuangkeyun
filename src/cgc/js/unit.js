@@ -171,7 +171,7 @@ var vm = {
     if (e.target.className == 'c-auth-info-img' && ($($curTarget).attr('mediatype') == 3 || $($curTarget).attr('mediatype') == 4)) {
       return;
     }
-    if (e.target.tagName != 'LI' && e.target.className != 'c-auth-info-img' && (e.target.className != 'c-tab-jj ' && e.target.className != 'c-tab-jj short' && e.target.className != 'c-tab-jj long')) {
+    if (e.target.tagName != 'LI' && e.target.className != 'c-qing-img' && e.target.className != 'c-auth-info-img' && (e.target.className != 'c-tab-jj ' && e.target.className != 'c-tab-jj short' && e.target.className != 'c-tab-jj long')) {
       return;
     }
     $target = $(e.currentTarget);
@@ -852,6 +852,11 @@ var vm = {
     e.stopPropagation();
     $target = $(e.target);
     vm.data.tagListIndex = $target.index();
+
+    ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+      mediaid: vm.data.mediaid,
+    });
+
     if ($('.c-tab-bd ul').eq($target.index()).html() == '') {
       vm.tagList($target.index());
     }
@@ -859,137 +864,135 @@ var vm = {
 
   //标签列表
   tagList: function(index) {
-    /*
-    var res = {
-      "message": "",
-      "result": {
-        "isloadmore": true,
-        "lastid": "2017-05-15 15:34:18740|101018",
-        "newslist": [{
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g14/M15/A2/5D/autohomecar__wKjByVkaav6AODgqAAJh9Is28Mg542.png?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "333",
-          "mediatype": 1,
-          "newsid": 101175,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 0,
-          "publishtime": "2017-05-16",
-          "pv": 159,
-          "replycount": "4",
-          "seriesids": "",
-          "session_id": "f86b69c046d34ebca5ccb9e19918b4ea",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g14/M15/A2/5D/autohomecar__wKjByVkaav6AODgqAAJh9Is28Mg542.png?imageView2/1/w/400/h/225"],
-          "title": "保时捷Macan漏油隐患波及奥迪，24万台Q5、Q7将被召回",
-          "userid": 39356249,
-          "username": "汽车评中评",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g9/M11/54/73/autohomecar__wKjBzljsQ52AWTKgAADEllW0O8w133.jpg?imageView2/1/w/120/h/120"
+    //var res = {
+    //  "message": "",
+    //  "result": {
+    //    "isloadmore": true,
+    //    "lastid": "2017-05-15 15:34:18740|101018",
+    //    "newslist": [{
+    //      "content": "",
+    //      "description": "",
+    //      "identifiertype": "",
+    //      "imageheight": 0,
+    //      "imagewidth": 0,
+    //      "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g14/M15/A2/5D/autohomecar__wKjByVkaav6AODgqAAJh9Is28Mg542.png?imageView2/2/w/640"],
+    //      "isattention": 0,
+    //      "iscandelete": 0,
+    //      "mediaid": "333",
+    //      "mediatype": 1,
+    //      "newsid": 101175,
+    //      "pics": [],
+    //      "playtime": "",
+    //      "praisenum": 0,
+    //      "publishtime": "2017-05-16",
+    //      "pv": 159,
+    //      "replycount": "4",
+    //      "seriesids": "",
+    //      "session_id": "f86b69c046d34ebca5ccb9e19918b4ea",
+    //      "status": 0,
+    //      "statusNote": "",
+    //      "statusStr": "",
+    //      "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g14/M15/A2/5D/autohomecar__wKjByVkaav6AODgqAAJh9Is28Mg542.png?imageView2/1/w/400/h/225"],
+    //      "title": "保时捷Macan漏油隐患波及奥迪，24万台Q5、Q7将被召回",
+    //      "userid": 39356249,
+    //      "username": "汽车评中评",
+    //      "userpic": "https://qnwww2.autoimg.cn/youchuang/g9/M11/54/73/autohomecar__wKjBzljsQ52AWTKgAADEllW0O8w133.jpg?imageView2/1/w/120/h/120"
 
-        }, {
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g15/M02/A2/CA/autohomecar__wKgH5VkZXliAPDKJAAhveSbp5ok870.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "333333222",
-          "mediatype": 2,
-          "newsid": 101028,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 2,
-          "publishtime": "2017-05-15",
-          "pv": 307,
-          "replycount": "1",
-          "seriesids": "",
-          "session_id": "f080eebbe59346058975b99e2616c2bd",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g15/M02/A2/CA/autohomecar__wKgH5VkZXliAPDKJAAhveSbp5ok870.jpg?imageView2/1/w/400/h/225"],
-          "title": "原来你是这样的汉子 体验长安CS95智趣格调",
-          "userid": 38586638,
-          "username": "跟我视驾",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g11/M13/2E/05/autohomecar__wKgH0ljHiTeAVBnvAAAwrCgJLxI146.jpg?imageView2/1/w/120/h/120"
+    //    }, {
+    //      "content": "",
+    //      "description": "",
+    //      "identifiertype": "",
+    //      "imageheight": 0,
+    //      "imagewidth": 0,
+    //      "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640", "https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640", "https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640", "https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640"],
+    //      "isattention": 0,
+    //      "iscandelete": 0,
+    //      "mediaid": "333333222",
+    //      "mediatype": 2,
+    //      "newsid": 101028,
+    //      "pics": [],
+    //      "playtime": "",
+    //      "praisenum": 2,
+    //      "publishtime": "2017-05-15",
+    //      "pv": 307,
+    //      "replycount": "1",
+    //      "seriesids": "",
+    //      "session_id": "f080eebbe59346058975b99e2616c2bd",
+    //      "status": 0,
+    //      "statusNote": "",
+    //      "statusStr": "",
+    //      "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g15/M02/A2/CA/autohomecar__wKgH5VkZXliAPDKJAAhveSbp5ok870.jpg?imageView2/1/w/400/h/225"],
+    //      "title": "原来你是这样的汉子 体验长安CS95智趣格调",
+    //      "userid": 38586638,
+    //      "username": "跟我视驾",
+    //      "userpic": "https://qnwww2.autoimg.cn/youchuang/g11/M13/2E/05/autohomecar__wKgH0ljHiTeAVBnvAAAwrCgJLxI146.jpg?imageView2/1/w/120/h/120"
 
-        }, {
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "83943242",
-          "mediatype": 3,
-          "newsid": 101018,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 0,
-          "publishtime": "2017-05-15",
-          "pv": 382,
-          "replycount": "0",
-          "seriesids": "",
-          "session_id": "e935c82d33b54a4dbe6e8d0fba8ef70e",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/1/w/400/h/225"],
-          "title": "融入智能科技的旗舰SUV 长安CS95推出高配专属车型",
-          "userid": 25414521,
-          "username": "车算子",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g18/M04/95/39/autohomecar__wKgH2VkScwKAM-DeAAQUdGTj1ss505.jpg?imageView2/1/w/120/h/120"
+    //    }, {
+    //      "content": "",
+    //      "description": "",
+    //      "identifiertype": "",
+    //      "imageheight": 0,
+    //      "imagewidth": 0,
+    //      "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640"],
+    //      "isattention": 0,
+    //      "iscandelete": 0,
+    //      "mediaid": "83943242",
+    //      "mediatype": 3,
+    //      "newsid": 101018,
+    //      "pics": [],
+    //      "playtime": "",
+    //      "praisenum": 0,
+    //      "publishtime": "2017-05-15",
+    //      "pv": 382,
+    //      "replycount": "0",
+    //      "seriesids": "",
+    //      "session_id": "e935c82d33b54a4dbe6e8d0fba8ef70e",
+    //      "status": 0,
+    //      "statusNote": "",
+    //      "statusStr": "",
+    //      "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/1/w/400/h/225"],
+    //      "title": "融入智能科技的旗舰SUV 长安CS95推出高配专属车型",
+    //      "userid": 25414521,
+    //      "username": "车算子",
+    //      "userpic": "https://qnwww2.autoimg.cn/youchuang/g18/M04/95/39/autohomecar__wKgH2VkScwKAM-DeAAQUdGTj1ss505.jpg?imageView2/1/w/120/h/120"
 
-        }, {
-          "content": "",
-          "description": "",
-          "identifiertype": "",
-          "imageheight": 0,
-          "imagewidth": 0,
-          "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640"],
-          "isattention": 0,
-          "iscandelete": 0,
-          "mediaid": "343243242",
-          "mediatype": 4,
-          "newsid": 101018,
-          "pics": [],
-          "playtime": "",
-          "praisenum": 0,
-          "publishtime": "2017-05-15",
-          "pv": 382,
-          "replycount": "0",
-          "seriesids": "",
-          "session_id": "e935c82d33b54a4dbe6e8d0fba8ef70e",
-          "status": 0,
-          "statusNote": "",
-          "statusStr": "",
-          "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/1/w/400/h/225"],
-          "title": "融入智能科技的旗舰SUV 长安CS95推出高配专属车型",
-          "userid": 25414521,
-          "username": "车算子",
-          "userpic": "https://qnwww2.autoimg.cn/youchuang/g18/M04/95/39/autohomecar__wKgH2VkScwKAM-DeAAQUdGTj1ss505.jpg?imageView2/1/w/120/h/120"
+    //    }, {
+    //      "content": "",
+    //      "description": "",
+    //      "identifiertype": "",
+    //      "imageheight": 0,
+    //      "imagewidth": 0,
+    //      "indexdetail": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/2/w/640"],
+    //      "isattention": 0,
+    //      "iscandelete": 0,
+    //      "mediaid": "343243242",
+    //      "mediatype": 4,
+    //      "newsid": 101018,
+    //      "pics": [],
+    //      "playtime": "",
+    //      "praisenum": 0,
+    //      "publishtime": "2017-05-15",
+    //      "pv": 382,
+    //      "replycount": "0",
+    //      "seriesids": "",
+    //      "session_id": "e935c82d33b54a4dbe6e8d0fba8ef70e",
+    //      "status": 0,
+    //      "statusNote": "",
+    //      "statusStr": "",
+    //      "thumbnailpics": ["https://qnwww2.autoimg.cn/youchuang/g22/M04/C9/3B/autohomecar__wKjBwVkZWRCARNAVAAyajoqWYLY268.jpg?imageView2/1/w/400/h/225"],
+    //      "title": "融入智能科技的旗舰SUV 长安CS95推出高配专属车型",
+    //      "userid": 25414521,
+    //      "username": "车算子",
+    //      "userpic": "https://qnwww2.autoimg.cn/youchuang/g18/M04/95/39/autohomecar__wKgH2VkScwKAM-DeAAQUdGTj1ss505.jpg?imageView2/1/w/120/h/120"
 
-        }]
+    //    }]
 
-      },
-      "returncode": 0
+    //  },
+    //  "returncode": 0
 
-    }
-    vm.renderTagList(res.result.newslist, index);
-    return;
-    */
+    //}
+    //vm.renderTagList(res.result.newslist, index);
+    //return;
     vm.ajax({
       url: vm.data.url + '/npnewlistfortagid.json',
       type: "GET",
@@ -1399,6 +1402,10 @@ var vm = {
       }
     })
   },
+  //图片比例
+  resizeImg: function(img) {
+    $(this).height($(img).width() * 0.5625);
+  },
 
   //渲染标签详情列表
   renderTagList: function(data, index) {
@@ -1407,26 +1414,49 @@ var vm = {
       var html = '';
 
       /*
-      data.map(function(v) {
-        if (v['mediatype'] == 4) {
-          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+        data.map(function(v) {
+          if (v['mediatype'] == 4) {
+            html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+          } else if (v['mediatype'] == 2) {
+
+            var qingImg = '<div class="c-qing-img-wp">';
+            v['indexdetail'].map(function(k, i) {
+              if (i > 2) {
+                return;
+              }
+              qingImg += '<img class="c-qing-img" src=' + k + ' />'
+            })
+            if (v['indexdetail'].length > 3) {
+              qingImg += '<span class="c-qing-num">' + v['indexdetail'].length + '</span></div>'
+            }
+            html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') +  '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>'+qingImg +'</div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+          } else {
+
+            html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+          }
+        })
+
+        if (!vm.data.isLoad) {
+          $('.c-tab-bd ul').eq(index).append(html);
         } else {
-          html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+          $('.c-tab-bd ul').eq(index).html(html);
         }
-      })
 
-      if (!vm.data.isLoad) {
-        $('.c-tab-bd ul').eq(index).append(html);
-      } else {
-        $('.c-tab-bd ul').eq(index).html(html);
-      }
+        $('.c-loading').hide();
+        vm.data.isLoad = true;
 
-      $('.c-loading').hide();
-      vm.data.isLoad = true;
+        $('.c-tab-bd ul li').each(function(v, i) {
+          if ($(this).attr('mediatype') == 4) {
+            return
+          };
+          $(this).find('.c-auth-info-img').height($(this).find('.c-auth-info-img').width() * 0.5625);
+          if ($(this).attr('mediatype') == 2) {
+            //$(this).find('.c-qing-img').height($(this).find('.c-qing-img').width() * 0.6);
+          }
+        })
 
-      return;
-      */
-
+        return;
+        */
       //本地关注与线上数据判断已关注过滤
       //登录未登录 
 
@@ -1435,41 +1465,96 @@ var vm = {
 
         //未登录 
         if (!Number(user.userId)) {
-          ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
+          try {
 
-            //本地数据有
-            if (!!follow.result.length) {
-              follow.result.map(function(v) {
-                data.map(function(j) {
-                  if (v['userId'] == j['userid']) {
-                    j['isattention'] = '1';
-                  }
+            ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
+
+              //本地数据有
+              if (!!follow.result.length) {
+                follow.result.map(function(v) {
+                  data.map(function(j) {
+                    if (v['userId'] == j['userid']) {
+                      j['isattention'] = '1';
+                    }
+                  })
                 })
-              })
-            }
-            data.map(function(v) {
-              if (v['mediatype'] == 4) {
-                html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 1 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
-              } else {
-                html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
               }
+              data.map(function(v) {
+                if (v['mediatype'] == 4) {
+                  html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+                } else if (v['mediatype'] == 2) {
+
+                  var qingImg = '<div class="c-qing-img-wp">';
+                  if(v['indexdetail'].length < 3){
+                    qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" src=' + v['indexdetail'][0] + ' /></div>'
+                  }else{
+                    v['indexdetail'].map(function(k, i) {
+                      if (i > 2) {
+                        return;
+                      }
+                      qingImg += '<img class="c-qing-img" src=' + k + ' />'
+                    })
+                  }
+                  
+                  if (v['indexdetail'].length > 3) {
+                    qingImg += '<span class="c-qing-num">' + v['indexdetail'].length + '</span>'
+                  } else {
+                    qingImg += '</div>'
+                  }
+                  html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+                } else {
+
+                  html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+                }
+              })
+
+              if (!vm.data.isLoad) {
+                $('.c-tab-bd ul').eq(index).append(html);
+              } else {
+                $('.c-tab-bd ul').eq(index).html(html);
+              }
+
+              $('.c-tab-bd ul li').each(function(v, i) {
+                if ($(this).attr('mediatype') == 4) {
+                  return
+                };
+                $(this).find('.c-auth-info-img').height($(this).find('.c-auth-info-img').width() * 0.5625);
+                if ($(this).attr('mediatype') == 2) {
+                  //$(this).find('.c-qing-img').height($(this).find('.c-qing-img').width() * 0.6);
+                }
+              })
+              $('.c-loading').hide();
+              vm.data.isLoad = true;
             })
-
-            if (!vm.data.isLoad) {
-              $('.c-tab-bd ul').eq(index).append(html);
-            } else {
-              $('.c-tab-bd ul').eq(index).html(html);
-            }
-
-            $('.c-loading').hide();
-            vm.data.isLoad = true;
-          })
+          } catch (e) {
+          }
         } else {
           data.map(function(v) {
             if (v['mediatype'] == 4) {
-              html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+              html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+            } else if (v['mediatype'] == 2) {
+
+              var qingImg = '<div class="c-qing-img-wp">';
+
+              if(v['indexdetail'].length < 3){
+                qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" src=' + v['indexdetail'][0] + ' /></div>'
+              }else{
+                v['indexdetail'].map(function(k, i) {
+                  if (i > 2) {
+                    return;
+                  }
+                  qingImg += '<img class="c-qing-img" src=' + k + ' />'
+                })
+              }
+              if (v['indexdetail'].length > 3) {
+                qingImg += '<span class="c-qing-num">' + v['indexdetail'].length + '</span></div>'
+              } else {
+                qingImg += '</div>'
+              }
+              html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
             } else {
-              html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title"></div>' + v['username'] + '</p>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 3 || v['mediatype'] == 1 || v['mediatype'] == 4) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
+
+              html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div class=c-media-info><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan"><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
             }
           })
 
@@ -1478,6 +1563,17 @@ var vm = {
           } else {
             $('.c-tab-bd ul').eq(index).html(html);
           }
+
+          $('.c-tab-bd ul li').each(function(v, i) {
+            if ($(this).attr('mediatype') == 4) {
+              return
+            };
+            $(this).find('.c-auth-info-img').height($(this).find('.c-auth-info-img').width() * 0.5625);
+            if ($(this).attr('mediatype') == 2) {
+              //$(this).find('.c-qing-img').height($(this).find('.c-qing-img').width() * 0.6);
+            }
+          })
+
           $('.c-loading').hide();
           vm.data.isLoad = true;
         }
