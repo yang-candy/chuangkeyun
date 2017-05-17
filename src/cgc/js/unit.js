@@ -1658,12 +1658,12 @@ var vm = {
     ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
     //to do 本地存储点赞
     vm.data.likes = [];
-    document.body.scrollTop = 0
 
     //vm.tagList(vm.data.tagListIndex);
     ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
       vm.data.tagListIndex = Number(index.index);
 
+      document.body.scrollTop = 0
       if (vm.data.tagListIndex + 1 == 4) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
