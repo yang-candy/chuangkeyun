@@ -265,6 +265,22 @@ var vm = {
     $target = $(e.currentTarget);
 
     var $followTarget = e.target;
+    var $curTarget = e.currentTarget;
+
+    if (e.target.tagName == 'A') {
+      console.log('ddddd')
+      var $type = $(e.target).hasClass('on') ? 1 : 0;
+      var $info = {
+        imgurl: $($followTarget).attr('userpic'),
+        time: $($followTarget).attr('usertime') || '',
+        userid: $($followTarget).attr('userid'),
+        title: $($followTarget).attr('title'),
+        description: $($followTarget).attr('userdesc') || '',
+        username: $($followTarget).attr('username')
+      }
+      vm.followToggle($($followTarget).attr('userid'), $type, $info, $($followTarget));
+      return;
+    }
 
     //跳转到作者客页
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
@@ -687,9 +703,11 @@ var vm = {
           vm.followList(res.result.vuserlist, 1, 'net', vm.data);
         } else {
           //已登录本地数据没有
-
-          //to do
-          $('.js-follow-more').html('暂无数据');
+          if(opt.au){
+            vm.getV();
+          }else{
+            $('.js-follow-more').html('暂无数据');
+          }
         }
       },
       fail: function(status) {
@@ -710,9 +728,9 @@ var vm = {
   },
 
   //取大v
-  getV: function(url) {
+  getV: function() {
     vm.ajax({
-      url: url,
+      url: vm.data.url + "/npgetvuserlist.json",
       type: "GET",
       data: {
         pm: vm.mobileType() == 'iOS' ? 1 : 2,
@@ -802,7 +820,7 @@ var vm = {
                 $('.js-follow-more').show();
                 $('.js-follow-v').hide();
               } else {
-                vm.getV(vm.data.url + "/npgetvuserlist.json");
+                vm.getV();
               }
             })
           }
