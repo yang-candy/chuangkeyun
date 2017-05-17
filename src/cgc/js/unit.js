@@ -1658,6 +1658,7 @@ var vm = {
     ApiBridge.callNative('ClientViewManager', 'hideLoadingView')
     //to do 本地存储点赞
     vm.data.likes = [];
+    document.body.scrollTop = 0
 
     //vm.tagList(vm.data.tagListIndex);
     ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
