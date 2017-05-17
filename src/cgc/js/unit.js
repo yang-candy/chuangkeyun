@@ -703,9 +703,9 @@ var vm = {
           vm.followList(res.result.vuserlist, 1, 'net', vm.data);
         } else {
           //已登录本地数据没有
-          if(opt.au){
+          if (opt.au) {
             vm.getV();
-          }else{
+          } else {
             $('.js-follow-more').html('暂无数据');
           }
         }
@@ -1653,6 +1653,85 @@ var vm = {
         }
       })
     }
+  },
+  initTag: function() {
+    //to do 本地存储点赞
+    vm.data.likes = [];
+
+    //vm.tagList(vm.data.tagListIndex);
+    ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
+      vm.data.tagListIndex = Number(index.index);
+
+      if (vm.data.tagListIndex + 1 == 4) {
+        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+          mediaid: vm.data.mediaid,
+        });
+      }
+      if (vm.data.tagListIndex + 1 == 3) {
+        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+          mediaid: vm.data.mediaid,
+        });
+      }
+
+      $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
+      vm.tagList(vm.data.tagListIndex);
+    })
+
+    //上拉翻页加载
+    vm.upScroll(function() {
+      if (!!vm.data.isLoad) {
+        vm.data.isLoad = false;
+        $('.c-loading').show();
+
+        if (vm.data.tagListIndex + 1 == 4) {
+          ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+        if (vm.data.tagListIndex + 1 == 3) {
+          ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+        vm.tagList(vm.data.tagListIndex);
+      }
+    });
+
+    //监听销毁视频
+    vm.deleteVideo();
+
+    //默认请求数据
+    //vm.tagList();
+
+    //下拉刷新
+    vm.reFresh.init({
+      container: '.container',
+      beforePull: function() {
+        console.log('beforePull')
+
+        if (vm.data.tagListIndex + 1 == 4) {
+          ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+        if (vm.data.tagListIndex + 1 == 3) {
+          ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+      },
+      onRefresh: function() {
+        vm.tagList(vm.data.tagListIndex);
+        console.log('onRefresh')
+        $('.js-tag-list').addClass('on');
+        $('#pullIcon').addClass('anima')
+        $('.pull-ab').addClass('rotate')
+      },
+      afterPull: function() {
+        console.log('afterPulll')
+        $('.js-tag-list').removeClass('on');
+      },
+    })
   }
 };
 vm.bindEvent();
@@ -1699,82 +1778,17 @@ if (/follow-more-tab/.test(window.location.href)) {
 
 //标签列表
 if (/tag-name/.test(window.location.href)) {
-  //to do 本地存储点赞
-  vm.data.likes = [];
-
-  //vm.tagList(vm.data.tagListIndex);
-  ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
-    vm.data.tagListIndex = Number(index.index);
-
-    if (vm.data.tagListIndex + 1 == 4) {
-      ApiBridge.callNative('ClientVideoManager', 'deleteById', {
-        mediaid: vm.data.mediaid,
-      });
+  ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
+    vm.data.isNet = state.result;
+    //未联网
+    if (!Number(vm.data.isNet)) {
+      ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
+        ApiBridge.callNative('ClientViewManager', 'showLoadingView')
+        vm.initTag();
+      })
+    } else {
+      vm.initTag();
     }
-    if (vm.data.tagListIndex + 1 == 3) {
-      ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-        mediaid: vm.data.mediaid,
-      });
-    }
-
-    $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
-    vm.tagList(vm.data.tagListIndex);
-  })
-
-  //上拉翻页加载
-  vm.upScroll(function() {
-    if (!!vm.data.isLoad) {
-      vm.data.isLoad = false;
-      $('.c-loading').show();
-
-      if (vm.data.tagListIndex + 1 == 4) {
-        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
-      }
-      if (vm.data.tagListIndex + 1 == 3) {
-        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
-      }
-      vm.tagList(vm.data.tagListIndex);
-    }
-  });
-
-  //监听销毁视频
-  vm.deleteVideo();
-
-  //默认请求数据
-  //vm.tagList();
-
-  //下拉刷新
-  vm.reFresh.init({
-    container: '.container',
-    beforePull: function() {
-      console.log('beforePull')
-
-      if (vm.data.tagListIndex + 1 == 4) {
-        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
-      }
-      if (vm.data.tagListIndex + 1 == 3) {
-        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
-      }
-    },
-    onRefresh: function() {
-      vm.tagList(vm.data.tagListIndex);
-      console.log('onRefresh')
-      $('.js-tag-list').addClass('on');
-      $('#pullIcon').addClass('anima')
-      $('.pull-ab').addClass('rotate')
-    },
-    afterPull: function() {
-      console.log('afterPulll')
-      $('.js-tag-list').removeClass('on');
-    },
   })
 }
 
