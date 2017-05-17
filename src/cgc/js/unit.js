@@ -1613,7 +1613,7 @@ if (/author/.test(window.location.href)) {
       icon1: 'articleplatform_icon_share_w',
       icon1_p: 'articleplatform_icon_share_w_p'
     }
-  }, function() {
+  }, function(res) {
     ApiBridge.callNative('ClientViewManager', 'shareAction');
     //to do share
   })
@@ -1645,12 +1645,12 @@ if (/tag-name/.test(window.location.href)) {
       $('.c-loading').show();
 
       if (vm.data.tagListIndex + 1 == 4) {
-        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
       if (vm.data.tagListIndex + 1 == 3) {
-        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
@@ -1671,12 +1671,12 @@ if (/tag-name/.test(window.location.href)) {
       console.log('beforePull')
 
       if (vm.data.tagListIndex + 1 == 4) {
-        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
       if (vm.data.tagListIndex + 1 == 3) {
-        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
