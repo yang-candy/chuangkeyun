@@ -30,7 +30,7 @@ var vm = {
     $('.js-tag-list').on('click', '.c-zan', vm.likeZan);
 
     //点击Tag获得TagId对应的News列表
-    $('.js-tag-title').on('click', 'li', vm.getTagContent);
+    //$('.js-tag-title').on('click', 'li', vm.getTagContent);
 
     //跳转关注更多
     $('.c-att-more').on('click', vm.followV);
@@ -669,10 +669,10 @@ var vm = {
           $('.js-follow-v').hide();
           vm.followList(res.result.vuserlist, 1, 'net', vm.data);
         } else {
-          //没有关注大 v
-          if (vm.data.isloadmore) {
-            //vm.getV(url);          
-          }
+          //已登录本地数据没有
+
+          //to do
+          $('.js-follow-more').html('暂无数据');
         }
       },
       fail: function(status) {
@@ -709,6 +709,8 @@ var vm = {
           $('.js-follow-more').hide();
           $('.js-follow-v').show();
           vm.followList(res.result.vuserlist, 0);
+        }else{
+          $('.js-follow-v').html('暂无数据');
         }
       },
       fail: function(status) {
@@ -848,27 +850,27 @@ var vm = {
     })
   },
 
-  getTagContent: function(e) {
-    e.stopPropagation();
+  //getTagContent: function(e) {
+  //  e.stopPropagation();
 
-    $target = $(e.target);
-    vm.data.tagListIndex = $target.index();
+  //  $target = $(e.target);
+  //  vm.data.tagListIndex = vm.data.tagListIndex;
 
-    if (vm.data.tagListIndex + 1 == 4) {
-      ApiBridge.callNative('ClientVideoManager', 'deleteById', {
-        mediaid: vm.data.mediaid,
-      });
-    }
-    if (vm.data.tagListIndex + 1 == 3) {
-      ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-        mediaid: vm.data.mediaid,
-      });
-    }
+  //  if (vm.data.tagListIndex + 1 == 4) {
+  //    ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+  //      mediaid: vm.data.mediaid,
+  //    });
+  //  }
+  //  if (vm.data.tagListIndex + 1 == 3) {
+  //    ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+  //      mediaid: vm.data.mediaid,
+  //    });
+  //  }
 
-    if ($('.c-tab-bd ul').eq($target.index()).html() == '') {
-      vm.tagList($target.index());
-    }
-  },
+  //  //if ($('.c-tab-bd ul').eq(vm.data.tagListIndex).html() == '') {
+  //    vm.tagList(vm.data.tagListIndex);
+  //  //}
+  //},
 
   //标签列表
   tagList: function(index) {
@@ -1027,7 +1029,7 @@ var vm = {
       fail: function(status) {
         ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
           ApiBridge.callNative('ClientViewManager', 'showLoadingView')
-          vm.init();
+          //vm.init();
         })
       }
     });
@@ -1517,12 +1519,12 @@ var vm = {
               })
 
               if (!vm.data.isLoad) {
-                $('.c-tab-bd ul').eq(index).append(html);
+                $('.js-tag-list-ul ul').eq(index).append(html);
               } else {
-                $('.c-tab-bd ul').eq(index).html(html);
+                $('.js-tag-list-ul ul').eq(index).html(html);
               }
 
-              $('.c-tab-bd ul li').each(function(v, i) {
+              $('.js-tag-list-ul ul li').each(function(v, i) {
                 if ($(this).attr('mediatype') == 4) {
                   return
                 };
@@ -1566,12 +1568,12 @@ var vm = {
           })
 
           if (!vm.data.isLoad) {
-            $('.c-tab-bd ul').eq(index).append(html);
+            $('.js-tag-list-ul ul').eq(index).append(html);
           } else {
-            $('.c-tab-bd ul').eq(index).html(html);
+            $('.js-tag-list-ul ul').eq(index).html(html);
           }
 
-          $('.c-tab-bd ul li').each(function(v, i) {
+          $('.js-tag-list-ul ul li').each(function(v, i) {
             if ($(this).attr('mediatype') == 4) {
               return
             };
@@ -1635,8 +1637,23 @@ if (/tag-name/.test(window.location.href)) {
   //to do 本地存储点赞
   vm.data.likes = [];
 
-  //存储media id
-  vm.data.mediaId = [];
+  ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index){
+    vm.data.tagListIndex = Number(index.index);
+
+    if (vm.data.tagListIndex + 1 == 4) {
+      ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+        mediaid: vm.data.mediaid,
+      });
+    }
+    if (vm.data.tagListIndex + 1 == 3) {
+      ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+        mediaid: vm.data.mediaid,
+      });
+    }
+
+    $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
+    vm.tagList(vm.data.tagListIndex);
+  })
 
   //上拉翻页加载
   vm.upScroll(function() {
@@ -1662,7 +1679,7 @@ if (/tag-name/.test(window.location.href)) {
   vm.deleteVideo();
 
   //默认请求数据
-  vm.tagList();
+  //vm.tagList();
 
   //下拉刷新
   vm.reFresh.init({
