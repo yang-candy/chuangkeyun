@@ -908,7 +908,7 @@ var vm = {
   //},
 
   //标签列表
-  tagList: function(index) {
+  tagList: function(index,num) {
     //var res = {
     //  "message": "",
     //  "result": {
@@ -1056,7 +1056,7 @@ var vm = {
         vm.data.lastpageid = res.result.lastid || '';
 
         if (!!res.result.newslist.length) {
-          vm.renderTagList(res.result.newslist, index);
+          vm.renderTagList(res.result.newslist, index, num);
         } else {
           console.log('暂无数据')
         }
@@ -1453,7 +1453,7 @@ var vm = {
   },
 
   //渲染标签详情列表
-  renderTagList: function(data, index) {
+  renderTagList: function(data, index, num) {
     index = index || 0;
     if (!!data.length) {
       var html = '';
@@ -1590,6 +1590,9 @@ var vm = {
               })
               $('.c-loading').hide();
               vm.data.isLoad = true;
+              if(num == 1){
+                document.body.scrollTop = 0;
+              }
             })
           } catch (e) {}
         } else {
@@ -1650,6 +1653,9 @@ var vm = {
 
           $('.c-loading').hide();
           vm.data.isLoad = true;
+          if(num == 1){
+            document.body.scrollTop = 0;
+          }
         }
       })
     }
@@ -1663,7 +1669,6 @@ var vm = {
     ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
       vm.data.tagListIndex = Number(index.index);
 
-      document.body.scrollTop = 0
       if (vm.data.tagListIndex + 1 == 4) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
@@ -1676,7 +1681,7 @@ var vm = {
       }
 
       $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
-      vm.tagList(vm.data.tagListIndex);
+      vm.tagList(vm.data.tagListIndex,1);
     })
 
     //上拉翻页加载
