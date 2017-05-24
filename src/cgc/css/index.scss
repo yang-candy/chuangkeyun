@@ -89,14 +89,16 @@ li{
   font-weight:normal;
   line-height:2.3;
 }
-.c-att-ul{
+.c-att-more-list{
   position:fixed;
   left:5rem;
   top:0;
-  bottom:0;
   right:0;
+  bottom:0;
   z-index:33;
   overflow:scroll;
+}
+.c-att-ul{
   .c-att-time{
     float:right;
     font-size:.6rem;
@@ -529,9 +531,9 @@ li{
   width:5rem;
   background:#f6f6f6;
   overflow-y:scroll;
+  z-index:99;
 }
 .c-att-bar{
-  
   li{
     line-height:5;
     text-indent:1rem;
