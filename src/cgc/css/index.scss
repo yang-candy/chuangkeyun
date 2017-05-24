@@ -532,10 +532,10 @@ li{
     display:inline-block;
     width:1rem;
     height:1rem;
-    margin-left:1.5rem;
+    margin-left:2.5rem;
     > span{
       color:#4C92FB;
-      font-size:.5rem;
+      font-size:.4rem;
     }
     &.c-zan{
       .zan-icon{
@@ -553,6 +553,10 @@ li{
         color:#4C92FB;
         animation: add 800ms linear 1 forwards;
       }
+      .zan-icon.on-no-inmation{
+        background:url(../image/tag-zan.png) center no-repeat;
+        background-size:100% auto;
+      }
       .zan-icon.on{
         background:url(../image/tag-zan.png) center no-repeat;
         background-size:100% auto;
@@ -561,8 +565,10 @@ li{
       }
       .c-num{
         position:absolute;
-        top:-.3rem;
-        left:.5rem;
+        top:-.2rem;
+        left:.78rem;
+        line-height:1;
+        background:#fff;
       }
     }
     &.c-common{
@@ -570,9 +576,10 @@ li{
       background-size:100% auto;
       .c-num{
         position:absolute;
-        top:-.3rem;
+        top:-.2rem;
         left:.8rem;
-        padding:2px;
+        padding:0px;
+        line-height:1;
         background:#fff;
       }
     }

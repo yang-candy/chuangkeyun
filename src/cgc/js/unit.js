@@ -226,6 +226,10 @@ var vm = {
     }, 1000)
 
     $target.find('.zan-icon').addClass('on');
+    setTimeout(function(){
+      $target.find('.zan-icon').removeClass('on')
+      $target.find('.zan-icon').addClass('on-no-inmation')
+    },1000);
 
     vm.ajax({
       url: 'https://reply.autohome.com.cn/api/like/set.json',
