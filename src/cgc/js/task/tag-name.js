@@ -263,7 +263,7 @@ vm.tagList = function(index, flag, num) {
       pid: pid,
       pagesize: 20,
       otype: 0,
-      itype: index + 1 || 1
+      itype: index || 0
     },
     dataType: "json",
     success: function(res, xml) {
