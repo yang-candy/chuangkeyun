@@ -5,6 +5,7 @@ vm.initTag = function() {
   //to do 本地存储点赞
   vm.data.likes = [];
   // mock
+
   //vm.tagList(vm.data.tagListIndex);
   // mock
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
@@ -291,7 +292,6 @@ vm.renderTagList = function(data, index, num) {
   index = index || 0;
   if (!!data.length) {
     // mock
-
     /*
     var html = '';
 
@@ -348,7 +348,6 @@ vm.renderTagList = function(data, index, num) {
       // debugger
       // var audio = $('.js-tag-list').find('.c-tag-video').addClass('c-tag-audio');
     return;
-
    i*/
     // mock
 
@@ -494,6 +493,7 @@ vm.renderTagList = function(data, index, num) {
 //标签列表
 if (/tag-name/.test(window.location.href)) {
   //mock
+
   //vm.initTag()
   //mock
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
