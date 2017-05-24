@@ -5,6 +5,7 @@ vm.initTag = function() {
   //to do 本地存储点赞
   vm.data.likes = [];
   // mock
+
   //vm.tagList(vm.data.tagListIndex);
   // mock
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
@@ -294,7 +295,6 @@ vm.renderTagList = function(data, index, num) {
   index = index || 0;
   if (!!data.length) {
     // mock
-
     /*
     var html = '';
 
@@ -351,7 +351,6 @@ vm.renderTagList = function(data, index, num) {
       // debugger
       // var audio = $('.js-tag-list').find('.c-tag-video').addClass('c-tag-audio');
     return;
-
    i*/
     // mock
 
@@ -391,6 +390,7 @@ vm.renderTagList = function(data, index, num) {
             data.map(function(v) {
 
               if (v['mediatype'] == 4) {
+
                 html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userid=' + v['userid'] + ' class=media-audio>' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['indexdetail'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon ' + (v['zaned'] == 1 ? 'on-no-inmation' : '') + '"></span><span class="c-num">' + (v['praisenum']) + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount']) + '</span></span>' + '</p>' + '<span class="c-looked">' + (v['pv'] || 0) + '浏览</span>' + '</li>';
               } else if (v['mediatype'] == 2) {
 
@@ -497,6 +497,7 @@ vm.renderTagList = function(data, index, num) {
 //标签列表
 if (/tag-name/.test(window.location.href)) {
   //mock
+
   //vm.initTag()
   //mock
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {

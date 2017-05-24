@@ -38,20 +38,34 @@ vm.deleteNew = function(e) {
   });
 }
 
-vm.setNav = function(userinfo){
+vm.setNav = function(info, data){
+  var shareinfo = data.shareinfo;
+  
+  ApiBridge.callNative('ClientNavigationManager', 'setNavBackIcon', {
+    navigationbacktype: info.navigationbacktype || 5
+  })
 
   ApiBridge.callNative('ClientNavigationManager', 'setNavCircleIcon', {
-    imgurl: userinfo.imgurl || ''
+    imgurl: info.imgurl || ''
   })
   ApiBridge.callNative('ClientNavigationManager', 'setNavTitle', {
-    title: userinfo.title || ''
+    title: info.title || ''
   })
-  
+
+  ApiBridge.callNative('ClientNavigationManager', 'setNavAlpha', {
+    alpha: info.alpha || 0
+  })
+
+  var statusBarStyle = (info.statusBarStyle == 0) ? 0 : 1;
+  ApiBridge.callNative('ClientViewManager', 'setStatusBarStyle', {
+    statusBarStyle: statusBarStyle
+  })
+
   var icon = {};
   if(vm.data.userId != vm.getParam('userId')){
     icon = {
-      icon1: userinfo.icon1 || 'articleplatform_icon_share_w',
-      icon1_p: userinfo.icon1_p || 'articleplatform_icon_share_w_p'
+      icon1: info.icon1 || 'articleplatform_icon_share_w',
+      icon1_p: info.icon1_p || 'articleplatform_icon_share_w_p'
     }
   }
   else{
@@ -66,11 +80,13 @@ vm.setNav = function(userinfo){
   }, function(res) {
 
     var opt = {
-      share: '',
-      url: '',
-      title: '',
-      logo: '',
-      summary: ''
+      share: {
+        url: shareinfo.shareurl ||'',
+        title: shareinfo.sharetitle ||'',
+        logo: shareinfo.sharelogo ||'',
+        icon: shareinfo.shareicon ||'',
+        summary: shareinfo.sharesummary ||''
+      }
     };
     ApiBridge.callNative('ClientShareManager', 'shareAction', opt, function(){
 
@@ -112,8 +128,8 @@ vm.renderAuthorInfo = function(data, index){
       + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
       + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
       + '<p class="c-auth-tips">'
-      + '<span class="c-auth-fans">' + userinfo['fanscount'] + '</span>' 
-      + '<span class="c-auth-work">' + userinfo['publishcount'] + '</span>' 
+      + '<span class="c-auth-fans">' + userinfo['fanscount'] + ' 粉丝</span>' 
+      + '<span class="c-auth-work">' + userinfo['publishcount'] + ' 作品</span>' 
       + '</p></div>';
 
   if(!vm.data.isAuthor){
@@ -225,7 +241,9 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + v['pics'] + ' alt=""></div>' 
+        + '<img class="c-auth-info-img" src=' + v['pics'] + ' alt="">' 
+        + (v['mediatype'] == 3? '<span class="c-tag-video-time">' + v['playtime'] + '</span>' : '')
+        + '</div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' 
@@ -545,7 +563,9 @@ vm.getAuthorPage = function(index){
 
       vm.renderAuthorPage(res.result, index);
       vm.setImgWithBlur(res.result.userinfo);
-      vm.navWatch(res.result.userinfo);
+      vm.navWatch(res.result);
+
+
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -599,31 +619,44 @@ vm.initAuthorTag = function(index){
 }
 
 //监听顶部导航
-vm.navWatch = function(userinfo) {
-  vm.setNav({});
+vm.navWatch = function(data) {
+  vm.setNav({}, data);
 
   window.addEventListener('scroll', function() {
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
 
     var $offsetTop = $('.c-auth-title').offset().top;
+    
     if($scrollTop >= ($offsetTop + $titleHeight)){
       var info = {
-        imgurl: userinfo.userpic,
-        title: userinfo.name,
+        imgurl: data.userinfo.userpic,
+        title: data.userinfo.name,
         icon1: 'articleplatform_icon_share',
-        icon1_p: 'articleplatform_icon_share_p'
+        icon1_p: 'articleplatform_icon_share_p',
+        navigationbacktype: 1,
+        statusBarStyle: 0,
+        alpha: 1
       };
-      vm.setNav(info)
+
+      if(!vm.data.hasSetNav){
+        vm.setNav(info, data);
+        vm.data.hasSetNav = true;
+      }
+      // vm.setNav(info, data)
     }
     else{
-      vm.setNav({});
+      vm.data.hasSetNav = false;
+      vm.setNav({}, data);
     }
     
   });
 }
 
 if (/author/.test(window.location.href)) {
+  // setNavBackIcon
+  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+
   ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
   // mock
   // vm.initAuthorTag();
