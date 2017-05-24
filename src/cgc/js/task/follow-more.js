@@ -2,82 +2,53 @@
 
 //获取关注更多左侧bar
 vm.getFollowMoreBar = function() {
+  ApiBridge.log('11111')
+  console.log('sssss')
   vm.data.lastId = [];
   // mock
-  
-  // var res = {
-  //    "message": "",
-  //    "result": [{
-  //          "id": 2,
-  //              "name": "全部",
-  //                  "sortnum": 1,
-  //                      "usercount": 59
-  //    },{                  
-  //              "name": "自媒体",
-  //                  "sortnum": 2,
-  //                      "usercount": 16
-                         
-  //    }],
-  //      "returncode": 0
 
-  // }
-  //      vm.renderFollowMoreBar(res.result);
-  // return;
-  
-  // mock
-  
+   //var res = {
+   //   "message": "",
+   //   "result": [{
+   //         "id": 2,
+   //             "name": "全部",
+   //                 "sortnum": 1,
+   //                     "usercount": 59
+   //   },{                  
+   //             "name": "自媒体",
+   //                 "sortnum": 2,
+   //                     "usercount": 16
+
+   //   }],
+   //     "returncode": 0
+
+   //}
+   //     vm.renderFollowMoreBar(res.result);
+   //return;
+
+  //// mock
+
   vm.ajax({
-    url: vm.data.url + '/npgetvuserlist.json',
+    url: vm.data.url + '/getCategoryList.json',
     type: "GET",
-    data: {
-      pm: vm.mobileType() == 'iOS' ? 1 : 2,
-      dt: 0,
-      au: ''
-    },
+    data: {},
     dataType: "json",
     success: function(res, xml) {
-      console.log('res',res)
       res = JSON.parse(res);
-      console.log('res',res.result)
+      ApiBridge.log(res.result)
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       if (!!res.result.length) {
-        console.log('res.result',res.result)
         vm.renderFollowMoreBar(res.result);
       }
     },
     fail: function(status) {
-      console.log('fail')
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
         ApiBridge.callNative('ClientViewManager', 'showLoadingView');
         vm.getFollowMoreBar();
       })
     }
   });
-  // vm.ajax({
-  //   url: vm.data.url + '/getCategoryList.json',
-  //   type: "GET",
-  //   data: {},
-  //   dataType: "json",
-  //   success: function(res, xml) {
-  //     console.log('res',res)
-  //     res = JSON.parse(res);
-  //     console.log('res',res.result)
-  //     ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
-
-  //     if (!!res.result.length) {
-  //       console.log('res.result',res.result)
-  //       vm.renderFollowMoreBar(res.result);
-  //     }
-  //   },
-  //   fail: function(status) {
-  //     console.log('fail')
-  //     ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
-  //       ApiBridge.callNative('ClientViewManager', 'showLoadingView');
-  //       vm.getFollowMoreBar();
-  //     })
-  //   }
-  // });
 }
 
 
@@ -86,15 +57,18 @@ vm.renderFollowMoreBar = function(data) {
   var html = '';
   var htmlUl = '';
 
-  console.log(111111111,data)
   data.map(function(v) {
     html += '<li ids=' + v['id'] + '>' + v['name'] + '</li>';
+    ApiBridge.log(html);
     htmlUl += '<ul class="c-att-ul js-follow-v-list"></ul>'
+    ApiBridge.log(htmlUl);
   })
+  ApiBridge.log(window.innerHeight)
   htmlUl = htmlUl + '<div class="c-loading"><span class="loading-icon"></span><p>加载中...</p></div>'
-  
+
   $('.js-follow-more-bar').html(html);
-  console.log('html', html)
+  ApiBridge.log(html)
+  ApiBridge.log(htmlUl)
   $('.js-follow-more-bar li').eq(0).addClass('on');
 
   $('.js-follow-more-list').html(htmlUl);
@@ -213,14 +187,14 @@ vm.getFollowMoreList = function(id, index) {
   // vm.data.lastId[index] = res.result.lastId;
   // vm.renderFollowMoreList(res.result.users, index);
   // return;
-  
+
   // mock
   vm.ajax({
     url: vm.data.url + '/getUserPageByCategory.json',
     type: "GET",
     data: {
       userCategoryId: id,
-      size: 30,
+      size: 20,
       lastId: vm.data.lastId[index] || ''
     },
     dataType: "json",
@@ -244,7 +218,7 @@ vm.renderFollowMoreList = function(data, index) {
   // mock
   // var html = '';
 
-  
+
   //     try{
   //           data.map(function(v) {
   //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
@@ -282,14 +256,14 @@ vm.renderFollowMoreList = function(data, index) {
   //               }
   //             }
   //           })
-            
+
   //         }catch(e){
   //         }
 
   //         return;
-           
+
   //         mock
-          
+
   //本地关注与线上数据判断已关注过滤
   //登录未登录 
 
