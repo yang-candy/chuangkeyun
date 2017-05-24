@@ -259,6 +259,8 @@ vm.renderAuthorNews = function(data, index){
       $('.c-tab-bd ul').eq(index).html(html);
     }
 
+    console.log('html', html);
+
     $('.c-tab-bd ul li').each(function(v, i) {
       if ($(i).attr('mediatype') == 4) {
         return
@@ -270,15 +272,15 @@ vm.renderAuthorNews = function(data, index){
     })
 
     $('.c-loading').hide();
-    vm.data.isLoad = true;
     // if(num == 1){
     //   document.body.scrollTop = 0;
     // }
   }
+  vm.data.isLoad = true;
 }
 
 //获取作者主页  
-vm.getAuthorPage = function(index){
+vm.getAuthorPage = function(index, flag){
   index = index || 0;
 
   // mock
@@ -540,9 +542,9 @@ vm.getAuthorPage = function(index){
   // return;
   
   //mock
-  
-  vm.ajax({
+  var pid = flag ? vm.data.lastpageid : '';
 
+  vm.ajax({
     url: vm.data.url + '/npnewListforvuser.json',
     type: "GET",
     data: {
@@ -550,7 +552,7 @@ vm.getAuthorPage = function(index){
       dt: 2,
       vuserid: vm.getParam('userId'),
       au: vm.data.userAuth,
-      pid: vm.data.lastpageid || '',
+      pid: pid,
       pagesize: 20,
       otype: 0,
       itype: index || 0
@@ -570,7 +572,7 @@ vm.getAuthorPage = function(index){
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
         ApiBridge.callNative('ClientViewManager', 'showLoadingView')
-          vm.initAuthorTag(); 
+          vm.getAuthorPage(); 
       })
     }
   });
@@ -610,7 +612,7 @@ vm.initAuthorTag = function(index){
           })
         }
       }
-      vm.getAuthorPage(index);
+      vm.getAuthorPage(index, 'up');
     }
   });
    
@@ -621,7 +623,7 @@ vm.initAuthorTag = function(index){
 //监听顶部导航
 vm.navWatch = function(data) {
   vm.setNav({}, data);
-
+  
   window.addEventListener('scroll', function() {
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
@@ -629,6 +631,8 @@ vm.navWatch = function(data) {
     var $offsetTop = $('.c-auth-title').offset().top;
     
     if($scrollTop >= ($offsetTop + $titleHeight)){
+      vm.data.isIn = false;
+
       var info = {
         imgurl: data.userinfo.userpic,
         title: data.userinfo.name,
@@ -639,15 +643,18 @@ vm.navWatch = function(data) {
         alpha: 1
       };
 
-      if(!vm.data.hasSetNav){
+      if(!vm.data.isOut){
+        vm.data.isOut = true;
         vm.setNav(info, data);
-        vm.data.hasSetNav = true;
       }
-      // vm.setNav(info, data)
     }
     else{
-      vm.data.hasSetNav = false;
-      vm.setNav({}, data);
+      vm.data.isOut = false;
+      if(!vm.data.isIn){
+        vm.data.isIn = true;
+        vm.setNav({}, data);
+      }
+      
     }
     
   });

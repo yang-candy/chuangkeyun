@@ -75,7 +75,6 @@ var vm = {
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
-    // 判断是否联网
 
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;

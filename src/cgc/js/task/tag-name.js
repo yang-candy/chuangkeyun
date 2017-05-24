@@ -435,7 +435,7 @@ vm.renderTagList = function(data, index, num) {
               }
             })
             $('.c-loading').hide();
-            vm.data.isLoad = true;
+            // vm.data.isLoad = true;
           })
         } catch (e) {}
       } else {
@@ -490,10 +490,12 @@ vm.renderTagList = function(data, index, num) {
         })
 
         $('.c-loading').hide();
-        vm.data.isLoad = true;
+        // vm.data.isLoad = true;
       }
     })
   }
+
+  vm.data.isLoad = true;
 }
 
 //标签列表
