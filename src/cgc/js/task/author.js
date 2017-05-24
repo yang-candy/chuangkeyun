@@ -112,8 +112,8 @@ vm.renderAuthorInfo = function(data, index){
       + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
       + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
       + '<p class="c-auth-tips">'
-      + '<span class="c-auth-fans">' + userinfo['fanscount'] + '</span>' 
-      + '<span class="c-auth-work">' + userinfo['publishcount'] + '</span>' 
+      + '<span class="c-auth-fans">' + userinfo['fanscount'] + ' 粉丝</span>' 
+      + '<span class="c-auth-work">' + userinfo['publishcount'] + ' 作品</span>' 
       + '</p></div>';
 
   if(!vm.data.isAuthor){
@@ -225,7 +225,9 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + v['pics'] + ' alt=""></div>' 
+        + '<img class="c-auth-info-img" src=' + v['pics'] + ' alt="">' 
+        + (v['mediatype'] == 3? '<span class="c-tag-video-time">' + v['playtime'] + '</span>' : '')
+        + '</div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' 
