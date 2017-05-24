@@ -52,8 +52,9 @@ vm.setNav = function(info, data){
     title: info.title || ''
   })
 
+  var statusBarStyle = (info.statusBarStyle == 0) ? 0 : 1;
   ApiBridge.callNative('ClientViewManager', 'setStatusBarStyle', {
-    statusBarStyle: info.statusBarStyle || 1
+    statusBarStyle: statusBarStyle
   })
 
   var icon = {};
