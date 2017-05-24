@@ -77,7 +77,6 @@ var vm = {
     var $target = $(e.currentTarget);
     
     var borderWidth = Number($(e.currentTarget).css('border-width').substr(0,1));
-    
     vm.data.mediaStatus = true;
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
     vm.data.mediatype = $(e.currentTarget).attr('mediatype');

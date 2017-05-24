@@ -201,7 +201,7 @@ vm.getTagContent = function(e) {
     }
   }
 
-  vm.initAuthorTag($target.index());
+  vm.getAuthorPage($target.index());
 }
 
 vm.bindEvent();
