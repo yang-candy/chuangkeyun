@@ -4,11 +4,11 @@ var vm = {
     url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf'
   },
 
-  getQingInfo: function(e){
+  getQingInfo: function(e) {
     e.stopPropagation();
     $target = $(e.currentTarget);
 
-    if($target.attr('imgnum') < 3){
+    if ($target.attr('imgnum') < 3) {
       return;
     }
 
@@ -16,7 +16,7 @@ var vm = {
 
     var pics = [];
     var picurl = $parent.attr('picurl').split(',');
-    $.map(picurl, function(item){
+    $.map(picurl, function(item) {
       var map = {};
       map.picurl = item;
 
@@ -75,50 +75,64 @@ var vm = {
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
-    
-    var borderWidth = Number($(e.currentTarget).css('border-width').substr(0,1));
-    vm.data.mediaStatus = true;
-    vm.data.mediaid = $(e.currentTarget).attr('mediaid');
-    vm.data.mediatype = $(e.currentTarget).attr('mediatype');
-    vm.data.mediatitle = $(e.currentTarget).attr('title');
-    vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
-    vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
-    vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
-    vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
-    //- document.body.scrollTop;
-    if($target.attr('status') != 0 && $target.attr('status') != 1){
-      return;
-    }
-    
-    var targetEl = $target.find('.c-tag-video');
-    var audioEl = $('.js-tag-list').find('.c-tag-audio');
-    
-    if(audioEl.length){
-      audioEl.map(function(index, item){
-        $(item).removeClass('c-tag-audio');
-      })
-    }
+    // 判断是否联网
 
-    var postData = {
-      mediaid: vm.data.mediaid,
-      width: vm.data.mediaWidth ,
-      height: vm.data.mediaHeight ,
-      title: vm.data.mediatitle,
-      x: vm.data.mediaX,
-      y: vm.data.mediaY,
-      status: $target.attr('status'),
-      playtime: $target.attr('playtime'),
-      thumbnailpics: $target.attr('thumbnailpics').split(',')
-    }
+    ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
+      vm.data.isNet = state.result;
 
-    if (vm.data.mediatype == 3) {
-      ApiBridge.callNative('ClientVideoManager', 'createById', postData);
-    }
-    if (vm.data.mediatype == 4) {
+      //未联网
+      if (!Number(vm.data.isNet)) {
+        ApiBridge.callNative('ClientViewManager', 'showToastView', {
+          type: 0,
+          msg: '当前网络不可用，请检查网络设置'
+        })
+      }else{
+        var borderWidth = Number($(e.currentTarget).css('border-width').substr(0, 1));
+        vm.data.mediaStatus = true;
+        vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+        vm.data.mediatype = $(e.currentTarget).attr('mediatype');
+        vm.data.mediatitle = $(e.currentTarget).attr('title');
+        vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
+        vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
+        vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
+        vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
+        //- document.body.scrollTop;
+        if ($target.attr('status') != 0 && $target.attr('status') != 1) {
+          return;
+        }
 
-      ApiBridge.callNative('ClientAudioManager', 'createById', postData);
-      $(targetEl).addClass('c-tag-audio');
-    }
+        var targetEl = $target.find('.c-tag-video');
+        var audioEl = $('.js-tag-list').find('.c-tag-audio');
+
+        if (audioEl.length) {
+          audioEl.map(function(index, item) {
+            $(item).removeClass('c-tag-audio');
+          })
+        }
+
+        var postData = {
+          mediaid: vm.data.mediaid,
+          width: vm.data.mediaWidth,
+          height: vm.data.mediaHeight,
+          title: vm.data.mediatitle,
+          x: vm.data.mediaX,
+          y: vm.data.mediaY,
+          status: $target.attr('status'),
+          playtime: $target.attr('playtime'),
+          thumbnailpics: $target.attr('thumbnailpics').split(',')
+        }
+
+        if (vm.data.mediatype == 3) {
+          ApiBridge.callNative('ClientVideoManager', 'createById', postData);
+        }
+        if (vm.data.mediatype == 4) {
+
+          ApiBridge.callNative('ClientAudioManager', 'createById', postData);
+          $(targetEl).addClass('c-tag-audio');
+        }
+
+      }
+    })
   },
 
   //监听销毁音频或视频
@@ -144,7 +158,7 @@ var vm = {
           //   });
 
           //   var audioEl = $('.js-tag-list').find('.c-tag-audio');
-    
+
           //   if(audioEl.length){
           //     audioEl.map(function(index, item){
           //       $(item).removeClass('c-tag-audio');
@@ -170,9 +184,9 @@ var vm = {
       });
 
       var audioEl = $('.js-tag-list').find('.c-tag-audio');
-    
-      if(audioEl.length){
-        audioEl.map(function(index, item){
+
+      if (audioEl.length) {
+        audioEl.map(function(index, item) {
           $(item).removeClass('c-tag-audio');
         })
       }
@@ -225,10 +239,10 @@ var vm = {
     }, 1000)
 
     $target.find('.zan-icon').addClass('on');
-    setTimeout(function(){
+    setTimeout(function() {
       $target.find('.zan-icon').removeClass('on')
       $target.find('.zan-icon').addClass('on-no-inmation')
-    },1000);
+    }, 1000);
 
     vm.ajax({
       url: 'https://reply.autohome.com.cn/api/like/set.json',
@@ -321,7 +335,11 @@ var vm = {
                 ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
                   msg: '关注成功!'
-                })
+                });
+                //判断流
+                if(/tag-name/.test(window.location.href)){
+                  target.remove();
+                }
               } else {
                 target.removeClass('on');
                 target.html('+  关注')
@@ -352,6 +370,10 @@ var vm = {
                 type: 1,
                 msg: '关注成功!'
               })
+              //判断流
+              if(/tag-name/.test(window.location.href)){
+                target.remove();
+              }
             } else {
               target.removeClass('on');
               target.html('+  关注')
