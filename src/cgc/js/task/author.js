@@ -52,6 +52,10 @@ vm.setNav = function(info, data){
     title: info.title || ''
   })
 
+  ApiBridge.callNative('ClientNavigationManager', 'setNavAlpha', {
+    alpha: info.alpha || 0
+  })
+
   var statusBarStyle = (info.statusBarStyle == 0) ? 0 : 1;
   ApiBridge.callNative('ClientViewManager', 'setStatusBarStyle', {
     statusBarStyle: statusBarStyle
@@ -623,6 +627,7 @@ vm.navWatch = function(data) {
     var $titleHeight = $('.c-auth-title').height();
 
     var $offsetTop = $('.c-auth-title').offset().top;
+    
     if($scrollTop >= ($offsetTop + $titleHeight)){
       var info = {
         imgurl: data.userinfo.userpic,
@@ -630,11 +635,18 @@ vm.navWatch = function(data) {
         icon1: 'articleplatform_icon_share',
         icon1_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
-        statusBarStyle: 0
+        statusBarStyle: 0,
+        alpha: 1
       };
-      vm.setNav(info, data)
+
+      if(!vm.data.hasSetNav){
+        vm.setNav(info, data);
+        vm.data.hasSetNav = true;
+      }
+      // vm.setNav(info, data)
     }
     else{
+      vm.data.hasSetNav = false;
       vm.setNav({}, data);
     }
     
