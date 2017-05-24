@@ -98,6 +98,9 @@ vm.initTag = function() {
       }
     },
     onRefresh: function() {
+      if(!vm.data.isRender){
+        return; 
+      }
       vm.tagList(vm.data.tagListIndex);
       console.log('onRefresh')
       $('.js-tag-list').addClass('on');
@@ -289,6 +292,7 @@ vm.tagList = function(index, flag, num) {
 
 //渲染标签详情列表
 vm.renderTagList = function(data, index, num) {
+  vm.data.isRender = false;
   index = index || 0;
   if (!!data.length) {
     // mock
@@ -414,6 +418,7 @@ vm.renderTagList = function(data, index, num) {
               }
             })
 
+            vm.data.isRender = true;
             if (!vm.data.isLoad) {
               $('.c-tab-bd ul').eq(index).append(html);
             } else {
@@ -466,6 +471,7 @@ vm.renderTagList = function(data, index, num) {
             // (vm.data.isAuthor && v['iscandelete'] == 1 ? 
           }
         })
+        vm.data.isRender = true;
 
         if (!vm.data.isLoad) {
           $('.c-tab-bd ul').eq(index).append(html);
