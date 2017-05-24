@@ -59,9 +59,9 @@ vm.bindEvent = function() {
 
 //点击作者头像获取UserId跳转作者主页
 vm.toAuthor = function(userId) {
-  debugger
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     var pagetype = (user.userId == userId) ? 5 : 7;
+    // var icon = (user.userId == userId) ? 5 : ;
 
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: pagetype,
@@ -70,10 +70,10 @@ vm.toAuthor = function(userId) {
         modename: 'author',
         ispagefullscreen: 1,
         navigationalpha: 0,
-        navigationbacktype: 5,
-        navigationrighticon: {
-          icon1: 'articleplatform_icon_share_p',
-        },
+        navigationbacktype: 1,
+        // navigationrighticon: {
+        //   icon1: 'articleplatform_icon_share_p',
+        // },
         navigationtype: 2
       },
       param: {

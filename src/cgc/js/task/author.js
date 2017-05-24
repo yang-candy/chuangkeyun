@@ -38,20 +38,29 @@ vm.deleteNew = function(e) {
   });
 }
 
-vm.setNav = function(userinfo){
+vm.setNav = function(info, data){
+  var shareinfo = data.shareinfo;
+  
+  ApiBridge.callNative('ClientNavigationManager', 'setNavBackIcon', {
+    navigationbacktype: info.navigationbacktype || 5
+  })
 
   ApiBridge.callNative('ClientNavigationManager', 'setNavCircleIcon', {
-    imgurl: userinfo.imgurl || ''
+    imgurl: info.imgurl || ''
   })
   ApiBridge.callNative('ClientNavigationManager', 'setNavTitle', {
-    title: userinfo.title || ''
+    title: info.title || ''
   })
-  
+
+  ApiBridge.callNative('ClientViewManager', 'setStatusBarStyle', {
+    statusBarStyle: info.statusBarStyle || 1
+  })
+
   var icon = {};
   if(vm.data.userId != vm.getParam('userId')){
     icon = {
-      icon1: userinfo.icon1 || 'articleplatform_icon_share_w',
-      icon1_p: userinfo.icon1_p || 'articleplatform_icon_share_w_p'
+      icon1: info.icon1 || 'articleplatform_icon_share_w',
+      icon1_p: info.icon1_p || 'articleplatform_icon_share_w_p'
     }
   }
   else{
@@ -66,11 +75,13 @@ vm.setNav = function(userinfo){
   }, function(res) {
 
     var opt = {
-      share: '',
-      url: '',
-      title: '',
-      logo: '',
-      summary: ''
+      share: {
+        url: shareinfo.shareurl ||'',
+        title: shareinfo.sharetitle ||'',
+        logo: shareinfo.sharelogo ||'',
+        icon: shareinfo.shareicon ||'',
+        summary: shareinfo.sharesummary ||''
+      }
     };
     ApiBridge.callNative('ClientShareManager', 'shareAction', opt, function(){
 
@@ -547,7 +558,9 @@ vm.getAuthorPage = function(index){
 
       vm.renderAuthorPage(res.result, index);
       vm.setImgWithBlur(res.result.userinfo);
-      vm.navWatch(res.result.userinfo);
+      vm.navWatch(res.result);
+
+
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -601,8 +614,8 @@ vm.initAuthorTag = function(index){
 }
 
 //监听顶部导航
-vm.navWatch = function(userinfo) {
-  vm.setNav({});
+vm.navWatch = function(data) {
+  vm.setNav({}, data);
 
   window.addEventListener('scroll', function() {
     var $scrollTop = document.body.scrollTop;
@@ -611,21 +624,26 @@ vm.navWatch = function(userinfo) {
     var $offsetTop = $('.c-auth-title').offset().top;
     if($scrollTop >= ($offsetTop + $titleHeight)){
       var info = {
-        imgurl: userinfo.userpic,
-        title: userinfo.name,
+        imgurl: data.userinfo.userpic,
+        title: data.userinfo.name,
         icon1: 'articleplatform_icon_share',
-        icon1_p: 'articleplatform_icon_share_p'
+        icon1_p: 'articleplatform_icon_share_p',
+        navigationbacktype: 1,
+        statusBarStyle: 0
       };
-      vm.setNav(info)
+      vm.setNav(info, data)
     }
     else{
-      vm.setNav({});
+      vm.setNav({}, data);
     }
     
   });
 }
 
 if (/author/.test(window.location.href)) {
+  // setNavBackIcon
+  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+
   ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
   // mock
   // vm.initAuthorTag();
