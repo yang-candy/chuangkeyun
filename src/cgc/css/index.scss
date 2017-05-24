@@ -331,6 +331,11 @@ li{
       display: inherit;
       margin-right:10px;
     }
+    .c-media-time{
+      font-size:.6rem;
+      color:#c3c3c3;
+      margin-left:.5rem;
+    }
     .c-tag-media{
       position:relative;
       z-index:21;
@@ -377,6 +382,20 @@ li{
     z-index:12;
     display:block;
     overflow:hidden;
+    .c-media-time{
+      position:absolute;
+      display:inline-block;
+      border:1px solid #1b1b1b;
+      background:rgba(27,27,27,0.4);
+      border-radius:2px;
+      color:#fff;
+      line-height:1;
+      padding:2px;
+      font-size:.3rem;
+      bottom:.4rem;
+      right:.3rem;
+      z-index:99;
+    }
     .c-tag-video{
       position:absolute;
       display:block;
@@ -445,9 +464,9 @@ li{
   }
   .c-looked{
     display:inline-block;
-    margin-top:.4rem;
+    margin-top:.8rem;
     font-size:.6rem;
-    color:#999;
+    color:#c3c3c3;
   }
   .c-auth-title{
     display:inline-block;
