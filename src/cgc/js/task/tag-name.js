@@ -494,7 +494,13 @@ vm.renderTagList = function(data, index, num) {
       }
     })
   }
-
+  else{
+    if (!vm.data.isLoad) {
+      $('.c-tab-bd ul').eq(index).append(html);
+    } else {
+      $('.c-tab-bd ul').eq(index).html(html);
+    }
+  }
   vm.data.isLoad = true;
 }
 

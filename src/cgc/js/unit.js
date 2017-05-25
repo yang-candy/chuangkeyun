@@ -243,21 +243,33 @@ var vm = {
       $target.find('.zan-icon').addClass('on-no-inmation')
     }, 1000);
 
-    vm.ajax({
-      url: 'https://reply.autohome.com.cn/api/like/set.json',
-      type: "POST",
-      isJson: true,
-      data: {
-        appid: '21',
-        liketype: '1',
-        objid: $target.attr('newsid')
-      },
-      dataType: "json",
-      success: function(res, xml) {
+    ApiBridge.callNative("ClientDataManager", "getSystemConstant", {}, function(follow) {
 
-      },
-      fail: function(status) {}
-    });
+      ApiBridge.callNative("ClientDataManager", "getSystemConstant", {}, function(user) {
+        vm.ajax({
+          url: 'https://reply.autohome.com.cn/api/like/set.json',
+          type: "POST",
+          isJson: true,
+          data: {
+            appid: '21',
+            _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
+            liketype: '1',
+            objid: $target.attr('newsid'),
+            secobj: '',
+            sessionid: user.uniqueDeviceIMEI,
+            autohomeua: user.userAgent,
+            authorization: user.userAuth,
+            extdata: ''
+          },
+          dataType: "json",
+          success: function(res, xml) {
+
+          },
+          fail: function(status) {}
+        });
+      })
+      
+    })
   },
   likeZan: function(e) {
 
@@ -321,8 +333,11 @@ var vm = {
         vm.ajax({
           url: $url,
           type: "POST",
+          isJson: true,
           data: {
             userid: userid,
+            pcpopclub: user.userAuth,
+            autohomeua: user.userAgent
           },
           dataType: "json",
           success: function(res, xml) {
