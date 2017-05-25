@@ -61,7 +61,9 @@ vm.initTag = function() {
           })
         }
       }
-      vm.tagList(vm.data.tagListIndex, 'up');
+      if(vm.data.isloadmore){
+        vm.tagList(vm.data.tagListIndex, 'up');
+      }
     }
   });
 
@@ -435,7 +437,7 @@ vm.renderTagList = function(data, index, num) {
               }
             })
             $('.c-loading').hide();
-            // vm.data.isLoad = true;
+            vm.data.isLoad = true;
           })
         } catch (e) {}
       } else {
@@ -490,18 +492,10 @@ vm.renderTagList = function(data, index, num) {
         })
 
         $('.c-loading').hide();
-        // vm.data.isLoad = true;
+        vm.data.isLoad = true;
       }
     })
   }
-  else{
-    if (!vm.data.isLoad) {
-      $('.c-tab-bd ul').eq(index).append(html);
-    } else {
-      $('.c-tab-bd ul').eq(index).html(html);
-    }
-  }
-  vm.data.isLoad = true;
 }
 
 //标签列表
@@ -510,6 +504,7 @@ if (/tag-name/.test(window.location.href)) {
 
   //vm.initTag()
   //mock
+  vm.data.isLoad = true;
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
     //未联网
