@@ -70,7 +70,9 @@ vm.setNav = function(info, data){
   if(vm.data.userId != vm.getParam('userId')){
     icon = {
       icon1: info.icon1 || 'articleplatform_icon_share_w',
-      icon1_p: info.icon1_p || 'articleplatform_icon_share_w_p'
+      icon1_p: info.icon1_p || 'articleplatform_icon_share_w_p',
+      // icon2: ,
+      // icon2_p: 
     }
   }
   else{
@@ -567,9 +569,13 @@ vm.getAuthorPage = function(index, flag){
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
 
-      vm.renderAuthorPage(res.result, index);
-      vm.setImgWithBlur(res.result.userinfo);
-      vm.navWatch(res.result);
+      if(res.result.userinfo){
+        vm.data.authorInfo = res.result.userinfo;
+        vm.renderAuthorPage(res.result, index);
+        vm.setImgWithBlur(res.result.userinfo);
+        // vm.navWatch(res.result);
+      }
+      
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -622,6 +628,8 @@ vm.initAuthorTag = function(index){
    
   //监听销毁视频
   vm.deleteMediaWatch();
+
+  vm.navWatch();
 }
 
 //监听顶部导航
@@ -638,8 +646,8 @@ vm.navWatch = function(data) {
       vm.data.isIn = false;
 
       var info = {
-        imgurl: data.userinfo.userpic,
-        title: data.userinfo.name,
+        imgurl: vm.data.authorInfo.userpic,
+        title: vm.data.authorInfo.userinfo.name,
         icon1: 'articleplatform_icon_share',
         icon1_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
@@ -658,16 +666,12 @@ vm.navWatch = function(data) {
         vm.data.isIn = true;
         vm.setNav({}, data);
       }
-      
     }
-    
   });
 }
 
 if (/author/.test(window.location.href)) {
   // setNavBackIcon
-  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
-
   ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
   // mock
   // vm.initAuthorTag();
