@@ -58,6 +58,7 @@ vm.renderFollowMoreBar = function(data) {
   var htmlUl = '';
 
   data.map(function(v) {
+    v['name'] = v['name'].slice(0,4);
     html += '<li ids=' + v['id'] + '>' + v['name'] + '</li>';
     ApiBridge.log(html);
     htmlUl += '<ul class="c-att-ul js-follow-v-list"></ul>'
