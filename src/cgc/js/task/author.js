@@ -21,21 +21,26 @@ vm.deleteNew = function(e) {
   var newsid = $target.attr('newsid');
 
   $parent.hide();
-  vm.ajax({
-    url: 'https://youchuangopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
-    type: "POST",
-    data: {
-      newsid: newsid
-    },
-    dataType: "json",
-    success: function(res, xml) {
-      res = JSON.parse(res);
-      if (res.result == 1) {
-        $parent.hide();
-      }
-    },
-    fail: function(status) {}
-  });
+  ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+    vm.ajax({
+      url: 'https://youchuangopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
+      type: "POST",
+      data: {
+        _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
+        pcpopclub: user.userAuth,
+        infoId: newsid
+      },
+      dataType: "json",
+      success: function(res, xml) {
+        res = JSON.parse(res);
+        if (res.result == 1) {
+          $parent.hide();
+        }
+      },
+      fail: function(status) {}
+    });
+  })
+  
 }
 
 vm.setNav = function(info, data){
@@ -167,7 +172,6 @@ vm.renderAuthorPage = function(data, index){
               }
             })
           }
-
           vm.renderAuthorInfo(data, index);
         })
       }catch (e) {}
@@ -566,8 +570,6 @@ vm.getAuthorPage = function(index, flag){
       vm.renderAuthorPage(res.result, index);
       vm.setImgWithBlur(res.result.userinfo);
       vm.navWatch(res.result);
-
-
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -612,7 +614,9 @@ vm.initAuthorTag = function(index){
           })
         }
       }
-      vm.getAuthorPage(index, 'up');
+      if(vm.data.isloadmore){
+       vm.getAuthorPage(index, 'up');
+      }
     }
   });
    
