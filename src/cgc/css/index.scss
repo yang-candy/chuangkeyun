@@ -97,6 +97,18 @@ li{
   bottom:0;
   z-index:33;
   overflow:scroll;
+  img{
+    margin-left: -3.4rem;
+  }
+  .c-att-ul li{
+    padding-left: 3.9rem;
+  }
+  .c-att-ul .c-att-href{
+    top:1rem;
+  }
+  .c-att-info{
+    width:97%;
+  }
 }
 .c-att-ul{
   .c-att-time{
@@ -182,7 +194,7 @@ li{
     font-size:1.2rem;
     font-weight:normal;
     line-height:1.3;
-    vertical-align:-3px;
+    vertical-align:-2px;
   }
 }
 

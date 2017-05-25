@@ -62,9 +62,9 @@ var vm = {
           vm.getFollowMoreBar();
         })
       } else {
-        if (vm.data.isFollowMore) {
-          return;
-        }
+        //if (vm.data.isFollowMore) {
+        //  return;
+        //}
         if ($('.js-follow-more-list ul').eq($target.index()).html() == '') {
           vm.getFollowMoreList($target.attr('ids'), $target.index());
         }
