@@ -496,7 +496,6 @@ vm.renderTagList = function(data, index, num) {
       }
     })
   }
-
 }
 
 //标签列表
