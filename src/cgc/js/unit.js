@@ -363,12 +363,12 @@ var vm = {
                 })
               }
 
-              if(!!info.icon2){
+              if(!!info.icon2 || target.className == 'c-auth-follow'){
                 var icon2 = {
                   icon2: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
                   icon2_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
                 };
-                
+
                 vm.setRightIcon(icon2);
               }
             }

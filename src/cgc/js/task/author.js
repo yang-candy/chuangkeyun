@@ -154,7 +154,7 @@ vm.renderAuthorInfo = function(data, index){
   var html = '<div class="c-auth-native"></div>'
       + '<div class="c-auth-bg"></div>'
       + '<div class="c-auth-info">'
-      +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + userinfo['userpic'] + ' />'
+      +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
       + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
       + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
       + '<p class="c-auth-tips">'
@@ -225,11 +225,11 @@ vm.renderAuthorNews = function(data, index){
       if (v['mediatype'] == 4) {
         html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['pics'] ? v['pics']: '../image/default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
+        + '<img class="c-auth-info-img" src=' + (v['pics'].length ? v['pics']: './image/default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
@@ -256,7 +256,7 @@ vm.renderAuthorNews = function(data, index){
         }
         html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -268,11 +268,11 @@ vm.renderAuthorNews = function(data, index){
 
         html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['pics'] ? v['pics']: '../image/default.png') + ' alt="">' 
+        + '<img class="c-auth-info-img" src=' + (v['pics'].length ? v['pics'] : './image/default.png') + ' alt="">' 
         + (v['mediatype'] == 3? '<span class="c-tag-video-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -373,7 +373,7 @@ vm.getAuthorPage = function(index, flag){
   //       mediatype: 3,
   //       newsid: 91996,
   //       pics: [
-  //         "https://qnwww2.autoimg.cn/youchuang/g11/M0B/07/98/autohomecar__wKgH0liix22Acy7HAA7qxSaViaI155.jpg?imageView2/2/w/640"
+          
   //       ],
   //       playtime: "05:35",
   //       praisenum: 1140,
