@@ -245,7 +245,7 @@ var vm = {
 
     ApiBridge.callNative("ClientDataManager", "getSystemConstant", {}, function(follow) {
 
-      ApiBridge.callNative("ClientDataManager", "getSystemConstant", {}, function(user) {
+      ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
         vm.ajax({
           url: 'https://reply.autohome.com.cn/api/like/set.json',
           type: "POST",
@@ -256,7 +256,7 @@ var vm = {
             liketype: '1',
             objid: $target.attr('newsid'),
             secobj: '',
-            sessionid: user.uniqueDeviceIMEI,
+            sessionid: follow.uniqueDeviceIMEI,
             autohomeua: user.userAgent,
             authorization: user.userAuth,
             extdata: ''
@@ -335,9 +335,9 @@ var vm = {
           type: "POST",
           isJson: true,
           data: {
-            userid: userid,
-            pcpopclub: user.userAuth,
-            autohomeua: user.userAgent
+            userId: userid,
+            _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
+            pcpopclub: user.userAuth
           },
           dataType: "json",
           success: function(res, xml) {
@@ -361,6 +361,15 @@ var vm = {
                   type: 1,
                   msg: '取消关注成功!'
                 })
+              }
+
+              if(!!info.icon2 || target.className == 'c-auth-follow'){
+                var icon2 = {
+                  icon2: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                  icon2_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
+                };
+
+                vm.setRightIcon(icon2);
               }
             }
           },

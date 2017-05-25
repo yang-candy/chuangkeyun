@@ -153,7 +153,7 @@ vm.article = function(e) {
       description: $($followTarget).attr('userdesc') || '',
       username: $($followTarget).attr('username')
     }
-    console.log($info)
+    
     vm.followToggle($($followTarget).attr('userid'), $type, $info, $($followTarget));
     return;
   }
@@ -179,6 +179,9 @@ vm.article = function(e) {
 vm.getTagContent = function(e) {
   e.stopPropagation();
 
+  document.body.scrollTop = 0;
+  vm.data.isLoad = true;
+  
   $target = $(e.currentTarget);
 
   if ($target.index() !== 3) {
