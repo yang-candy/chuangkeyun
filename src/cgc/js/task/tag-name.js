@@ -11,12 +11,12 @@ vm.initTag = function() {
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
     vm.data.tagListIndex = Number(index.index);
 
-    if (vm.data.tagListIndex + 1 !== 3) {
+    if (vm.data.tagListIndex !== 3) {
       ApiBridge.callNative('ClientVideoManager', 'deleteById', {
         mediaid: vm.data.mediaid,
       });
     }
-    if (vm.data.tagListIndex + 1 !== 4) {
+    if (vm.data.tagListIndex !== 4) {
 
       ApiBridge.callNative('ClientAudioManager', 'deleteById', {
         mediaid: vm.data.mediaid,
@@ -42,12 +42,12 @@ vm.initTag = function() {
       vm.data.isLoad = false;
       $('.c-loading').show();
 
-      if (vm.data.tagListIndex + 1 == 3) {
+      if (vm.data.tagListIndex == 3) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
-      if (vm.data.tagListIndex + 1 == 4) {
+      if (vm.data.tagListIndex == 4) {
 
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
@@ -79,12 +79,12 @@ vm.initTag = function() {
     beforePull: function() {
       console.log('beforePull')
 
-      if (vm.data.tagListIndex + 1 == 3) {
+      if (vm.data.tagListIndex == 3) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
-      if (vm.data.tagListIndex + 1 == 4) {
+      if (vm.data.tagListIndex == 4) {
 
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,

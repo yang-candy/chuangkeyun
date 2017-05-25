@@ -362,6 +362,15 @@ var vm = {
                   msg: '取消关注成功!'
                 })
               }
+
+              if(!!info.icon2){
+                var icon2 = {
+                  icon2: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                  icon2_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
+                };
+                
+                vm.setRightIcon(icon2);
+              }
             }
           },
           fail: function(status) {}
