@@ -928,12 +928,16 @@ li{
         width:31.2%;
         height:66px;
         margin-right:5px;
+        background: url(../image/default.png)center no-repeat;
+        background-size: 100% 100%;
       }
     }
 .c-qing-img-one{
         img{
           width:100%;
           max-height:400px;
+          background: url(../image/default.png)center no-repeat;
+          background-size: 100% 100%;
         }
       }
 .pull-down-content .spinner {
