@@ -247,7 +247,7 @@ var vm = {
 
       ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
         vm.ajax({
-          url: 'https://reply.autohome.com.cn/api/like/set.json',
+          url: 'https://reply.autohome.com.cn/api/like/set.json?encode=utf-8',
           type: "POST",
           isJson: true,
           data: {
@@ -272,7 +272,6 @@ var vm = {
     })
   },
   likeZan: function(e) {
-
     e.stopPropagation();
     $target = $(e.currentTarget);
 
@@ -322,6 +321,7 @@ var vm = {
 
   //关注未关注
   followToggle: function(userid, type, info, target) {
+    console.log(target)
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       //已登录
       if (Number(user.userId)) {
@@ -337,12 +337,27 @@ var vm = {
           data: {
             userId: userid,
             _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
-            pcpopclub: user.userAuth
+            pcpopclub: user.userAuth,
+            autohomeua: user.userAgent
           },
           dataType: "json",
           success: function(res, xml) {
             res = JSON.parse(res);
+            console.log(target);
+            console.log(222222)
             if (!!res.result) {
+              if((!!info.icon2) || (/author/.test(window.location.href))){
+                console.log(111111111);
+                var icon2 = {
+                  icon2: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                  icon2_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
+                };
+
+                vm.setRightIcon(icon2);
+
+                target = $('.c-auth-follow');
+              }
+
               if (!type) {
                 target.addClass('on');
                 target.html('已关注')
@@ -361,15 +376,6 @@ var vm = {
                   type: 1,
                   msg: '取消关注成功!'
                 })
-              }
-
-              if(!!info.icon2 || target.className == 'c-auth-follow'){
-                var icon2 = {
-                  icon2: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
-                  icon2_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
-                };
-
-                vm.setRightIcon(icon2);
               }
             }
           },
