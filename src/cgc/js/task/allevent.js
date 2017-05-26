@@ -104,12 +104,16 @@ vm.author2 = function(e) {
     return;
   }
 
-  if($followTarget.tagName == 'P' || $followTarget.tagName == 'IMG'){
-    debugger
-    var userId = $curTarget.attr('userid');
-    if(userId){
-      vm.toAuthor(userId);
-    }
+  if($curTarget.hasClass('c-media-info') && ($followTarget.tagName == 'P' || $followTarget.tagName == 'IMG')){
+    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
+      pagetype: 2,
+      animationtype: 2,
+      param: {
+        newsid: $target.attr('newsid'),
+        type: $curTarget.parent('li').attr('mediatype'),
+        autoscrolltocomment: 0
+      }
+    });
     return;
   }
 
