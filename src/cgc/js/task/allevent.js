@@ -146,6 +146,7 @@ vm.article = function(e) {
     console.log('ddddd')
     var $type = $(e.target).hasClass('on') ? 1 : 0;
     var $info = {
+      test: '11',
       imgurl: $($followTarget).attr('userpic'),
       time: $($followTarget).attr('usertime') || '',
       userid: $($followTarget).attr('userid'),

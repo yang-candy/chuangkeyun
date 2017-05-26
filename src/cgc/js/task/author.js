@@ -67,7 +67,7 @@ vm.setRightIcon = function (icon){
 
         var follow = {
           icon2: true
-        }
+        };
         vm.followToggle(userId, type, follow);
       }
     })
@@ -217,8 +217,7 @@ vm.renderAuthorNews = function(data, index){
   data = data.newslist;
 
   if (!!data.length) {
-    $('.c-tab-empty').show();
-
+    $('.c-tab-empty').hide();
     data.map(function(v) {
       v['pv'] = v['pv'] || 0;
 
@@ -229,7 +228,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['pics'].length ? v['pics']: './image/default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
+        + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics']: './image/default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
@@ -237,20 +236,20 @@ vm.renderAuthorNews = function(data, index){
          + '</li>';
       } else if (v['mediatype'] == 2) {
 
-        var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['pics'] + ' sharecontent=' + v['description'] +  '>';
+        var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
-        if (v['pics'].length < 3) {
-          qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['pics'].length + ' src=' + v['pics'][0] + ' /></div>'
+        if (v['thumbnailpics'].length < 3) {
+          qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
         } else {
-          v['pics'].map(function(k, i) {
+          v['thumbnailpics'].map(function(k, i) {
             if (i > 2) {
               return;
             }
-            qingImg += '<img class="c-qing-img" imgnum=' + v['pics'].length + ' src=' + k + ' />'
+            qingImg += '<img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + k + ' />'
           })
         }
-        if (v['pics'].length > 3) {
-          qingImg += '<span class="c-qing-num">' + v['pics'].length + '</span></div>'
+        if (v['thumbnailpics'].length > 3) {
+          qingImg += '<span class="c-qing-num">' + v['thumbnailpics'].length + '</span></div>'
         } else {
           qingImg += '</div>'
         }
@@ -272,7 +271,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['pics'].length ? v['pics'] : './image/default.png') + ' alt="">' 
+        + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics'] : './image/default.png') + ' alt="">' 
         + (v['mediatype'] == 3? '<span class="c-tag-video-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -605,8 +604,9 @@ vm.getAuthorPage = function(index, flag){
           icon2: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
           icon2_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
         };
-        vm.setRightIcon(icon2);
+
         vm.navWatch(res.result);
+        // vm.setRightIcon(icon2);
       }      
     },
     fail: function(status) {
@@ -665,6 +665,10 @@ vm.initAuthorTag = function(index){
 
 //监听顶部导航
 vm.navWatch = function(data) {
+  var userinfo = $.extend({},data.userinfo);
+  console.log(userinfo);
+  console.log(11111111111111111)
+  
   vm.setNav({}, data);
   
   window.addEventListener('scroll', function() {
@@ -677,8 +681,8 @@ vm.navWatch = function(data) {
       vm.data.isIn = false;
 
       var info = {
-        imgurl: data.userinfo.userpic,
-        title: data.userinfo.name,
+        imgurl: userinfo.userpic,
+        title: userinfo.name,
         icon1: 'articleplatform_icon_share',
         icon1_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
@@ -686,8 +690,16 @@ vm.navWatch = function(data) {
         alpha: 1
       };
 
+      var icon2 = {
+        icon2: data.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+        icon2_p: data.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
+      };
+      
+      vm.setRightIcon(icon2);
+
       if(!vm.data.isOut){
         vm.data.isOut = true;
+        
         vm.setNav(info, data);
       }
     }
