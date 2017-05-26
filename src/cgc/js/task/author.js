@@ -43,9 +43,6 @@ vm.deleteNew = function(e) {
 }
 
 vm.setRightIcon = function (icon){
-  // if(!icon){
-  //   return;
-  // }
   if(vm.data.userId != vm.getParam('userId')){
     ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
       righticons: icon
@@ -161,8 +158,8 @@ vm.renderAuthorInfo = function(data, index){
       + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
       + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
       + '<p class="c-auth-tips">'
-      + '<span class="c-auth-fans">' + userinfo['fanscount'] + ' 粉丝</span>' 
-      + '<span class="c-auth-work">' + userinfo['publishcount'] + ' 作品</span>' 
+      + '<span class="c-auth-fans">' + userinfo['fanscount'] + '粉丝</span>' 
+      + '<span class="c-auth-work">' + userinfo['publishcount'] + '作品</span>' 
       + '</p></div>';
 
   if(!vm.data.isAuthor){
@@ -220,7 +217,6 @@ vm.renderAuthorNews = function(data, index){
   data = data.newslist;
 
   if (!!data.length) {
-    $('.c-tab-empty').hide();
     data.map(function(v) {
       v['pv'] = v['pv'] || 0;
 
@@ -235,7 +231,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
-        + (v['status'] == 1 ? '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>' : '<span class="c-error-tip">' + v['statusStr'] + ' </span>') 
+        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';
       } else if (v['mediatype'] == 2) {
 
@@ -264,7 +260,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
-        + (v['status'] == 1 ? '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>' : '<span class="c-error-tip">' + v['statusStr'] + ' </span>') 
+        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';   
       } else {
 
@@ -281,13 +277,14 @@ vm.renderAuthorNews = function(data, index){
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' 
         + '</p>' 
-        + (v['status'] == 1 ? '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>' : '<span class="c-error-tip">' + v['statusStr'] + ' </span>') 
+        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';
       }
     })
 
     if (!vm.data.isLoad) {
       $('.c-tab-bd ul').eq(index).append(html);
+      vm.data.isLoad = true;
     } else {
       $('.c-tab-bd ul').eq(index).html(html);
     }
@@ -312,13 +309,12 @@ vm.renderAuthorNews = function(data, index){
   else{
     $('.c-tab-empty').show();
   }
-  vm.data.isLoad = true;
 }
 
 //获取作者主页  
 vm.getAuthorPage = function(index, flag){
   index = index || 0;
-
+  $('.c-tab-empty').hide();
   // mock
 
   // var res = {
@@ -608,7 +604,11 @@ vm.getAuthorPage = function(index, flag){
           icon2_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
         };
 
-        vm.navWatch(res.result);
+        //注册一次
+        if(vm.data.isScrollAuthor){
+          vm.navWatch(res.result);
+        }
+        vm.data.isScrollAuthor = false;
         // vm.setRightIcon(icon2);
       }      
     },
@@ -628,6 +628,7 @@ vm.initAuthorTag = function(index){
   //to do 本地存储点赞
   vm.data.likes = [];
 
+  vm.data.isScrollAuthor = true;
   vm.getAuthorPage(index);
 
   //上拉翻页加载
