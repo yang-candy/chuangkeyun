@@ -89,7 +89,7 @@ vm.author2 = function(e) {
   e.stopPropagation();
   var $followTarget = e.target;
   var $curTarget = $(e.currentTarget);
-  
+
   if ($followTarget.tagName == 'A') {
     console.log('ddddd')
     var $type = $($followTarget).hasClass('on') ? 1 : 0;
@@ -124,6 +124,9 @@ vm.article = function(e) {
   var $curTarget = e.currentTarget;
 
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
+    if($($curTarget).attr('page') == 'author'){
+      return ;
+    }
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       var pagetype = (user.userId == $($followTarget).parent('li').attr('userid')) ? 5 : 7;
       vm.toAuthor(pagetype, $($followTarget).parent('li').attr('userid'));
@@ -215,7 +218,12 @@ vm.getTagContent = function(e) {
     }
   }
 
-  vm.getAuthorPage($target.index());
+  //判断是否请求过内容
+  if($('.c-tab-list ul').eq($target.index()).html() == ''){
+    vm.getAuthorPage($target.index());
+  }
+
+  // vm.getAuthorPage($target.index());
 }
 
 vm.bindEvent();
