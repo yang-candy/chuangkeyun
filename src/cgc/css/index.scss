@@ -599,6 +599,7 @@ li{
         width:1rem;
         background:url(../image/zan.png) center no-repeat;
         background-size:100% auto;
+        vertical-align:2px;
       }
       .c-add1{
         position:absolute;
@@ -620,7 +621,7 @@ li{
       }
       .c-num{
         position:absolute;
-        top:-.2rem;
+        top:0rem;
         left:.78rem;
         line-height:1;
         background:#fff;
