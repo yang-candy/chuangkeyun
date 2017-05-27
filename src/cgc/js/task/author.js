@@ -42,24 +42,26 @@ vm.deleteNew = function(e) {
   })
 }
 
-vm.setRightIcon = function (icon){
+vm.setRightIcon = function (icon, shareinfo){
+
   if(vm.data.userId != vm.getParam('userId')){
     ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
       righticons: icon
     }, function(result) {
-
       if(result.result == 'icon2'){
+
         var opt = {
           share: {
             url: shareinfo.shareurl ||'',
             title: shareinfo.sharetitle ||'',
             logo: shareinfo.sharelogo ||'',
-            icon: shareinfo.shareicon ||'',
+            icon: shareinfo.shareicon ||' ',
             summary: shareinfo.sharesummary ||''
           }
         };
-        
-        ApiBridge.callNative('ClientShareManager', 'shareAction', {});
+        ApiBridge.log(11111111111111111)
+        ApiBridge.log(result)
+        ApiBridge.callNative('ClientShareManager', 'shareAction', opt);
       }
       else{
         var type = $('.c-auth-follow').hasClass('on') ? 1 : 0;
@@ -102,7 +104,7 @@ vm.setNav = function(info, data){
       icon2: info.icon2 || 'articleplatform_icon_share_w',
       icon2_p: info.icon2_p || 'articleplatform_icon_share_w_p'
     };
-    vm.setRightIcon(icon2);
+    vm.setRightIcon(icon2, shareinfo);
   }
 
   // ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
@@ -154,7 +156,7 @@ vm.renderAuthorInfo = function(data, index){
   var html = '<div class="c-auth-native"></div>'
       + '<div class="c-auth-bg"></div>'
       + '<div class="c-auth-info">'
-      +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + userinfo['userpic'] + ' />'
+      +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
       + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
       + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
       + '<p class="c-auth-tips">'
@@ -221,13 +223,13 @@ vm.renderAuthorNews = function(data, index){
       v['pv'] = v['pv'] || 0;
 
       if (v['mediatype'] == 4) {
-        html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + v['thumbnailpics'] + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
+        + '<img class="c-auth-info-img c-auth-audio-img" src=' + (v['thumbnailpics'] ? v['thumbnailpics'] : './image/audio_default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
@@ -252,9 +254,9 @@ vm.renderAuthorNews = function(data, index){
         } else {
           qingImg += '</div>'
         }
-        html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -264,9 +266,9 @@ vm.renderAuthorNews = function(data, index){
          + '</li>';   
       } else {
 
-        html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + userinfo['userpic'] + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
@@ -351,13 +353,11 @@ vm.getAuthorPage = function(index, flag){
   //       statusNote: "",
   //       statusStr: "正常",
   //       thumbnailpics: [
-  //         "https://qnwww2.autoimg.cn/youchuang/g12/M09/9F/E9/autohomecar__wKgH01kbPDuAI3xSAAGNMMeSgqk414.jpg?imageView2/1/w/200/h/200",
-  //         "https://qnwww2.autoimg.cn/youchuang/g12/M0C/A9/7B/autohomecar__wKgH4lkbPFSAActaAAF5vXvNJdU798.jpg?imageView2/1/w/200/h/200"
-  //       ],
+  //                 ],
   //       title: "",
   //       userid: 0,
   //       username: "",
-  //       userpic: "https://qnwww2.autoimg.cn/youchuang/g6/M0D/E3/67/autohomecar__wKgHzVht7DKANOYBAAEk9BBTtuA095.jpg?imageView2/1/w/120/h/120"
+  //       userpic: ""
   //     },{
   //       content: "",
   //       description: "",
@@ -560,7 +560,7 @@ vm.getAuthorPage = function(index, flag){
   //       name: "丈母娘唠车",
   //       publishcount: "18",
   //       session_id: "43839fda8db54f3097e94c0534e44922",
-  //       userpic: "https://qnwww2.autoimg.cn/youchuang/g6/M0D/E3/67/autohomecar__wKgHzVht7DKANOYBAAEk9BBTtuA095.jpg?imageView2/1/w/120/h/120",
+  //       userpic: "",
   //       vcrrvideoimg: "https://x.autoimg.cn/app/image/pnvideodefult_small.jpg",
   //       vcrvideoid: ""
   //     }
@@ -742,6 +742,17 @@ vm.navWatch = function(data) {
 }
 
 if (/author/.test(window.location.href)) {
+  // var opt = {
+  //   share: {
+  //     url: '',
+  //     title: '',
+  //     logo: '',
+  //     icon: '',
+  //     summary: ''
+  //   }
+  // };
+  
+  // ApiBridge.callNative('ClientShareManager', 'shareAction', opt);
   // setNavBackIcon
   vm.data.isLoad = true;
   ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
