@@ -237,7 +237,7 @@ vm.renderAuthorNews = function(data, index){
 
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
-        if (v['thumbnailpics'].length < 3) {
+        if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
           qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
         } else {
           v['thumbnailpics'].map(function(k, i) {
@@ -664,8 +664,25 @@ vm.initAuthorTag = function(index){
    
   //监听销毁视频
   vm.deleteMediaWatch();
+  vm.viewBounces();
 }
 
+// ios设置下拉时顶部空白设置
+vm.viewBounces = function(){
+  window.addEventListener('scroll', function() {
+    if(document.body.scrollTop <= 0){
+      ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {
+        bounces: 0
+      });
+    }
+    else{
+      ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {
+        bounces: 1
+      });
+    }
+  })
+  
+}
 
 //监听顶部导航
 vm.navWatch = function(data) {
@@ -676,6 +693,7 @@ vm.navWatch = function(data) {
   vm.setNav({}, data);
   
   window.addEventListener('scroll', function() {
+
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
 
