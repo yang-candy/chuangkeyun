@@ -36,7 +36,7 @@ vm.followAjax = function(url, opt) {
         if (opt.au) {
           vm.getV();
         } else {
-          $('.js-follow-more').html('暂无数据');
+          $('.c-tab-empty').show();
         }
       }
     },
