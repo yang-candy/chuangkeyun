@@ -865,13 +865,13 @@ li{
   vertical-align: middle;
   .pull-re{
     position:absolute;
-    top:15px;
+    top:0px;
     left:0;
     z-index:12;
   }
   .pull-ab{
     position:absolute;
-    top:15px;
+    top:0px;
     left:0;
     z-index:13;
     &.rotate{
@@ -893,6 +893,8 @@ li{
   }
 }
 .pull-down-content #arrowIcon {
+  position:relative;
+  top:15px;
   width: 20px;
   height: 20px;
   display: block;
