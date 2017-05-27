@@ -1,7 +1,9 @@
 //标签列表页
 //
 vm.initTag = function() {
+  //本地储存scroll
 
+  vm.data.tagListTop = window.pageYOffset || document.body.scrollTop;
   //to do 本地存储点赞
   vm.data.likes = [];
   // mock
@@ -31,9 +33,14 @@ vm.initTag = function() {
       }
     }
 
+    //记录scrollTop
+
     $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
 
-    vm.tagList(vm.data.tagListIndex, 'set', 1);
+    //判断是否请求过内容
+    if($('.js-tag-list-ul ul').eq(vm.data.tagListIndex).html() == ''){
+      vm.tagList(vm.data.tagListIndex, 'set', 1);
+    }
   })
 
   //上拉翻页加载

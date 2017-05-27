@@ -503,9 +503,9 @@ var vm = {
   reFresh: {
     init: function(opt) {
 
-      var dragThreshold = opt.dragThreshold || 0.1; // 临界值
+      var dragThreshold = opt.dragThreshold || 0.3; // 临界值
 
-      var moveCount = opt.moveCount || 600; // 位移系数
+      var moveCount = opt.moveCount || 400; // 位移系数
 
       var dragStart = null; // 开始抓取标志位
 
