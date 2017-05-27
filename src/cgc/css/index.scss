@@ -839,7 +839,7 @@ li{
     transition: 330ms; 
     transform: translate3d(0px, 0px, 0px);
     &.on{
-      //margin-top:2.7rem;
+      margin-top:1.3rem;
     }
   }
 }
@@ -865,13 +865,13 @@ li{
   vertical-align: middle;
   .pull-re{
     position:absolute;
-    top:0px;
+    top:15px;
     left:0;
     z-index:12;
   }
   .pull-ab{
     position:absolute;
-    top:0px;
+    top:15px;
     left:0;
     z-index:13;
     &.rotate{
@@ -893,8 +893,6 @@ li{
   }
 }
 .pull-down-content #arrowIcon {
-  position:relative;
-  top:15px;
   width: 20px;
   height: 20px;
   display: block;
