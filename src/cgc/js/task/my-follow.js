@@ -109,7 +109,7 @@ vm.followList = function(data, isType, net, pageinfo) {
       if (!!net) {
         html += '<li userid=' + v['userid'] + '> <img src=' + v['userpic'] + ' alt=""> <span class="c-att-time">' + v['createtime'] + '</span> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
       } else {
-        html += '<li userId=' + v['userId'] + '> <img src=' + v['imgurl'] + ' alt=""> <span class="c-att-time">' + v['time'] + '</span> <h3 class="c-att-title">' + v['userName'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
+        html += '<li userid=' + v['userId'] + '> <img src=' + v['imgurl'] + ' alt=""> <span class="c-att-time">' + v['time'] + '</span> <h3 class="c-att-title">' + v['userName'] + '</h3> <p class="c-att-info">' + v['title'] + '</p> </li>';
       }
     })
 
@@ -131,7 +131,7 @@ vm.followList = function(data, isType, net, pageinfo) {
   if (!isType && !!data.length) {
     var html = '';
     data.map(function(v) {
-      html += '<li > <a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+      html += '<li userid=' + v['userid'] + '><a class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
     })
 
     $('.js-follow-v-list').html(html);

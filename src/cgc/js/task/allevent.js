@@ -5,11 +5,12 @@ vm.bindEvent = function() {
   $('.js-follow-v-list').on('click', 'li', vm.author2);
   $('.js-follow-list').on('click', 'li', vm.author2);
 
-  //标签部分视频点击创建
-  $('.js-tag-list').on('click', '.c-tag-media', vm.createMedia);
-
   //关注更多 -->跳转作者客页
   $('.js-follow-more-list').on('click', 'li', vm.author2);
+
+
+  //标签部分视频点击创建
+  $('.js-tag-list').on('click', '.c-tag-media', vm.createMedia);
 
   //标签列表 -->评论跳转到评论页
   $('.js-tag-list').on('click', '.c-common', vm.tagCommon);
@@ -58,7 +59,7 @@ vm.bindEvent = function() {
 }
 
 //点击作者头像获取UserId跳转作者主页
-vm.toAuthor = function(userId) {
+vm.toAuthor = function(userId, userId) {
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     var pagetype = (user.userId == userId) ? 5 : 7;
     // var icon = (user.userId == userId) ? 5 : ;
@@ -109,10 +110,10 @@ vm.author2 = function(e) {
   // vm.toAuthor(pagetype, userId);
 
   // mock
-  
+
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      var pagetype = (user.userId == userId) ? 5 : 7;
-      vm.toAuthor(pagetype, userId);
+      var pagetype = (user.userId == $curTarget.attr('userid')) ? 5 : 7;
+      vm.toAuthor(pagetype, $curTarget.attr('userid'));
     })
 }
 
