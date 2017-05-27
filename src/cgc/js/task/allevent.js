@@ -124,8 +124,8 @@ vm.article = function(e) {
 
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      var pagetype = (user.userId == userId) ? 5 : 7;
-      vm.toAuthor(pagetype, userId);
+      var pagetype = (user.userId == $($followTarget).parent('li').attr('userid')) ? 5 : 7;
+      vm.toAuthor(pagetype, $($followTarget).parent('li').attr('userid'));
     })
     return;
   }
