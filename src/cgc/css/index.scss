@@ -599,6 +599,7 @@ li{
         width:1rem;
         background:url(../image/zan.png) center no-repeat;
         background-size:100% auto;
+        vertical-align:2px;
       }
       .c-add1{
         position:absolute;
@@ -620,7 +621,7 @@ li{
       }
       .c-num{
         position:absolute;
-        top:-.2rem;
+        top:0rem;
         left:.78rem;
         line-height:1;
         background:#fff;
@@ -838,7 +839,7 @@ li{
     transition: 330ms; 
     transform: translate3d(0px, 0px, 0px);
     &.on{
-      margin-top:2.7rem;
+      //margin-top:2.7rem;
     }
   }
 }
@@ -864,13 +865,13 @@ li{
   vertical-align: middle;
   .pull-re{
     position:absolute;
-    top:15px;
+    top:0px;
     left:0;
     z-index:12;
   }
   .pull-ab{
     position:absolute;
-    top:15px;
+    top:0px;
     left:0;
     z-index:13;
     &.rotate{
@@ -892,6 +893,8 @@ li{
   }
 }
 .pull-down-content #arrowIcon {
+  position:relative;
+  top:15px;
   width: 20px;
   height: 20px;
   display: block;
