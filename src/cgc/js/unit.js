@@ -527,6 +527,7 @@ var vm = {
 
       dom.on('touchstart', function(event) {
 
+        pullText.text('下拉刷新');
         if (refreshFlag) {
           event.preventDefault();
           return;
