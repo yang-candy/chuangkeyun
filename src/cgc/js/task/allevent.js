@@ -21,7 +21,7 @@ vm.bindEvent = function() {
   $('.c-wp').on('click', '.c-auth-follow', vm.article);
 
   //标签列表 -->点击头像或名字跳转个人主页
-  $('.js-tag-list').on('click', '.c-media-info', vm.author2);
+  //$('.js-tag-list').on('click', '.c-media-info', vm.author2);
 
   //标签列表 -->点赞动作
   $('.js-tag-list').on('click', '.c-zan', vm.likeZan);
@@ -104,32 +104,16 @@ vm.author2 = function(e) {
     return;
   }
 
-  if($curTarget.hasClass('c-media-info') && ($followTarget.tagName == 'P' || $followTarget.tagName == 'IMG')){
-    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
-      pagetype: 2,
-      animationtype: 2,
-      param: {
-        newsid: $target.attr('newsid'),
-        type: $curTarget.parent('li').attr('mediatype'),
-        autoscrolltocomment: 0
-      }
-    });
-    return;
-  }
-
-  
-
   // mock
   // var pagetype = (vm.data.userId == userId) ? 7 : 5;
   // vm.toAuthor(pagetype, userId);
 
   // mock
-  ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-    
-    var pagetype = (user.userId == userId) ? 5 : 7;
-
-    vm.toAuthor(pagetype, userId);
-  })
+  
+    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      var pagetype = (user.userId == userId) ? 5 : 7;
+      vm.toAuthor(pagetype, userId);
+    })
 }
 
 vm.article = function(e) {
@@ -137,6 +121,27 @@ vm.article = function(e) {
 
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
+
+  if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
+    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      var pagetype = (user.userId == $($followTarget).parent('li').attr('userid')) ? 5 : 7;
+      vm.toAuthor(pagetype, $($followTarget).parent('li').attr('userid'));
+    })
+    return;
+  }
+  //头像空白页跳转到最终页
+  if(e.target.className == 'c-media-info'){
+    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
+      pagetype: 2,
+      animationtype: 2,
+      param: {
+        newsid: $($followTarget).parent('li').attr('newsid'),
+        type: $($followTarget).parent('li').attr('mediatype'),
+        autoscrolltocomment: 0
+      }
+    });
+    return;
+  }
   if (e.target.tagName != 'LI' && e.target.className == 'c-qing-img' &&  $(e.target).attr('imgnum') >= 3) {
     return;
   }
