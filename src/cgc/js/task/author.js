@@ -48,7 +48,7 @@ vm.setRightIcon = function (icon){
       righticons: icon
     }, function(result) {
 
-      if(result.result == 'icon1'){
+      if(result.result == 'icon2'){
         var opt = {
           share: {
             url: shareinfo.shareurl ||'',
@@ -66,7 +66,7 @@ vm.setRightIcon = function (icon){
         var userId = vm.getParam('userId');
 
         var follow = {
-          icon2: true
+          icon1: true
         };
         vm.followToggle(userId, type, follow);
       }
@@ -98,11 +98,11 @@ vm.setNav = function(info, data){
   })
 
   if(vm.data.userId != vm.getParam('userId')){
-    var icon1 = {
-      icon1: info.icon1 || 'articleplatform_icon_share_w',
-      icon1_p: info.icon1_p || 'articleplatform_icon_share_w_p'
+    var icon2 = {
+      icon2: info.icon2 || 'articleplatform_icon_share_w',
+      icon2_p: info.icon2_p || 'articleplatform_icon_share_w_p'
     };
-    vm.setRightIcon(icon1);
+    vm.setRightIcon(icon2);
   }
 
   // ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
@@ -237,7 +237,7 @@ vm.renderAuthorNews = function(data, index){
 
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
-        if (v['thumbnailpics'].length < 3) {
+        if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
           qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
         } else {
           v['thumbnailpics'].map(function(k, i) {
@@ -270,7 +270,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics'] : './image/default.png') + ' alt="">' 
+        + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics'] : './image/default.jpg') + ' alt="">' 
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -599,9 +599,9 @@ vm.getAuthorPage = function(index, flag){
         vm.renderAuthorPage(res.result, index);
         vm.setImgWithBlur(res.result.userinfo);
 
-        var icon2 = {
-          icon2: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
-          icon2_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
+        var icon1 = {
+          icon1: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+          icon1_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
         };
 
         //注册一次
@@ -609,7 +609,7 @@ vm.getAuthorPage = function(index, flag){
           vm.navWatch(res.result);
         }
         vm.data.isScrollAuthor = false;
-        // vm.setRightIcon(icon2);
+        // vm.setRightIcon(icon1);
       }      
     },
     fail: function(status) {
@@ -664,8 +664,25 @@ vm.initAuthorTag = function(index){
    
   //监听销毁视频
   vm.deleteMediaWatch();
+  vm.viewBounces();
 }
 
+// ios设置下拉时顶部空白设置
+vm.viewBounces = function(){
+  window.addEventListener('scroll', function() {
+    if(document.body.scrollTop <= 0){
+      ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {
+        bounces: 0
+      });
+    }
+    else{
+      ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {
+        bounces: 1
+      });
+    }
+  })
+  
+}
 
 //监听顶部导航
 vm.navWatch = function(data) {
@@ -676,6 +693,7 @@ vm.navWatch = function(data) {
   vm.setNav({}, data);
   
   window.addEventListener('scroll', function() {
+
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
 
@@ -687,8 +705,8 @@ vm.navWatch = function(data) {
       var info = {
         imgurl: data.userinfo.userpic,
         title: data.userinfo.name,
-        icon1: 'articleplatform_icon_share',
-        icon1_p: 'articleplatform_icon_share_p',
+        icon2: 'articleplatform_icon_share',
+        icon2_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
         statusBarStyle: 0,
         alpha: 1
@@ -696,12 +714,12 @@ vm.navWatch = function(data) {
 
       var type = $('.c-auth-follow').hasClass('on') ? 1 : 0;
 
-      var icon2 = {
-        icon2: type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
-        icon2_p: type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
+      var icon1 = {
+        icon1: type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+        icon1_p: type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
       };
 
-      vm.setRightIcon(icon2);
+      vm.setRightIcon(icon1);
 
       if(!vm.data.isOut){
         vm.data.isOut = true;
@@ -711,8 +729,8 @@ vm.navWatch = function(data) {
     }
     else{
       vm.setRightIcon({
-        icon2: '',
-        icon2_p: ''
+        icon1: '',
+        icon1_p: ''
       });
       vm.data.isOut = false;
       if(!vm.data.isIn){
