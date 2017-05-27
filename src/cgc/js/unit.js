@@ -275,7 +275,7 @@ var vm = {
     e.stopPropagation();
     $target = $(e.currentTarget);
 
-    if ($target.find('.zan-icon').hasClass('on')) {
+    if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
       return;
     };
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
