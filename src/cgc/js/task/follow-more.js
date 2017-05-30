@@ -189,12 +189,14 @@ vm.getFollowMoreList = function(id, index) {
   //return;
 
   // mock
+  ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
   vm.ajax({
     url: vm.data.url + '/getUserPageByCategory.json',
     type: "GET",
     data: {
       userCategoryId: id,
       size: 20,
+      au: user.userAuth || '',
       lastId: vm.data.lastId[index] || ''
     },
     dataType: "json",
@@ -208,6 +210,7 @@ vm.getFollowMoreList = function(id, index) {
       }
     },
     fail: function(status) {}
+  });
   });
 }
 
