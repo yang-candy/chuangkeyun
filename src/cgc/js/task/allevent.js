@@ -119,9 +119,29 @@ vm.author2 = function(e) {
 
 vm.article = function(e) {
   e.stopPropagation();
-
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
+
+  if (vm.data.tagListIndex !== 3) {
+    ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+      mediaid: vm.data.mediaid,
+    });
+  }
+  if (vm.data.tagListIndex !== 4) {
+
+    ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+      mediaid: vm.data.mediaid,
+    });
+
+    var audioEl = $('.js-tag-list').find('.c-tag-audio');
+
+    if (audioEl.length) {
+      audioEl.map(function(index, item) {
+        $(item).removeClass('c-tag-audio');
+      })
+    }
+  }
+
 
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){
@@ -198,6 +218,8 @@ vm.getTagContent = function(e) {
   
   $target = $(e.currentTarget);
 
+  vm.data.tagListIndex = $target.index();
+
   if ($target.index() !== 3) {
     ApiBridge.callNative('ClientVideoManager', 'deleteById', {
       mediaid: vm.data.mediaid,
@@ -220,7 +242,8 @@ vm.getTagContent = function(e) {
 
   //判断是否请求过内容
   if($('.c-tab-list ul').eq($target.index()).html() == ''){
-    vm.getAuthorPage($target.index());
+    ApiBridge.log($target.index());
+    vm.initAuthorTag($target.index());
   }
 
   // vm.getAuthorPage($target.index());

@@ -59,8 +59,7 @@ vm.setRightIcon = function (icon, shareinfo){
             summary: shareinfo.sharesummary ||''
           }
         };
-        ApiBridge.log(11111111111111111)
-        ApiBridge.log(result)
+        
         ApiBridge.callNative('ClientShareManager', 'shareAction', opt);
       }
       else{
@@ -140,6 +139,7 @@ vm.setImgWithBlur = function(userinfo){
     var html = '<img class="c-auth-bg" src="data:image/jpeg;base64,' + result.result+'"/>';
     if(result.result){
       $('.c-auth-bg').html(html);
+      vm.data.hasUserInfo = true;
     }
   });
 }
@@ -228,13 +228,14 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class=" ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + '<img class="c-auth-info-img c-auth-audio-img" src=' + (v['thumbnailpics'] ? v['thumbnailpics'] : './image/audio_default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
-        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
         + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
-         + '</li>';
+        + '<span class="c-media-time">' + v['playtime'] + '</span>'
+        + '</li>';
       } else if (v['mediatype'] == 2) {
 
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
@@ -260,8 +261,8 @@ vm.renderAuthorNews = function(data, index){
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
-        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
         + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';   
       } else {
@@ -276,8 +277,8 @@ vm.renderAuthorNews = function(data, index){
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' 
-        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' 
         + '</p>' 
         + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';
@@ -322,7 +323,7 @@ vm.getAuthorPage = function(index, flag){
   // var res = {
   //   message: "",
   //   result: {
-  //     isloadmore: 0,
+  //     isloadmore: 1,
   //     lastid: "2017-01-05 15:42:09023|89843",
   //     newslist: [{
   //       content: "",
@@ -568,6 +569,7 @@ vm.getAuthorPage = function(index, flag){
   //   returncode: 0
 
   // }
+  // vm.data.isloadmore = res.result.isloadmore || '';
   // vm.renderAuthorPage(res.result, index);
   // vm.setImgWithBlur(res.result.userinfo);
   // vm.navWatch(res.result.userinfo);
@@ -575,14 +577,15 @@ vm.getAuthorPage = function(index, flag){
   
   //mock
   var pid = flag ? vm.data.lastpageid : '';
-
+  var dt = (vm.data.userId != vm.getParam('userId')) ? 2: 3;
+  
   vm.ajax({
     url: vm.data.url + '/npnewListforvuser.json',
     type: "GET",
     data: {
       pm: vm.mobileType() == 'iOS' ? 1 : 2,
-      dt: 2,
-      vuserid: vm.getParam('userId'),
+      dt: dt, //主客页区分  主页3，客页2
+      vuserid: vm.getParam('userId') || '',
       au: vm.data.userAuth,
       pid: pid,
       pagesize: 20,
@@ -597,13 +600,16 @@ vm.getAuthorPage = function(index, flag){
 
       if(res.result.userinfo){
         vm.renderAuthorPage(res.result, index);
-        vm.setImgWithBlur(res.result.userinfo);
-
+        
         var icon1 = {
           icon1: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
           icon1_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
         };
 
+        //设置一次
+        if(!vm.data.hasUserInfo){
+          vm.setImgWithBlur(res.result.userinfo);
+        }
         //注册一次
         if(vm.data.isScrollAuthor){
           vm.navWatch(res.result);
@@ -624,6 +630,7 @@ vm.getAuthorPage = function(index, flag){
 vm.initAuthorTag = function(index){
 
   index = index || 0;
+  vm.data.tagListIndex = index || 0;
 
   //to do 本地存储点赞
   vm.data.likes = [];
@@ -656,7 +663,7 @@ vm.initAuthorTag = function(index){
           })
         }
       }
-      if(vm.data.isloadmore){
+      if(!!vm.data.isloadmore){
        vm.getAuthorPage(index, 'up');
       }
     }
@@ -688,7 +695,6 @@ vm.viewBounces = function(){
 vm.navWatch = function(data) {
   var userinfo = $.extend({},data.userinfo);
   console.log(userinfo);
-  console.log(11111111111111111)
   
   vm.setNav({}, data);
   
@@ -742,18 +748,6 @@ vm.navWatch = function(data) {
 }
 
 if (/author/.test(window.location.href)) {
-  // var opt = {
-  //   share: {
-  //     url: '',
-  //     title: '',
-  //     logo: '',
-  //     icon: '',
-  //     summary: ''
-  //   }
-  // };
-  
-  // ApiBridge.callNative('ClientShareManager', 'shareAction', opt);
-  // setNavBackIcon
   vm.data.isLoad = true;
   ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
   // mock

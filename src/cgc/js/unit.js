@@ -263,7 +263,7 @@ var vm = {
           },
           dataType: "json",
           success: function(res, xml) {
-
+            $target.attr('hasZan', 'true');
           },
           fail: function(status) {}
         });
@@ -274,10 +274,13 @@ var vm = {
   likeZan: function(e) {
     e.stopPropagation();
     $target = $(e.currentTarget);
-
+    if(!!$target.attr('hasZan')){
+      return;
+    }
     if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
       return;
     };
+
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       if (!Number(user.userId)) {
         ApiBridge.callNative('ClientViewManager', 'login', {}, function(res) {

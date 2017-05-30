@@ -473,9 +473,9 @@ li{
     }
   }
   .c-auth-img{
-    width:2rem;
-    height:2rem;
-    margin-right:.6rem;
+    width:30px;
+    height:30px;
+    margin-right:10px;
     border-radius:100px;
     vertical-align:-.6rem;
     background: url(../image/pic_head.png) no-repeat;
@@ -519,7 +519,7 @@ li{
   .c-auth-title{
     display:inline-block;
     white-space: nowrap;
-    width: 60%;
+    max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -587,7 +587,7 @@ li{
     display:inline-block;
     width:1rem;
     height:1rem;
-    margin-left:2.5rem;
+    margin-left: 30px;
     > span{
       color:#4C92FB;
       font-size:.4rem;
