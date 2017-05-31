@@ -8,7 +8,7 @@ vm.initTag = function() {
   vm.data.likes = [];
   // mock
 
-  //vm.tagList(vm.data.tagListIndex);
+  // vm.tagList(vm.data.tagListIndex);
   // mock
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
 
@@ -27,13 +27,13 @@ vm.initTag = function() {
         mediaid: vm.data.mediaid,
       });
 
-      var audioEl = $('.js-tag-list').find('.c-tag-audio');
+      // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-      if (audioEl.length) {
-        audioEl.map(function(index, item) {
-          $(item).removeClass('c-tag-audio');
-        })
-      }
+      // if (audioEl.length) {
+      //   audioEl.map(function(index, item) {
+      //     $(item).removeClass('c-tag-audio');
+      //   })
+      // }
     }
 
     //记录scrollTop
@@ -44,38 +44,71 @@ vm.initTag = function() {
     if ($('.js-tag-list-ul ul').eq(vm.data.tagListIndex).html() == '') {
       vm.tagList(vm.data.tagListIndex, 'set', 1);
     }
+
+    vm.upScroll(function() {
+      if (!!vm.data.isLoad) {
+        vm.data.isLoad = false;
+        // $('.c-loading').show();
+
+        if (vm.data.tagListIndex == 3) {
+          ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+        if (vm.data.tagListIndex == 4) {
+
+          ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+
+          // var audioEl = $('.js-tag-list').find('.c-tag-audio');
+
+          // if (audioEl.length) {
+          //   audioEl.map(function(index, item) {
+          //     $(item).removeClass('c-tag-audio');
+          //   })
+          // }
+        }
+        if (vm.data.isloadmore) {
+          $('.c-loading').show();
+          vm.tagList(vm.data.tagListIndex, 'up');
+        }
+      }
+    });
+
   })
 
   //上拉翻页加载
-  vm.upScroll(function() {
-    if (!!vm.data.isLoad) {
-      vm.data.isLoad = false;
-      $('.c-loading').show();
+  // vm.upScroll(function() {
+  //   if (!!vm.data.isLoad) {
+  //     vm.data.isLoad = false;
+  //     // $('.c-loading').show();
 
-      if (vm.data.tagListIndex == 3) {
-        ApiBridge.callNative('ClientVideoManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
-      }
-      if (vm.data.tagListIndex == 4) {
+  //     if (vm.data.tagListIndex == 3) {
+  //       ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+  //         mediaid: vm.data.mediaid,
+  //       });
+  //     }
+  //     if (vm.data.tagListIndex == 4) {
 
-        ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-          mediaid: vm.data.mediaid,
-        });
+  //       ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+  //         mediaid: vm.data.mediaid,
+  //       });
 
-        var audioEl = $('.js-tag-list').find('.c-tag-audio');
+  //       var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-        if (audioEl.length) {
-          audioEl.map(function(index, item) {
-            $(item).removeClass('c-tag-audio');
-          })
-        }
-      }
-      if (vm.data.isloadmore) {
-        vm.tagList(vm.data.tagListIndex, 'up');
-      }
-    }
-  });
+  //       if (audioEl.length) {
+  //         audioEl.map(function(index, item) {
+  //           $(item).removeClass('c-tag-audio');
+  //         })
+  //       }
+  //     }
+  //     if (vm.data.isloadmore) {
+  //       $('.c-loading').show();
+  //       vm.tagList(vm.data.tagListIndex, 'up');
+  //     }
+  //   }
+  // });
 
   //监听销毁视频
   vm.deleteMediaWatch();
@@ -100,13 +133,13 @@ vm.initTag = function() {
           mediaid: vm.data.mediaid,
         });
 
-        var audioEl = $('.js-tag-list').find('.c-tag-audio');
+        // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-        if (audioEl.length) {
-          audioEl.map(function(index, item) {
-            $(item).removeClass('c-tag-audio');
-          })
-        }
+        // if (audioEl.length) {
+        //   audioEl.map(function(index, item) {
+        //     $(item).removeClass('c-tag-audio');
+        //   })
+        // }
       }
     },
     onRefresh: function() {
@@ -129,9 +162,9 @@ vm.initTag = function() {
 //标签列表
 vm.tagList = function(index, flag, num) {
   // mock
-  //var res = {
-  //"message": "",
-  //"result": {
+  // var res = {
+  // "message": "",
+  // "result": {
   //  "isloadmore": true,
   //  "lastid": "2017-05-15 15:34:18740|101018",
   //  "newslist": [{
@@ -252,12 +285,12 @@ vm.tagList = function(index, flag, num) {
 
   //  }]
 
-  //},
-  //"returncode": 0
+  // },
+  // "returncode": 0
 
-  //}
-  //vm.renderTagList(res.result.newslist, index);
-  //return;
+  // }
+  // vm.renderTagList(res.result.newslist, index);
+  // return;
 
   //mock
   var lastpageid = vm.data.lastpageid || '';
@@ -294,6 +327,7 @@ vm.tagList = function(index, flag, num) {
         if (!!res.result.newslist.length) {
           vm.renderTagList(res.result.newslist, index, num);
         } else {
+          $('.c-loading').hide();
           $('.c-empty').show();
         }
       },
@@ -313,9 +347,9 @@ vm.renderTagList = function(data, index, num) {
   index = index || 0;
   if (!!data.length) {
     // mock
-    //var html = '';
+    // var html = '';
 
-    //data.map(function(v) {
+    // data.map(function(v) {
     //  //判断赞
     //  if (vm.getLs('tagLiked') && vm.getLs('tagLiked').length) {
     //    vm.getLs('tagLiked').map(function(j) {
@@ -345,18 +379,18 @@ vm.renderTagList = function(data, index, num) {
 
     //    html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userid=' + v['userid'] + ' >' + '<a class="c-att-t" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + ' >' + (v['isattention'] == 1 ? '已关注' : '+ 关注') + '</a>' + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '<img class="c-auth-info-img" src=' + v['thumbnailpics'] + ' alt=""></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon  ' + (v['zaned'] == 1 ? 'on-no-inmation' : '') + '"></span><span class="c-num">' + (v['praisenum'] || 0) + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount'] || 0) + '</span></span>' + '</p>' + '<span class="c-looked">' + v['pv'] + ' 浏览</span>' + '</li>';
     //  }
-    //})
+    // })
 
-    //if (!vm.data.isLoad) {
+    // if (!vm.data.isLoad) {
     //  $('.c-tab-bd ul').eq(index).append(html);
-    //} else {
+    // } else {
     //  $('.c-tab-bd ul').eq(index).html(html);
-    //}
+    // }
 
-    //$('.c-loading').hide();
-    //vm.data.isLoad = true;
+    // $('.c-loading').hide();
+    // vm.data.isLoad = true;
 
-    //$('.c-tab-bd ul li').each(function(v, i) {
+    // $('.c-tab-bd ul li').each(function(v, i) {
     //    if ($(i).attr('mediatype') == 4) {
     //      return
     //    };
@@ -367,7 +401,7 @@ vm.renderTagList = function(data, index, num) {
     //  })
     //  // debugger
     //  // var audio = $('.js-tag-list').find('.c-tag-video').addClass('c-tag-audio');
-    //return;
+    // return;
     // mock
 
     //本地关注与线上数据判断已关注过滤
@@ -521,7 +555,7 @@ vm.renderTagList = function(data, index, num) {
 if (/tag-name/.test(window.location.href)) {
   //mock
 
-  //vm.initTag()
+  // vm.initTag()
   //mock
   vm.data.isLoad = true;
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {

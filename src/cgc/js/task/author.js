@@ -43,7 +43,8 @@ vm.deleteNew = function(e) {
 }
 
 vm.setRightIcon = function (icon, shareinfo){
-
+  var shareinfo = vm.data.authInfo.shareinfo;
+  
   if(vm.data.userId != vm.getParam('userId')){
     ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
       righticons: icon
@@ -69,7 +70,7 @@ vm.setRightIcon = function (icon, shareinfo){
         var follow = {
           icon1: true
         };
-        vm.followToggle(userId, type, follow);
+        vm.followToggle(userId, type, follow, $('.c-auth-follow'));
       }
     })
   }
@@ -228,7 +229,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class=" ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + '<img class="c-auth-info-img c-auth-audio-img" src=' + (v['thumbnailpics'] ? v['thumbnailpics'] : './image/audio_default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
@@ -271,7 +272,7 @@ vm.renderAuthorNews = function(data, index){
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
-        + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'short' : 'long') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
+        + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'long' : 'short') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics'] : './image/default.jpg') + ' alt="">' 
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
@@ -291,10 +292,7 @@ vm.renderAuthorNews = function(data, index){
     } else {
       $('.c-tab-bd ul').eq(index).html(html);
     }
-
-    console.log('html', html);
-
-    $('.c-tab-bd ul li').each(function(v, i) {
+    $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
       if ($(i).attr('mediatype') == 4) {
         return
       };
@@ -303,6 +301,16 @@ vm.renderAuthorNews = function(data, index){
         $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
       }
     })
+    // $('.c-tab-bd ul li').each(function(v, i) {
+    //   if ($(i).attr('mediatype') == 4) {
+    //     return
+    //   };
+    //   debugger
+    //   $(i).find('.c-auth-info-img').height($(i).find('.c-auth-info-img').width() * 0.5625);
+    //   if ($(i).attr('mediatype') == 2) {
+    //     $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+    //   }
+    // })
 
     $('.c-loading').hide();
     // if(num == 1){
@@ -326,6 +334,34 @@ vm.getAuthorPage = function(index, flag){
   //     isloadmore: 1,
   //     lastid: "2017-01-05 15:42:09023|89843",
   //     newslist: [{
+  //       "content": "",
+  //       "description": "",
+  //       "identifiertype": "",
+  //       "imageheight": 0,
+  //       "imagewidth": 0,
+  //       "indexdetail": [],
+  //       "isattention": 0,
+  //       "iscandelete": 0,
+  //       "mediaid": "04D323D5A73A6932",
+  //       "mediatype": 4,
+  //       "newsid": 195275,
+  //       "pics": [],
+  //       "playtime": "02:18",
+  //       "praisenum": "",
+  //       "publishtime": "2017-05-22",
+  //       "pv": "4",
+  //       "replycount": "",
+  //       "seriesids": "",
+  //       "session_id": "90ff7d26010c4b15b03d423ab3345bc4",
+  //       "status": 0,
+  //       "statusNote": "",
+  //       "statusStr": "待审核",
+  //       "thumbnailpics": ["https://x.autoimg.cn/app/image/pnaudiodefult_small.jpg"],
+  //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！",
+  //       "userid": 0,
+  //       "username": "",
+  //       "userpic": ""
+  //     },{
   //       content: "",
   //       description: "",
   //       identifiertype: "",
@@ -578,14 +614,15 @@ vm.getAuthorPage = function(index, flag){
   //mock
   var pid = flag ? vm.data.lastpageid : '';
   var dt = (vm.data.userId != vm.getParam('userId')) ? 2: 3;
-  
+  var vuserid = !!vm.getParam('userId') ? vm.getParam('userId'): '';
+
   vm.ajax({
     url: vm.data.url + '/npnewListforvuser.json',
     type: "GET",
     data: {
       pm: vm.mobileType() == 'iOS' ? 1 : 2,
       dt: dt, //主客页区分  主页3，客页2
-      vuserid: vm.getParam('userId') || '',
+      vuserid: vuserid,
       au: vm.data.userAuth,
       pid: pid,
       pagesize: 20,
@@ -655,13 +692,13 @@ vm.initAuthorTag = function(index){
           mediaid: vm.data.mediaid,
         });
 
-        var audioEl = $('.c-tab-list').find('.c-tag-audio');
+        // var audioEl = $('.c-tab-list').find('.c-tag-audio');
       
-        if(audioEl.length){
-          audioEl.map(function(index, item){
-            $(item).removeClass('c-tag-audio');
-          })
-        }
+        // if(audioEl.length){
+        //   audioEl.map(function(index, item){
+        //     $(item).removeClass('c-tag-audio');
+        //   })
+        // }
       }
       if(!!vm.data.isloadmore){
        vm.getAuthorPage(index, 'up');
@@ -693,6 +730,7 @@ vm.viewBounces = function(){
 
 //监听顶部导航
 vm.navWatch = function(data) {
+  vm.data.authInfo = $.extend({},data);
   var userinfo = $.extend({},data.userinfo);
   console.log(userinfo);
   
@@ -709,8 +747,8 @@ vm.navWatch = function(data) {
       vm.data.isIn = false;
 
       var info = {
-        imgurl: data.userinfo.userpic,
-        title: data.userinfo.name,
+        imgurl: vm.data.authInfo.userinfo.userpic,
+        title: vm.data.authInfo.userinfo.name,
         icon2: 'articleplatform_icon_share',
         icon2_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
@@ -730,7 +768,7 @@ vm.navWatch = function(data) {
       if(!vm.data.isOut){
         vm.data.isOut = true;
         
-        vm.setNav(info, data);
+        vm.setNav(info, vm.data.authInfo);
       }
     }
     else{

@@ -95,19 +95,20 @@ var vm = {
         vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
         vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
         vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
+        
         //- document.body.scrollTop;
         if ($target.attr('status') != 0 && $target.attr('status') != 1) {
           return;
         }
 
-        var targetEl = $target.find('.c-tag-video');
-        var audioEl = $('.js-tag-list').find('.c-tag-audio');
+        // var targetEl = $target.find('.c-tag-video');
+        // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-        if (audioEl.length) {
-          audioEl.map(function(index, item) {
-            $(item).removeClass('c-tag-audio');
-          })
-        }
+        // if (audioEl.length) {
+        //   audioEl.map(function(index, item) {
+        //     $(item).removeClass('c-tag-audio');
+        //   })
+        // }
 
         var postData = {
           mediaid: vm.data.mediaid,
@@ -127,7 +128,7 @@ var vm = {
         if (vm.data.mediatype == 4) {
 
           ApiBridge.callNative('ClientAudioManager', 'createById', postData);
-          $(targetEl).addClass('c-tag-audio');
+          // $(targetEl).addClass('c-tag-audio');
         }
 
       }
@@ -182,13 +183,13 @@ var vm = {
         mediaid: vm.data.mediaid,
       });
 
-      var audioEl = $('.js-tag-list').find('.c-tag-audio');
+      // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-      if (audioEl.length) {
-        audioEl.map(function(index, item) {
-          $(item).removeClass('c-tag-audio');
-        })
-      }
+      // if (audioEl.length) {
+      //   audioEl.map(function(index, item) {
+      //     $(item).removeClass('c-tag-audio');
+      //   })
+      // }
     }
   },
 

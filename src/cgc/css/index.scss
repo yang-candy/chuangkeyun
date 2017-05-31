@@ -369,7 +369,7 @@ li{
       float: right;
       margin-right:.9rem;
       border-radius:100px;
-      border:3px solid #eee;
+      border:2px solid #eee;
       &:after{
         position:absolute;
         top:0;
@@ -379,7 +379,7 @@ li{
         content:'';
         z-index:97;
         background:#1b1b1b;
-        opacity:0.3;
+        opacity:0;
         border-radius:100px;
       }
     }

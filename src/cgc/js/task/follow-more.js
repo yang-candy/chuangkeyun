@@ -5,24 +5,24 @@ vm.getFollowMoreBar = function() {
   vm.data.lastId = [];
   // mock
 
-  //var res = {
-  //   "message": "",
-  //   "result": [{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{                  
-  //             "name": "自媒体",
-  //                 "sortnum": 2,
-  //                     "usercount": 16
+  var res = {
+    "message": "",
+    "result": [{
+          "id": 2,
+              "name": "全部",
+                  "sortnum": 1,
+                      "usercount": 59
+    },{                  
+              "name": "自媒体",
+                  "sortnum": 2,
+                      "usercount": 16
 
-  //   }],
-  //     "returncode": 0
+    }],
+      "returncode": 0
 
-  //}
-  //     vm.renderFollowMoreBar(res.result);
-  //return;
+  }
+      vm.renderFollowMoreBar(res.result);
+  return;
 
   //// mock
 
@@ -85,108 +85,108 @@ vm.getFollowMoreList = function(id, index) {
   index = index || 0;
 
   //mock
-  //var res = {
-  // "message": "",
-  // "result": {
-  //   "lastId": "100000000|2017/4/27 14:00:05|18759205",
-  //   "loadMore": true,
-  //   "users": [{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },  {
-  //     "fansnum": "",
-  //     "isattention": 0,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 18759205,
-  //     "username": "卡尔本次",
-  //     "userpic": ""
+  var res = {
+  "message": "",
+  "result": {
+    "lastId": "100000000|2017/4/27 14:00:05|18759205",
+    "loadMore": true,
+    "users": [{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "createtime": "2017-04-24 04:41:27",
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },{
+      "fansnum": "",
+      "isattention": 1,
+      "title": "",
+      "userdesc": "",
+      "userid": 6098853,
+      "username": "无限试驾",
+      "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+    },  {
+      "fansnum": "",
+      "isattention": 0,
+      "title": "",
+      "userdesc": "",
+      "userid": 18759205,
+      "username": "卡尔本次",
+      "userpic": ""
 
-  //   }]
+    }]
 
-  // },
-  // "returncode": 0
-  //}
-  //vm.data.loadMore = res.result.loadMore;
-  //index = index || 0;
-  //vm.data.lastId[index] = res.result.lastId;
-  //vm.renderFollowMoreList(res.result.users, index);
-  //return;
+  },
+  "returncode": 0
+  }
+  vm.data.loadMore = res.result.loadMore;
+  index = index || 0;
+  vm.data.lastId[index] = res.result.lastId;
+  vm.renderFollowMoreList(res.result.users, index);
+  return;
 
   // mock
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
@@ -219,53 +219,53 @@ vm.renderFollowMoreList = function(data, index) {
   index = index || 0;
 
   // mock
-  // var html = '';
+  var html = '';
 
 
-  //     try{
-  //           data.map(function(v) {
-  //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
-  //           })
-  //           if (!vm.data.isLoad) {
-  //             $('.js-follow-more-list ul').eq(index).append(html);
-  //           } else {
-  //             $('.js-follow-more-list ul').eq(index).html(html);
-  //           }
+      try{
+            data.map(function(v) {
+              html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+            })
+            if (!vm.data.isLoad) {
+              $('.js-follow-more-list ul').eq(index).append(html);
+            } else {
+              $('.js-follow-more-list ul').eq(index).html(html);
+            }
 
-  //           $('.c-loading').hide();
-  //           vm.data.isLoad = true;
+            $('.c-loading').hide();
+            vm.data.isLoad = true;
 
-  //           if(!vm.data.registLoad){
-  //             return;
-  //           }
-  //           $('.js-follow-v-list').on('scroll',function(e){
-  //             vm.data.registLoad = false;
+            if(!vm.data.registLoad){
+              return;
+            }
+            $('.js-follow-v-list').on('scroll',function(e){
+              vm.data.registLoad = false;
 
-  //             var $target = e.currentTarget;
+              var $target = e.currentTarget;
 
-  //             var $scrollHeight = $($target)[0].scrollHeight;
-  //             var $height = $($target).height();
-  //             var $scrollTop = $target.scrollTop; 
+              var $scrollHeight = $($target)[0].scrollHeight;
+              var $height = $($target).height();
+              var $scrollTop = $target.scrollTop; 
 
-  //             if($height + $scrollTop >= $scrollHeight){
-  //               if(!!vm.data.isLoad){
-  //               vm.data.isLoad = false;
-  //                 $('.c-loading').show();
-  //                 if(!!vm.data.loadMore){
-  //                   vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
-  //                 }else{
-  //                   $('.c-loading').hide();
-  //                 }
-  //               }
-  //             }
-  //           })
+              if($height + $scrollTop >= $scrollHeight){
+                if(!!vm.data.isLoad){
+                vm.data.isLoad = false;
+                  $('.c-loading').show();
+                  if(!!vm.data.loadMore){
+                    vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
+                  }else{
+                    $('.c-loading').hide();
+                  }
+                }
+              }
+            })
 
-  //         }catch(e){
-  //         }
+          }catch(e){
+          }
 
-  //         return;
+          return;
 
-  //         mock
+  // mock
 
   //本地关注与线上数据判断已关注过滤
   //登录未登录 
