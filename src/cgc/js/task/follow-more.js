@@ -207,6 +207,9 @@ vm.getFollowMoreList = function(id, index) {
 
         vm.data.lastId[index] = res.result.lastId;
         vm.renderFollowMoreList(res.result.users, index);
+        $('.c-tab-empty').hide();
+      }else{
+        $('.c-tab-empty').show();
       }
     },
     fail: function(status) {}
