@@ -35,6 +35,7 @@ vm.deleteNew = function(e) {
         res = JSON.parse(res);
         if (res.result == 1) {
           $parent.hide();
+
         }
       },
       fail: function(status) {}
@@ -46,6 +47,20 @@ vm.setRightIcon = function (icon, shareinfo){
   var shareinfo = vm.data.authInfo.shareinfo;
   
   if(vm.data.userId != vm.getParam('userId')){
+    var $scrollTop = document.body.scrollTop;
+    var $titleHeight = $('.c-auth-title').height();
+
+    var $offsetTop = $('.c-auth-title').offset().top;
+    
+    if(!shareinfo && $scrollTop < ($offsetTop + $titleHeight)){
+      vm.setRightIcon({
+        icon1: '',
+        icon1_p: ''
+      });
+
+      return;
+    }
+
     ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
       righticons: icon
     }, function(result) {
@@ -68,6 +83,9 @@ vm.setRightIcon = function (icon, shareinfo){
         var userId = vm.getParam('userId');
 
         var follow = {
+          userid: userId,
+          username: vm.data.authInfo.userinfo.name,
+          imgurl: vm.data.authInfo.userinfo.userpic,
           icon1: true
         };
         vm.followToggle(userId, type, follow, $('.c-auth-follow'));
@@ -129,7 +147,7 @@ vm.setNav = function(info, data){
 //高斯模糊设置
 vm.setImgWithBlur = function(userinfo){
   var opt = {
-    url: userinfo.userpic,
+    url: vm.data.authInfo.userinfo.userpic,
     set: {
       radius: 32,
       saturationdeltafactor: 1.8
@@ -149,32 +167,61 @@ vm.setImgWithBlur = function(userinfo){
 vm.renderAuthorInfo = function(data, index){
   index = index || 0;
 
-  var userinfo = data.userinfo;
+  
 
   vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
-  //主页展示
-  var html = '<div class="c-auth-native"></div>'
-      + '<div class="c-auth-bg"></div>'
-      + '<div class="c-auth-info">'
-      +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
-      + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
-      + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
-      + '<p class="c-auth-tips">'
-      + '<span class="c-auth-fans">' + userinfo['fanscount'] + '粉丝</span>' 
-      + '<span class="c-auth-work">' + userinfo['publishcount'] + '作品</span>' 
-      + '</p></div>';
+  if(!vm.data.hasUserInfo){
+    vm.data.authInfo = $.extend({},data);
+    vm.setImgWithBlur(vm.data.authInfo.userinfo);
 
-  if(!vm.data.isAuthor){
-    //客页
-    html += '<p class="c-auth-f">'
-      + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
-      + '</p>';
+    var userinfo = vm.data.authInfo.userinfo;
+    //主页展示
+    var html = '<div class="c-auth-native"></div>'
+        + '<div class="c-auth-bg"></div>'
+        + '<div class="c-auth-info">'
+        +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
+        + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
+        + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
+        + '<p class="c-auth-tips">'
+        + '<span class="c-auth-fans">' + userinfo['fanscount'] + '粉丝</span>' 
+        + '<span class="c-auth-work">' + userinfo['publishcount'] + '作品</span>' 
+        + '</p></div>';
+
+    if(!vm.data.isAuthor){
+      //客页
+      html += '<p class="c-auth-f">'
+        + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
+        + '</p>';
+    }
+
+    $('.c-auth-top').html(html);
+    vm.data.hasUserInfo = true;
+    document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   }
 
-  $('.c-auth-top').html(html);
+  // //主页展示
+  // var html = '<div class="c-auth-native"></div>'
+  //     + '<div class="c-auth-bg"></div>'
+  //     + '<div class="c-auth-info">'
+  //     +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
+  //     + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
+  //     + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
+  //     + '<p class="c-auth-tips">'
+  //     + '<span class="c-auth-fans">' + userinfo['fanscount'] + '粉丝</span>' 
+  //     + '<span class="c-auth-work">' + userinfo['publishcount'] + '作品</span>' 
+  //     + '</p></div>';
 
-  document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
+  // if(!vm.data.isAuthor){
+  //   //客页
+  //   html += '<p class="c-auth-f">'
+  //     + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
+  //     + '</p>';
+  // }
+
+  // $('.c-auth-top').html(html);
+
+  // document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   vm.renderAuthorNews(data, index);
 }
 
@@ -635,6 +682,8 @@ vm.getAuthorPage = function(index, flag){
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
 
+      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+
       if(res.result.userinfo){
         vm.renderAuthorPage(res.result, index);
         
@@ -644,9 +693,10 @@ vm.getAuthorPage = function(index, flag){
         };
 
         //设置一次
-        if(!vm.data.hasUserInfo){
-          vm.setImgWithBlur(res.result.userinfo);
-        }
+        // if(!vm.data.hasUserInfo){
+        //   vm.data.authInfo = $.extend({},res.result);
+        //   vm.setImgWithBlur(res.result.userinfo);
+        // }
         //注册一次
         if(vm.data.isScrollAuthor){
           vm.navWatch(res.result);
@@ -730,11 +780,9 @@ vm.viewBounces = function(){
 
 //监听顶部导航
 vm.navWatch = function(data) {
-  vm.data.authInfo = $.extend({},data);
-  var userinfo = $.extend({},data.userinfo);
-  console.log(userinfo);
+  // vm.data.authInfo = $.extend({},data);
   
-  vm.setNav({}, data);
+  vm.setNav({}, vm.data.authInfo);
   
   window.addEventListener('scroll', function() {
 
@@ -779,7 +827,7 @@ vm.navWatch = function(data) {
       vm.data.isOut = false;
       if(!vm.data.isIn){
         vm.data.isIn = true;
-        vm.setNav({}, data);
+        vm.setNav({}, vm.data.authInfo);
       }
     }
   });
@@ -787,7 +835,6 @@ vm.navWatch = function(data) {
 
 if (/author/.test(window.location.href)) {
   vm.data.isLoad = true;
-  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
   // mock
   // vm.initAuthorTag();
   //mock 

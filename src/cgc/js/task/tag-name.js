@@ -12,16 +12,16 @@ vm.initTag = function() {
   // mock
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
 
-    $('.c-empty').hide();
+    $('.c-empty').hide()
 
     vm.data.tagListIndex = Number(index.index);
 
-    if (vm.data.tagListIndex !== 3) {
+    if (vm.data.tagListIndex !== 3 || vm.data.tagListIndex !== 0) {
       ApiBridge.callNative('ClientVideoManager', 'deleteById', {
         mediaid: vm.data.mediaid,
       });
     }
-    if (vm.data.tagListIndex !== 4) {
+    if (vm.data.tagListIndex !== 4 || vm.data.tagListIndex !== 0) {
 
       ApiBridge.callNative('ClientAudioManager', 'deleteById', {
         mediaid: vm.data.mediaid,
@@ -50,12 +50,12 @@ vm.initTag = function() {
         vm.data.isLoad = false;
         // $('.c-loading').show();
 
-        if (vm.data.tagListIndex == 3) {
+        if (vm.data.tagListIndex == 3 || vm.data.tagListIndex == 0) {
           ApiBridge.callNative('ClientVideoManager', 'deleteById', {
             mediaid: vm.data.mediaid,
           });
         }
-        if (vm.data.tagListIndex == 4) {
+        if (vm.data.tagListIndex == 4 || vm.data.tagListIndex == 0) {
 
           ApiBridge.callNative('ClientAudioManager', 'deleteById', {
             mediaid: vm.data.mediaid,
@@ -70,7 +70,7 @@ vm.initTag = function() {
           // }
         }
         if (vm.data.isloadmore) {
-          $('.c-loading').show();
+          // $('.c-loading').show();
           vm.tagList(vm.data.tagListIndex, 'up');
         }
       }
@@ -122,12 +122,12 @@ vm.initTag = function() {
     beforePull: function() {
       console.log('beforePull')
 
-      if (vm.data.tagListIndex == 3) {
+      if (vm.data.tagListIndex == 3 || vm.data.tagListIndex == 0) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
-      if (vm.data.tagListIndex == 4) {
+      if (vm.data.tagListIndex == 4 || vm.data.tagListIndex == 0) {
 
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
@@ -299,7 +299,7 @@ vm.tagList = function(index, flag, num) {
   if (flag == 'up') {
     pid = lastpageid;
   }
-
+  $('.c-loading').show();
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
 
     //未登录 

@@ -151,6 +151,12 @@ var vm = {
               mediaid: vm.data.mediaid,
             });
           }
+
+          // if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+          //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+          //     mediaid: vm.data.mediaid,
+          //   });
+          // }
           // if (vm.data.mediatype == 4) {
 
           //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
@@ -223,6 +229,8 @@ var vm = {
   },
 
   zanHandler: function($target) {
+    $target.attr('hasZan', 'true');
+    
     var num = Number($target.find('.c-num').html());
     num++;
     $target.find('.c-num').html(num);
@@ -266,7 +274,9 @@ var vm = {
           success: function(res, xml) {
             $target.attr('hasZan', 'true');
           },
-          fail: function(status) {}
+          fail: function(status) {
+            $target.attr('hasZan', 'false');
+          }
         });
       })
       
@@ -350,6 +360,8 @@ var vm = {
             console.log(target);
             console.log(222222)
             if (!!res.result) {
+              ApiBridge.log(info)
+              ApiBridge.log('infoApiBridge.log(info)')
               if((!!info.icon1) || (/author/.test(window.location.href))){
                 console.log(111111111);
                 var icon1 = {
@@ -396,6 +408,18 @@ var vm = {
         };
         ApiBridge.callNative('ClientDataManager', $url, post, function(result) {
           if (!!result.result) {
+            if((!!info.icon1) || (/author/.test(window.location.href))){
+              console.log(111111111);
+              var icon1 = {
+                icon1: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                icon1_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
+              };
+
+              vm.setRightIcon(icon1);
+
+              target = $('.c-auth-follow');
+            }
+
             if (!type) {
               target.addClass('on');
               target.html('已关注')
@@ -684,7 +708,6 @@ var vm = {
   resizeImg: function(img) {
     $(this).height($(img).width() * 0.5625);
   }
-
 };
 
 //本地数据页码
