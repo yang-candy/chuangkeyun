@@ -111,25 +111,31 @@ vm.author2 = function(e) {
 
   // mock
 
-    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      var pagetype = (user.userId == $curTarget.attr('userid')) ? 5 : 7;
-      vm.toAuthor(pagetype, $curTarget.attr('userid'));
-    })
+  ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+    var pagetype = (user.userId == $curTarget.attr('userid')) ? 5 : 7;
+    vm.toAuthor(pagetype, $curTarget.attr('userid'));
+  })
 }
 
 vm.article = function(e) {
   e.stopPropagation();
-
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
+
+  if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+
+    ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+      mediaid: vm.data.mediaid,
+    });
+  }
 
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){
       return ;
     }
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-      var pagetype = (user.userId == $($followTarget).parent('li').attr('userid')) ? 5 : 7;
-      vm.toAuthor(pagetype, $($followTarget).parent('li').attr('userid'));
+      var pagetype = (user.userId == $($curTarget).attr('userid')) ? 5 : 7;
+      vm.toAuthor(pagetype, $($curTarget).attr('userid'));
     })
     return;
   }
@@ -194,33 +200,37 @@ vm.getTagContent = function(e) {
   e.stopPropagation();
 
   document.body.scrollTop = 0;
-  vm.data.isLoad = true;
+  $('.c-tab-empty').hide();
+  // vm.data.isLoad = true;
   
   $target = $(e.currentTarget);
 
-  if ($target.index() !== 3) {
+  vm.data.tagListIndex = $target.index();
+
+  if ($target.index() !== 3 || $target.index() !== 0) {
     ApiBridge.callNative('ClientVideoManager', 'deleteById', {
       mediaid: vm.data.mediaid,
     });
   }
-  if ($target.index() !== 4) {
+  if ($target.index() !== 4 || $target.index() !== 0) {
 
     ApiBridge.callNative('ClientAudioManager', 'deleteById', {
       mediaid: vm.data.mediaid,
     });
 
-    var audioEl = $('.c-tab-list').find('.c-tag-audio');
+    // var audioEl = $('.c-tab-list').find('.c-tag-audio');
   
-    if(audioEl.length){
-      audioEl.map(function(index, item){
-        $(item).removeClass('c-tag-audio');
-      })
-    }
+    // if(audioEl.length){
+    //   audioEl.map(function(index, item){
+    //     $(item).removeClass('c-tag-audio');
+    //   })
+    // }
   }
 
   //判断是否请求过内容
-  if($('.c-tab-list ul').eq($target.index()).html() == ''){
-    vm.getAuthorPage($target.index());
+  if($('.c-tab-bd ul').eq($target.index()).html() == ''){
+    ApiBridge.log($target.index());
+    vm.initAuthorTag($target.index());
   }
 
   // vm.getAuthorPage($target.index());

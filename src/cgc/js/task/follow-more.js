@@ -5,7 +5,7 @@ vm.getFollowMoreBar = function() {
   vm.data.lastId = [];
   // mock
 
-  //var res = {
+  // var res = {
   //   "message": "",
   //   "result": [{
   //         "id": 2,
@@ -20,9 +20,9 @@ vm.getFollowMoreBar = function() {
   //   }],
   //     "returncode": 0
 
-  //}
+  // }
   //     vm.renderFollowMoreBar(res.result);
-  //return;
+  // return;
 
   //// mock
 
@@ -85,7 +85,7 @@ vm.getFollowMoreList = function(id, index) {
   index = index || 0;
 
   //mock
-  //var res = {
+  // var res = {
   // "message": "",
   // "result": {
   //   "lastId": "100000000|2017/4/27 14:00:05|18759205",
@@ -181,12 +181,12 @@ vm.getFollowMoreList = function(id, index) {
 
   // },
   // "returncode": 0
-  //}
-  //vm.data.loadMore = res.result.loadMore;
-  //index = index || 0;
-  //vm.data.lastId[index] = res.result.lastId;
-  //vm.renderFollowMoreList(res.result.users, index);
-  //return;
+  // }
+  // vm.data.loadMore = res.result.loadMore;
+  // index = index || 0;
+  // vm.data.lastId[index] = res.result.lastId;
+  // vm.renderFollowMoreList(res.result.users, index);
+  // return;
 
   // mock
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
@@ -265,7 +265,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //         return;
 
-  //         mock
+  // mock
 
   //本地关注与线上数据判断已关注过滤
   //登录未登录 
@@ -289,7 +289,7 @@ vm.renderFollowMoreList = function(data, index) {
           })
         }
         data.map(function(v) {
-          html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         });
 
         if (!vm.data.isLoad) {
@@ -343,7 +343,7 @@ vm.renderFollowMoreList = function(data, index) {
     } else {
       try {
         data.map(function(v) {
-          html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         })
         if (!vm.data.isLoad) {
           $('.js-follow-more-list ul').eq(index).append(html);

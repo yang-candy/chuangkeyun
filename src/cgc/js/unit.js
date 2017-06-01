@@ -95,19 +95,20 @@ var vm = {
         vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
         vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
         vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
+        
         //- document.body.scrollTop;
         if ($target.attr('status') != 0 && $target.attr('status') != 1) {
           return;
         }
 
-        var targetEl = $target.find('.c-tag-video');
-        var audioEl = $('.js-tag-list').find('.c-tag-audio');
+        // var targetEl = $target.find('.c-tag-video');
+        // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-        if (audioEl.length) {
-          audioEl.map(function(index, item) {
-            $(item).removeClass('c-tag-audio');
-          })
-        }
+        // if (audioEl.length) {
+        //   audioEl.map(function(index, item) {
+        //     $(item).removeClass('c-tag-audio');
+        //   })
+        // }
 
         var postData = {
           mediaid: vm.data.mediaid,
@@ -127,7 +128,7 @@ var vm = {
         if (vm.data.mediatype == 4) {
 
           ApiBridge.callNative('ClientAudioManager', 'createById', postData);
-          $(targetEl).addClass('c-tag-audio');
+          // $(targetEl).addClass('c-tag-audio');
         }
 
       }
@@ -150,6 +151,12 @@ var vm = {
               mediaid: vm.data.mediaid,
             });
           }
+
+          // if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+          //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+          //     mediaid: vm.data.mediaid,
+          //   });
+          // }
           // if (vm.data.mediatype == 4) {
 
           //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
@@ -182,13 +189,13 @@ var vm = {
         mediaid: vm.data.mediaid,
       });
 
-      var audioEl = $('.js-tag-list').find('.c-tag-audio');
+      // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-      if (audioEl.length) {
-        audioEl.map(function(index, item) {
-          $(item).removeClass('c-tag-audio');
-        })
-      }
+      // if (audioEl.length) {
+      //   audioEl.map(function(index, item) {
+      //     $(item).removeClass('c-tag-audio');
+      //   })
+      // }
     }
   },
 
@@ -222,6 +229,8 @@ var vm = {
   },
 
   zanHandler: function($target) {
+    $target.attr('hasZan', 'true');
+    
     var num = Number($target.find('.c-num').html());
     num++;
     $target.find('.c-num').html(num);
@@ -263,9 +272,11 @@ var vm = {
           },
           dataType: "json",
           success: function(res, xml) {
-
+            $target.attr('hasZan', 'true');
           },
-          fail: function(status) {}
+          fail: function(status) {
+            $target.attr('hasZan', 'false');
+          }
         });
       })
       
@@ -274,10 +285,13 @@ var vm = {
   likeZan: function(e) {
     e.stopPropagation();
     $target = $(e.currentTarget);
-
+    if(!!$target.attr('hasZan')){
+      return;
+    }
     if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
       return;
     };
+
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       if (!Number(user.userId)) {
         ApiBridge.callNative('ClientViewManager', 'login', {}, function(res) {
@@ -346,6 +360,8 @@ var vm = {
             console.log(target);
             console.log(222222)
             if (!!res.result) {
+              ApiBridge.log(info)
+              ApiBridge.log('infoApiBridge.log(info)')
               if((!!info.icon1) || (/author/.test(window.location.href))){
                 console.log(111111111);
                 var icon1 = {
@@ -392,6 +408,18 @@ var vm = {
         };
         ApiBridge.callNative('ClientDataManager', $url, post, function(result) {
           if (!!result.result) {
+            if((!!info.icon1) || (/author/.test(window.location.href))){
+              console.log(111111111);
+              var icon1 = {
+                icon1: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                icon1_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
+              };
+
+              vm.setRightIcon(icon1);
+
+              target = $('.c-auth-follow');
+            }
+
             if (!type) {
               target.addClass('on');
               target.html('已关注')
@@ -680,7 +708,6 @@ var vm = {
   resizeImg: function(img) {
     $(this).height($(img).width() * 0.5625);
   }
-
 };
 
 //本地数据页码
