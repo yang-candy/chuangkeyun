@@ -510,6 +510,10 @@ li{
     background: url(../image/default.jpg)center no-repeat;
     background-size: 100% 100%;
   }
+  .c-auth-audio-img{
+    background: url(../image/audio_default.png)center no-repeat;
+    background-size: 100% 100%;
+  }
   .c-looked{
     display:inline-block;
     margin-top:.8rem;
@@ -974,6 +978,9 @@ li{
     font-size: 12px;
     color: #333;
   }
+}
+.c-wp{
+  background: #fff;
 }
 
 .c-empty{
