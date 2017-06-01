@@ -69,7 +69,8 @@ vm.renderFollowMoreBar = function(data) {
   ApiBridge.log(html)
   ApiBridge.log(htmlUl)
   $('.js-follow-more-bar li').eq(0).addClass('on');
-
+  
+  htmlUl += '<div class="c-tab-empty"><img src="./image/pic_empty.png"><p>暂无内容</p></div>';
   $('.js-follow-more-list').html(htmlUl);
   $('.js-follow-more-list ul').eq(0).show();
 
