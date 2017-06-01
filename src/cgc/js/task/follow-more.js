@@ -69,7 +69,8 @@ vm.renderFollowMoreBar = function(data) {
   ApiBridge.log(html)
   ApiBridge.log(htmlUl)
   $('.js-follow-more-bar li').eq(0).addClass('on');
-
+  
+  htmlUl += '<div class="c-tab-empty"><img src="./image/pic_empty.png"><p>暂无内容</p></div>';
   $('.js-follow-more-list').html(htmlUl);
   $('.js-follow-more-list ul').eq(0).show();
 
@@ -207,6 +208,9 @@ vm.getFollowMoreList = function(id, index) {
 
         vm.data.lastId[index] = res.result.lastId;
         vm.renderFollowMoreList(res.result.users, index);
+        $('.c-tab-empty').hide();
+      }else{
+        $('.c-tab-empty').show();
       }
     },
     fail: function(status) {}
@@ -303,7 +307,7 @@ vm.renderFollowMoreList = function(data, index) {
         if (!vm.data.registLoad) {
           return;
         }
-        $('.js-follow-v-list').on('scroll', function(e) {
+        $('.js-follow-more-list').on('scroll', function(e) {
           vm.data.registLoad = false;
 
           var $target = e.currentTarget;
@@ -357,7 +361,7 @@ vm.renderFollowMoreList = function(data, index) {
         if (!vm.data.registLoad) {
           return;
         }
-        $('.js-follow-v-list').on('scroll', function(e) {
+        $('.js-follow-more-list').on('scroll', function(e) {
           vm.data.registLoad = false;
 
           var $target = e.currentTarget;
