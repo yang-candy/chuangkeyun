@@ -23,7 +23,7 @@ vm.deleteNew = function(e) {
   $parent.hide();
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     vm.ajax({
-      url: 'https://youchuangopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
+      url: 'https://chejiahaoopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
       type: "POST",
       data: {
         _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
@@ -705,6 +705,8 @@ vm.getAuthorPage = function(index, flag){
         if(vm.data.isScrollAuthor){
           vm.navWatch(vm.data.authInfo);
         }
+        ApiBridge.log(vm.data.isLoad)
+        ApiBridge.log('vm.data.isLoad')
         vm.data.isScrollAuthor = false;
         // vm.setRightIcon(icon1);
       }      

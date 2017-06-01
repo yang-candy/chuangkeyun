@@ -372,8 +372,8 @@ li{
     .c-tag-media{
       position:relative;
       z-index:21;
-      width: 70px;
-      height: 70px;
+      width: 4rem;
+      height: 4rem;
       float: right;
       margin-right:.9rem;
       border-radius:100px;
@@ -455,13 +455,13 @@ li{
         content:'';
         position:absolute;
         top:1rem;
-        left:1.1rem;
+        left:1rem;
         z-index:100;
         width:0;
         height:0;
-        border-top: 8px solid transparent;
-        border-left: 15px solid #fff;
-        border-bottom: 8px solid transparent;
+        border-top: 9px solid transparent;
+        border-left: 16px solid #fff;
+        border-bottom: 9px solid transparent;
       }
     }
 
@@ -539,8 +539,8 @@ li{
   .c-att-t{
     position:absolute;
     right:.8rem;
-    top:1.1rem;
-    padding:.2rem .6rem;
+    top:.9rem;
+    padding:.18rem .6rem;
     font-size:.6rem;
     color:#333;
     border:1px solid #999;

@@ -1,7 +1,7 @@
 ;
 var vm = {
   data: {
-    url: 'http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf'
+    url: 'http://chejiahao.app.autohome.com.cn/chejiahao_v1.0.0/newspf'
   },
 
   getQingInfo: function(e) {
@@ -340,9 +340,9 @@ var vm = {
       //已登录
       if (Number(user.userId)) {
         if (!type) {
-          var $url = 'https://youchuangopen.api.autohome.com.cn/OpenUserService.svc/Follow';
+          var $url = 'https://chejiahaoopen.api.autohome.com.cn/OpenUserService.svc/Follow';
         } else {
-          var $url = 'https://youchuangopen.api.autohome.com.cn/OpenUserService.svc/UnFollow';
+          var $url = 'https://chejiahaoopen.api.autohome.com.cn/OpenUserService.svc/UnFollow';
         }
         vm.ajax({
           url: $url,
