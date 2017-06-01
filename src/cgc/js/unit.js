@@ -239,7 +239,7 @@ var vm = {
     $target.append(html);
 
     //记录点赞
-    vm.data.likes.push($target.parents('li').attr('userId'));
+    vm.data.likes.push($target.parents('li').attr('userid'));
     vm.setLs('tagliked', vm.data.likes)
 
     setTimeout(function() {
