@@ -19,7 +19,7 @@ vm.bindEvent = function() {
   $('.js-tag-list').on('click', 'li', vm.article);
 
   //作者主页点击关注
-  $('.c-wp').on('click', '.c-auth-follow', vm.article);
+  $('.c-auth-top').on('click', '.c-auth-follow', vm.article);
 
   //标签列表 -->点击头像或名字跳转个人主页
   //$('.js-tag-list').on('click', '.c-media-info', vm.author2);
