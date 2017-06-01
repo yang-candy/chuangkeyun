@@ -91,7 +91,6 @@ vm.author2 = function(e) {
   var $curTarget = $(e.currentTarget);
 
   if ($followTarget.tagName == 'A') {
-    console.log('ddddd')
     var $type = $($followTarget).hasClass('on') ? 1 : 0;
     var $info = {
       imgurl: $($followTarget).attr('userpic'),
@@ -101,7 +100,105 @@ vm.author2 = function(e) {
       description: $($followTarget).attr('userdesc') || '',
       username: $($followTarget).attr('username')
     }
-    vm.followToggle($($followTarget).attr('userid'), $type, $info, $($followTarget));
+
+    //单独拿出来vivo7使用
+    ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      //已登录
+      if (!!Number(user.userId)) {
+        if (!$type) {
+          var $url = 'https://youchuangopen.api.autohome.com.cn/OpenUserService.svc/Follow';
+        } else {
+          var $url = 'https://youchuangopen.api.autohome.com.cn/OpenUserService.svc/UnFollow';
+        }
+        vm.ajax({
+          url: $url,
+          type: "POST",
+          isJson: true,
+          data: {
+            userId: $($followTarget).attr('userid'),
+            _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
+            pcpopclub: user.userAuth,
+            autohomeua: user.userAgent
+          },
+          dataType: "json",
+          success: function(res, xml) {
+            res = JSON.parse(res);
+            if (!!res.result) {
+              if((!!$info.icon1) || (/author/.test(window.location.href))){
+                var icon1 = {
+                  icon1: !$type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                  icon1_p: !$type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
+                };
+                vm.setRightIcon(icon1);
+              }
+
+              if (!$type) {
+                $($followTarget).addClass('on');
+                $($followTarget).html('已关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {
+                  type: 1,
+                  msg: '关注成功!'
+                });
+                //判断流
+                if(/tag-name/.test(window.location.href)){
+                  $($followTarget).remove();
+                }
+              } else {
+                $($followTarget).removeClass('on');
+                $($followTarget).html('+  关注')
+                ApiBridge.callNative('ClientViewManager', 'showToastView', {
+                  type: 1,
+                  msg: '取消关注成功!'
+                })
+              }
+            }
+          },
+          fail: function(status) {}
+        });
+      } else {
+        if (!$type) {
+          var $url = 'addLocalDataForFollow';
+        } else {
+          var $url = 'deletLocalDataForFollow';
+        }
+        var post = !$type ? $info : { userid: $info.userid };
+        ApiBridge.callNative('ClientDataManager', $url, post, function(result) {
+          if (!!result.result) {
+            if((!!$info.icon1) || (/author/.test(window.location.href))){
+              var icon1 = {
+                icon1: !$type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
+                icon1_p: !$type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
+              };
+
+              vm.setRightIcon(icon1);
+
+              //target = !!$('.c-att-href').length ? $('.c-att-href') : $('.c-auth-follow');
+            }
+
+            if (!$type) {
+              $($followTarget).addClass('on');
+              $($followTarget).html('已关注')
+              ApiBridge.callNative('ClientViewManager', 'showToastView', {
+                type: 1,
+                msg: '关注成功!'
+              })
+              //判断流
+              if(/tag-name/.test(window.location.href)){
+                $($followTarget).remove();
+              }
+            } else {
+              $($followTarget).removeClass('on');
+              $($followTarget).html('+  关注')
+              ApiBridge.callNative('ClientViewManager', 'showToastView', {
+                type: 1,
+                msg: '取消关注成功!'
+              })
+            }
+          }
+        })
+      }
+    })
+
     return;
   }
 
@@ -162,7 +259,6 @@ vm.article = function(e) {
   }
 
   if (e.target.tagName == 'A') {
-    console.log('ddddd')
     var $type = $(e.target).hasClass('on') ? 1 : 0;
     var $info = {
       test: '11',
@@ -229,7 +325,6 @@ vm.getTagContent = function(e) {
 
   //判断是否请求过内容
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
-    ApiBridge.log($target.index());
     vm.initAuthorTag($target.index());
   }
 

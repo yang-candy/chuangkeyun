@@ -85,7 +85,7 @@ var vm = {
           type: 0,
           msg: '当前网络不可用，请检查网络设置'
         })
-      }else{
+      } else {
         var borderWidth = Number($(e.currentTarget).css('border-width').substr(0, 1));
         vm.data.mediaStatus = true;
         vm.data.mediaid = $(e.currentTarget).attr('mediaid');
@@ -95,7 +95,7 @@ var vm = {
         vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
         vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
         vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
-        
+
         //- document.body.scrollTop;
         if ($target.attr('status') != 0 && $target.attr('status') != 1) {
           return;
@@ -230,7 +230,7 @@ var vm = {
 
   zanHandler: function($target) {
     $target.attr('hasZan', 'true');
-    
+
     var num = Number($target.find('.c-num').html());
     num++;
     $target.find('.c-num').html(num);
@@ -279,13 +279,13 @@ var vm = {
           }
         });
       })
-      
+
     })
   },
   likeZan: function(e) {
     e.stopPropagation();
     $target = $(e.currentTarget);
-    if(!!$target.attr('hasZan')){
+    if (!!$target.attr('hasZan')) {
       return;
     }
     if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
@@ -332,10 +332,8 @@ var vm = {
       }
     });
   },
-
-  //关注未关注
+  // 关注不关注
   followToggle: function(userid, type, info, target) {
-    console.log(target)
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       //已登录
       if (Number(user.userId)) {
@@ -357,13 +355,8 @@ var vm = {
           dataType: "json",
           success: function(res, xml) {
             res = JSON.parse(res);
-            console.log(target);
-            console.log(222222)
             if (!!res.result) {
-              ApiBridge.log(info)
-              ApiBridge.log('infoApiBridge.log(info)')
-              if((!!info.icon1) || (/author/.test(window.location.href))){
-                console.log(111111111);
+              if ((!!info.icon1) || (/author/.test(window.location.href))) {
                 var icon1 = {
                   icon1: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
                   icon1_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
@@ -371,7 +364,7 @@ var vm = {
 
                 vm.setRightIcon(icon1);
 
-                target = $('.c-auth-follow');
+                //target = !!$('.c-att-href').length ? $('.c-att-href') : $('.c-auth-follow');
               }
 
               if (!type) {
@@ -382,7 +375,7 @@ var vm = {
                   msg: '关注成功!'
                 });
                 //判断流
-                if(/tag-name/.test(window.location.href)){
+                if (/tag-name/.test(window.location.href)) {
                   target.remove();
                 }
               } else {
@@ -408,8 +401,7 @@ var vm = {
         };
         ApiBridge.callNative('ClientDataManager', $url, post, function(result) {
           if (!!result.result) {
-            if((!!info.icon1) || (/author/.test(window.location.href))){
-              console.log(111111111);
+            if ((!!info.icon1) || (/author/.test(window.location.href))) {
               var icon1 = {
                 icon1: !type ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
                 icon1_p: !type ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p',
@@ -417,18 +409,18 @@ var vm = {
 
               vm.setRightIcon(icon1);
 
-              target = $('.c-auth-follow');
+              //target = !!$('.c-att-href').length ? $('.c-att-href') : $('.c-auth-follow');
             }
 
             if (!type) {
               target.addClass('on');
               target.html('已关注')
               ApiBridge.callNative('ClientViewManager', 'showToastView', {
-                type: 1,
-                msg: '关注成功!'
-              })
-              //判断流
-              if(/tag-name/.test(window.location.href)){
+                  type: 1,
+                  msg: '关注成功!'
+                })
+                //判断流
+              if (/tag-name/.test(window.location.href)) {
                 target.remove();
               }
             } else {
