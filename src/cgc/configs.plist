@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>htmlVersionl</key>
+	<string>1.0.0</string>
+	<key>tagPageForTagNames</key>
+	<array>
+		<string>全部</string>
+		<string>长文</string>
+		<string>轻文</string>
+		<string>视频</string>
+		<string>音频</string>
+	</array>
+</dict>
+</plist>
