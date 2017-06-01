@@ -23,7 +23,7 @@ vm.deleteNew = function(e) {
   $parent.hide();
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     vm.ajax({
-      url: 'https://youchuangopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
+      url: 'https://chejiahaoopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
       type: "POST",
       data: {
         _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
@@ -43,22 +43,21 @@ vm.deleteNew = function(e) {
   })
 }
 
-vm.setRightIcon = function (icon, shareinfo){
+vm.setRightIcon = function (icon, flag){
   var shareinfo = vm.data.authInfo.shareinfo;
   
   if(vm.data.userId != vm.getParam('userId')){
+
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
 
     var $offsetTop = $('.c-auth-title').offset().top;
     
-    if(!shareinfo && $scrollTop < ($offsetTop + $titleHeight)){
-      vm.setRightIcon({
+    if(flag !== 'icon2' && $scrollTop < ($offsetTop + $titleHeight)){
+      icon = {
         icon1: '',
         icon1_p: ''
-      });
-
-      return;
+      }
     }
 
     ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
@@ -122,7 +121,7 @@ vm.setNav = function(info, data){
       icon2: info.icon2 || 'articleplatform_icon_share_w',
       icon2_p: info.icon2_p || 'articleplatform_icon_share_w_p'
     };
-    vm.setRightIcon(icon2, shareinfo);
+    vm.setRightIcon(icon2, 'icon2');
   }
 
   // ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
@@ -172,7 +171,7 @@ vm.renderAuthorInfo = function(data, index){
   vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
   if(!vm.data.hasUserInfo){
-    vm.data.authInfo = $.extend({},data);
+    // vm.data.authInfo = $.extend({},data);
     vm.setImgWithBlur(vm.data.authInfo.userinfo);
 
     var userinfo = vm.data.authInfo.userinfo;
@@ -277,7 +276,9 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img c-auth-audio-img" src=' + (v['thumbnailpics'] ? v['thumbnailpics'] : './image/audio_default.png') + ' alt=""></div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
+        + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img  c-auth-audio-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
+
+        + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
@@ -321,7 +322,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'long' : 'short') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
-        + '<img class="c-auth-info-img" src=' + (v['thumbnailpics'].length ? v['thumbnailpics'] : './image/default.jpg') + ' alt="">' 
+        + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -403,7 +404,7 @@ vm.getAuthorPage = function(index, flag){
   //       "status": 0,
   //       "statusNote": "",
   //       "statusStr": "待审核",
-  //       "thumbnailpics": ["https://x.autoimg.cn/app/image/pnaudiodefult_small.jpg"],
+  //       "thumbnailpics": [],
   //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！",
   //       "userid": 0,
   //       "username": "",
@@ -652,6 +653,7 @@ vm.getAuthorPage = function(index, flag){
   //   returncode: 0
 
   // }
+  // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
   // vm.renderAuthorPage(res.result, index);
   // vm.setImgWithBlur(res.result.userinfo);
@@ -685,12 +687,14 @@ vm.getAuthorPage = function(index, flag){
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       if(res.result.userinfo){
+        vm.data.authInfo = $.extend({},res.result);
         vm.renderAuthorPage(res.result, index);
         
         var icon1 = {
           icon1: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
           icon1_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
         };
+
 
         //设置一次
         // if(!vm.data.hasUserInfo){
@@ -699,8 +703,10 @@ vm.getAuthorPage = function(index, flag){
         // }
         //注册一次
         if(vm.data.isScrollAuthor){
-          vm.navWatch(res.result);
+          vm.navWatch(vm.data.authInfo);
         }
+        ApiBridge.log(vm.data.isLoad)
+        ApiBridge.log('vm.data.isLoad')
         vm.data.isScrollAuthor = false;
         // vm.setRightIcon(icon1);
       }      
