@@ -415,8 +415,8 @@ vm.renderTagList = function(data, index, num) {
         try {
 
           //判断赞
-          if (vm.getLs('tagLiked') && vm.getLs('tagLiked').length) {
-            vm.getLs('tagLiked').map(function(j) {
+          if (vm.data.likes.length) {
+            vm.data.likes.map(function(j) {
               if (j == v['userid']) {
                 v['zaned'] = 1;
               } else {
