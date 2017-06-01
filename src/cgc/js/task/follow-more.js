@@ -306,7 +306,7 @@ vm.renderFollowMoreList = function(data, index) {
         if (!vm.data.registLoad) {
           return;
         }
-        $('.js-follow-v-list').on('scroll', function(e) {
+        $('.js-follow-more-list').on('scroll', function(e) {
           vm.data.registLoad = false;
 
           var $target = e.currentTarget;
@@ -360,7 +360,7 @@ vm.renderFollowMoreList = function(data, index) {
         if (!vm.data.registLoad) {
           return;
         }
-        $('.js-follow-v-list').on('scroll', function(e) {
+        $('.js-follow-more-list').on('scroll', function(e) {
           vm.data.registLoad = false;
 
           var $target = e.currentTarget;
