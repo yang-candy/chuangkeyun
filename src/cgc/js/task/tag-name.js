@@ -390,7 +390,7 @@ vm.renderTagList = function(data, index, num) {
     // $('.c-loading').hide();
     // vm.data.isLoad = true;
 
-    // $('.c-tab-bd ul li').each(function(v, i) {
+    // $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
     //    if ($(i).attr('mediatype') == 4) {
     //      return
     //    };
@@ -473,8 +473,8 @@ vm.renderTagList = function(data, index, num) {
             } else {
               $('.c-tab-bd ul').eq(index).html(html);
             }
-
-            $('.c-tab-bd ul li').each(function(v, i) {
+            
+            $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
               if ($(i).attr('mediatype') == 4) {
                 return
               };
@@ -531,7 +531,7 @@ vm.renderTagList = function(data, index, num) {
           $('.c-tab-bd ul').eq(index).html(html);
         }
 
-        $('.c-tab-bd ul li').each(function(v, i) {
+        $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
           if ($(i).attr('mediatype') == 4) {
             return
           };
