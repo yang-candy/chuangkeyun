@@ -76,7 +76,7 @@ var vm = {
     e.stopPropagation();
     var $target = $(e.currentTarget);
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
-    
+    debugger
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 

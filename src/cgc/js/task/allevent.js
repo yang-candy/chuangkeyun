@@ -257,7 +257,6 @@ vm.article = function(e) {
     vm.deleteNewModal(e);
     return;
   }
-
   if (e.target.tagName == 'A') {
     var $type = $(e.target).hasClass('on') ? 1 : 0;
     var $info = {
@@ -276,11 +275,10 @@ vm.article = function(e) {
   if (e.target.className == 'c-auth-info-img' && ($($curTarget).attr('mediatype') == 3 || $($curTarget).attr('mediatype') == 4)) {
     return;
   }
-  if (e.target.tagName != 'LI' && e.target.className != 'c-qing-img' && e.target.className != 'c-auth-info-img' && (e.target.className != 'c-tab-jj ' && e.target.className != 'c-tab-jj short' && e.target.className != 'c-tab-jj long')) {
+  if (e.target.tagName != 'LI' && e.target.className != 'c-qing-img' && e.target.className != 'c-auth-info-img' && (e.target.className != 'c-tab-jj ' && e.target.className != 'c-tab-jj short' && e.target.className != 'c-tab-jj long') && e.target.className != 'c-media-audio') {
     return;
   }
   $target = $(e.currentTarget);
-
   ApiBridge.callNative('ClientViewManager', 'pushViewController', {
     pagetype: 2,
     animationtype: 2,
@@ -300,9 +298,10 @@ vm.getTagContent = function(e) {
   // vm.data.isLoad = true;
   
   $target = $(e.currentTarget);
-
+  ApiBridge.log(vm.data.tagListIndex)
+  ApiBridge.log('vm.data.tagList')
   vm.data.tagListIndex = $target.index();
-
+  debugger
   if ($target.index() !== 3 || $target.index() !== 0) {
     ApiBridge.callNative('ClientVideoManager', 'deleteById', {
       mediaid: vm.data.mediaid,
@@ -313,22 +312,12 @@ vm.getTagContent = function(e) {
     ApiBridge.callNative('ClientAudioManager', 'deleteById', {
       mediaid: vm.data.mediaid,
     });
-
-    // var audioEl = $('.c-tab-list').find('.c-tag-audio');
-  
-    // if(audioEl.length){
-    //   audioEl.map(function(index, item){
-    //     $(item).removeClass('c-tag-audio');
-    //   })
-    // }
   }
 
   //判断是否请求过内容
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
-    vm.initAuthorTag($target.index());
+    vm.initAuthorTag();
   }
-
-  // vm.getAuthorPage($target.index());
 }
 
 vm.bindEvent();
