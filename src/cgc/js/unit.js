@@ -95,7 +95,8 @@ var vm = {
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
-
+    vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+    
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -121,7 +122,6 @@ var vm = {
           if ($target.attr('status') != 0 && $target.attr('status') != 1) {
             return;
           }
-
           // var targetEl = $target.find('.c-tag-video');
           // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 

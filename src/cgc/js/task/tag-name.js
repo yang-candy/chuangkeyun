@@ -1,5 +1,6 @@
 //标签列表页
 //
+vm.data.scrollTopArr = [];
 vm.initTag = function() {
   //本地储存scroll
 
@@ -12,9 +13,9 @@ vm.initTag = function() {
   // mock
   ApiBridge.callNative('ClientViewManager', 'setTitleLabelCallback', {}, function(index) {
 
+
     $('.c-empty').hide()
 
-    vm.data.tagListIndex = Number(index.index);
 
     if (vm.data.tagListIndex !== 3 || vm.data.tagListIndex !== 0) {
       ApiBridge.callNative('ClientVideoManager', 'deleteById', {
@@ -37,6 +38,16 @@ vm.initTag = function() {
     }
 
     //记录scrollTop
+    if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
+      document.body.scrollTop = 0;
+    }
+    else{
+      document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
+    }
+    vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
+
+    vm.data.tagListIndex = Number(index.index);
+
 
     $('.js-tag-list-ul ul').eq(vm.data.tagListIndex).show().siblings().hide();
 
@@ -300,6 +311,9 @@ vm.tagList = function(index, flag, num) {
     pid = lastpageid;
   }
   $('.c-loading').show();
+  ApiBridge.log(vm.data.isLoad)
+  ApiBridge.log('vm.data.isLoad tag name')
+
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
 
     //未登录 
@@ -317,6 +331,7 @@ vm.tagList = function(index, flag, num) {
       },
       dataType: "json",
       success: function(res, xml) {
+        ApiBridge.log('vm.data.isLoad tag name succ')
         ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
         res = JSON.parse(res);
@@ -332,6 +347,8 @@ vm.tagList = function(index, flag, num) {
         }
       },
       fail: function(status) {
+        ApiBridge.log('vm.data.isLoad tag name fail')
+        $('.c-loading').hide();
         ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
           ApiBridge.callNative('ClientViewManager', 'showLoadingView');
           vm.initTag();
@@ -390,7 +407,7 @@ vm.renderTagList = function(data, index, num) {
     // $('.c-loading').hide();
     // vm.data.isLoad = true;
 
-    // $('.c-tab-bd ul li').each(function(v, i) {
+    // $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
     //    if ($(i).attr('mediatype') == 4) {
     //      return
     //    };
@@ -473,17 +490,27 @@ vm.renderTagList = function(data, index, num) {
             } else {
               $('.c-tab-bd ul').eq(index).html(html);
             }
-
-            $('.c-tab-bd ul li').each(function(v, i) {
+            
+            $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
               if ($(i).attr('mediatype') == 4) {
                 return
               };
-              var $width = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
-              $(i).find('.c-auth-info-img').height($width * 0.5625);
+
+              if(!vm.data.tagImgwidth){
+                // vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
+                vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width();
+              }
+
+              // var $width = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
+              $(i).find('.c-auth-info-img').css("height", vm.data.tagImgwidth * 0.5625);
 
               if ($(i).attr('mediatype') == 2) {
-                var qingWid = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
-                $(i).find('.c-qing-img').height(qingWid * 0.5625);
+                if(!vm.data.tagQingwidth){
+                  // vm.data.tagQingwidth = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
+                  vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
+                }
+                // var qingWid = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
+                $(i).find('.c-qing-img').css('height', vm.data.tagQingwidth * 0.5625);
               }
             })
             $('.c-loading').hide();
@@ -531,16 +558,24 @@ vm.renderTagList = function(data, index, num) {
           $('.c-tab-bd ul').eq(index).html(html);
         }
 
-        $('.c-tab-bd ul li').each(function(v, i) {
+
+        $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
           if ($(i).attr('mediatype') == 4) {
             return
           };
-          var $width = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
-          $(i).find('.c-auth-info-img').height($width * 0.5625);
+          
+          if(!vm.data.tagImgwidth){
+            vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width();
+          }
 
+          $(i).find('.c-auth-info-img').css("height", vm.data.tagImgwidth * 0.5625);
+             
           if ($(i).attr('mediatype') == 2) {
-            var qingWid = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
-            $(i).find('.c-qing-img').height(qingWid * 0.5625);
+            if(!vm.data.tagQingwidth){
+              vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
+            }
+
+            $(i).find('.c-qing-img').css('height', vm.data.tagQingwidth * 0.5625);
           }
         })
 
