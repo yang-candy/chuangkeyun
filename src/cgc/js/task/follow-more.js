@@ -210,7 +210,9 @@ vm.getFollowMoreList = function(id, index) {
         vm.renderFollowMoreList(res.result.users, index);
         $('.c-tab-empty').hide();
       }else{
-        $('.c-tab-empty').show();
+        if(!!vm.data.isLoad){
+          $('.c-tab-empty').show();
+        }
       }
     },
     fail: function(status) {}
@@ -411,6 +413,7 @@ vm.renderFollowMoreList = function(data, index) {
 
 if (/follow-more-tab/.test(window.location.href)) {
   //vm.data.isFollowMore = true;
+  vm.data.isLoad = true;
 
   vm.data.registLoad = true;
   vm.getFollowMoreBar();
