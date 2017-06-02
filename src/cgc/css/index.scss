@@ -411,6 +411,7 @@ li{
   li{
     position:relative;
     padding:.8rem;
+    padding-bottom: 4px;
     overflow:hidden;
     border-bottom:1px solid #f6f6f6;
   }
@@ -601,8 +602,8 @@ li{
     position:relative;
     z-index:15;
     display:inline-block;
-    width:1.12rem;
-    height:1.12rem;
+    width:20px;
+    height:20px;
     margin-left: 30px;
     > span{
       color:#4C92FB;
@@ -611,8 +612,8 @@ li{
     &.c-zan{
       .zan-icon{
         display:inline-block;
-        height:1.12rem;
-        width:1.12rem;
+        height:20px;
+        width:20px;
         background:url(../image/zan.png) center no-repeat;
         background-size:100% auto;
         vertical-align:2px;
@@ -992,6 +993,11 @@ li{
 }
 .c-wp{
   background: #fff;
+
+  .c-tab-ul .c-auth-title{
+    max-width: none;
+    white-space: normal;
+  }
 }
 
 .c-empty{
