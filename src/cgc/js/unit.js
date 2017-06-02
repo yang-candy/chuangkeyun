@@ -72,6 +72,26 @@ var vm = {
     })
   },
 
+  //根据wifi 判断是否创建播放器
+  isCreatePlayer: function(fn) {
+    ApiBridge.callNative("ClientDataManager", "getWifiState", {}, function(state) {
+      if (!state.result) {
+        ApiBridge.callNative('ClientDataManager', 'getVideoShowAlertState', {}, function(data) {
+          if (!data.result) {
+            ApiBridge.callNative('ClientToastManager', 'showAlert', {}, function(info) {
+              if (!!info.result) {
+                fn && fn();
+              }
+            })
+          }else{
+            fn && fn();
+          }
+        })
+      }else{
+        fn && fn();
+      }
+    })
+  },
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
@@ -86,51 +106,52 @@ var vm = {
           msg: '当前网络不可用，请检查网络设置'
         })
       } else {
-        var borderWidth = Number($(e.currentTarget).css('border-width').substr(0, 1));
-        vm.data.mediaStatus = true;
-        vm.data.mediaid = $(e.currentTarget).attr('mediaid');
-        vm.data.mediatype = $(e.currentTarget).attr('mediatype');
-        vm.data.mediatitle = $(e.currentTarget).attr('title');
-        vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
-        vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
-        vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
-        vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
+        vm.isCreatePlayer(function() {
+          var borderWidth = Number($(e.currentTarget).css('border-width').substr(0, 1));
+          vm.data.mediaStatus = true;
+          vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+          vm.data.mediatype = $(e.currentTarget).attr('mediatype');
+          vm.data.mediatitle = $(e.currentTarget).attr('title');
+          vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
+          vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
+          vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
+          vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
 
-        //- document.body.scrollTop;
-        if ($target.attr('status') != 0 && $target.attr('status') != 1) {
-          return;
-        }
+          //- document.body.scrollTop;
+          if ($target.attr('status') != 0 && $target.attr('status') != 1) {
+            return;
+          }
 
-        // var targetEl = $target.find('.c-tag-video');
-        // var audioEl = $('.js-tag-list').find('.c-tag-audio');
+          // var targetEl = $target.find('.c-tag-video');
+          // var audioEl = $('.js-tag-list').find('.c-tag-audio');
 
-        // if (audioEl.length) {
-        //   audioEl.map(function(index, item) {
-        //     $(item).removeClass('c-tag-audio');
-        //   })
-        // }
+          // if (audioEl.length) {
+          //   audioEl.map(function(index, item) {
+          //     $(item).removeClass('c-tag-audio');
+          //   })
+          // }
 
-        var postData = {
-          mediaid: vm.data.mediaid,
-          width: vm.data.mediaWidth,
-          height: vm.data.mediaHeight,
-          title: vm.data.mediatitle,
-          x: vm.data.mediaX,
-          y: vm.data.mediaY,
-          status: $target.attr('status'),
-          playtime: $target.attr('playtime'),
-          thumbnailpics: $target.attr('thumbnailpics').split(',')
-        }
+          var postData = {
+            mediaid: vm.data.mediaid,
+            width: vm.data.mediaWidth,
+            height: vm.data.mediaHeight,
+            title: vm.data.mediatitle,
+            x: vm.data.mediaX,
+            y: vm.data.mediaY,
+            status: $target.attr('status'),
+            playtime: $target.attr('playtime'),
+            thumbnailpics: $target.attr('thumbnailpics').split(',')
+          }
 
-        if (vm.data.mediatype == 3) {
-          ApiBridge.callNative('ClientVideoManager', 'createById', postData);
-        }
-        if (vm.data.mediatype == 4) {
+          if (vm.data.mediatype == 3) {
+            ApiBridge.callNative('ClientVideoManager', 'createById', postData);
+          }
+          if (vm.data.mediatype == 4) {
 
-          ApiBridge.callNative('ClientAudioManager', 'createById', postData);
-          // $(targetEl).addClass('c-tag-audio');
-        }
-
+            ApiBridge.callNative('ClientAudioManager', 'createById', postData);
+            // $(targetEl).addClass('c-tag-audio');
+          }
+        })
       }
     })
   },
