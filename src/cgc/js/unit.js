@@ -75,7 +75,8 @@ var vm = {
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
-
+    vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+    
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -88,7 +89,7 @@ var vm = {
       } else {
         var borderWidth = Number($(e.currentTarget).css('border-width').substr(0, 1));
         vm.data.mediaStatus = true;
-        vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+        // vm.data.mediaid = $(e.currentTarget).attr('mediaid');
         vm.data.mediatype = $(e.currentTarget).attr('mediatype');
         vm.data.mediatitle = $(e.currentTarget).attr('title');
         vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
