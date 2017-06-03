@@ -225,7 +225,7 @@ vm.article = function(e) {
       mediaid: vm.data.mediaid,
     });
   }
-
+  debugger
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){
       return ;

@@ -399,7 +399,9 @@ vm.getAuthorPage = function(flag){
   //       "status": 0,
   //       "statusNote": "",
   //       "statusStr": "待审核",
-  //       "thumbnailpics": [],
+  //       "thumbnailpics": [
+  //         "https://qnwww2.autoimg.cn/youchuang/g11/M0B/07/98/autohomecar__wKgH0liix22Acy7HAA7qxSaViaI155.jpg?imageView2/1/w/400/h/225"
+  //       ],
   //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！",
   //       "userid": 0,
   //       "username": "",
@@ -648,6 +650,7 @@ vm.getAuthorPage = function(flag){
   //   returncode: 0
 
   // }
+  // $('body').show();
   // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
   // vm.renderAuthorPage(res.result);
@@ -678,8 +681,8 @@ vm.getAuthorPage = function(flag){
       res = JSON.parse(res);
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
-
-      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+      $('body').show();
+      // ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
@@ -852,14 +855,15 @@ vm.navWatch = function(data) {
 }
 
 if (/author/.test(window.location.href)) {
+  $('body').hide();
   vm.data.isLoad = true;
   // mock
   // vm.initAuthorTag();
   //mock 
 
+  
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
-    ApiBridge.callNative('ClientViewManager', 'showLoadingView');
     //未联网
     if (!Number(vm.data.isNet)) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
