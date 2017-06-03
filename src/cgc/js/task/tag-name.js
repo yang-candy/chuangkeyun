@@ -27,14 +27,6 @@ vm.initTag = function() {
       ApiBridge.callNative('ClientAudioManager', 'deleteById', {
         mediaid: vm.data.mediaid,
       });
-
-      // var audioEl = $('.js-tag-list').find('.c-tag-audio');
-
-      // if (audioEl.length) {
-      //   audioEl.map(function(index, item) {
-      //     $(item).removeClass('c-tag-audio');
-      //   })
-      // }
     }
 
     //记录scrollTop
@@ -71,14 +63,6 @@ vm.initTag = function() {
           ApiBridge.callNative('ClientAudioManager', 'deleteById', {
             mediaid: vm.data.mediaid,
           });
-
-          // var audioEl = $('.js-tag-list').find('.c-tag-audio');
-
-          // if (audioEl.length) {
-          //   audioEl.map(function(index, item) {
-          //     $(item).removeClass('c-tag-audio');
-          //   })
-          // }
         }
         if (vm.data.isloadmore) {
           // $('.c-loading').show();
@@ -145,14 +129,6 @@ vm.initTag = function() {
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
-
-        // var audioEl = $('.js-tag-list').find('.c-tag-audio');
-
-        // if (audioEl.length) {
-        //   audioEl.map(function(index, item) {
-        //     $(item).removeClass('c-tag-audio');
-        //   })
-        // }
       }
     },
     onRefresh: function() {
@@ -507,18 +483,7 @@ vm.renderTagList = function(data, index, num) {
               $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
 
               if ($(i).attr('mediatype') == 2) {
-                if(!vm.data.tagQingwidth){
-                  vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
-                }
-                // vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
-                // $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
-                // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
-
-                if(!!vm.data.oneQingWid){
-                  $(i).find('.c-qing-img').height(vm.data.tagImgwidth * 0.5625);
-                } else {
-                  $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
-                }
+                $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
               }
             })
             $('.c-loading').hide();
@@ -589,19 +554,7 @@ vm.renderTagList = function(data, index, num) {
           $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
              
           if ($(i).attr('mediatype') == 2) {
-            if(!vm.data.tagQingwidth){
-              vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
-            }
-
-            if(!!vm.data.oneQingWid){
-              $(i).find('.c-qing-img').height(vm.data.tagImgwidth * 0.5625);
-            } else {
-              $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
-            }
-
-            // vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
-            // $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
-            // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+            $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
           }
         })
 

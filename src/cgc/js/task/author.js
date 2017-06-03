@@ -327,12 +327,12 @@ vm.renderAuthorNews = function(data){
     if (!vm.data.isLoad) {
       ApiBridge.log(vm.data.tagListIndex);
       ApiBridge.log('vm.data.tagListIndex')
-      $('.c-tab-bd ul').eq(vm.data.tagListIndex).append(html);
+      $('.c-tab-bd ul').eq(tagListIndex).append(html);
       vm.data.isLoad = true;
     } else {
-      $('.c-tab-bd ul').eq(vm.data.tagListIndex).html(html);
+      $('.c-tab-bd ul').eq(tagListIndex).html(html);
     }
-    $('.c-tab-bd ul').eq(vm.data.tagListIndex).children('li').each(function(v, i) {
+    $('.c-tab-bd ul').eq(tagListIndex).children('li').each(function(v, i) {
       if ($(i).attr('mediatype') == 4) {
         return
       };
@@ -343,19 +343,12 @@ vm.renderAuthorNews = function(data){
 
       $(i).find('.c-auth-info-img').height(vm.data.authImgWid * 0.5625);
       if ($(i).attr('mediatype') == 2) {
-        if(!vm.data.authQingWid){
-          vm.data.authQingWid = $(i).find('.c-qing-img').width();
-        }
-        if(!!vm.data.oneQingWid){
-          ApiBridge.log(vm.data.authImgWid);
-          ApiBridge.log('vm.data.authImgWid');
-          $(i).find('.c-qing-img').height(vm.data.authImgWid * 0.5625);
+        if($(i).find('.c-qing-img').attr('imgnum') < 3){
+          $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
         } else {
-          $(i).find('.c-qing-img').height(vm.data.authQingWid * 0.5625);
+          $(i).find('.c-qing-img').height((window.innerWidth - 40)/3 * 0.5625);
         }
-        // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
-        // vm.data.authQingWid = $(i).find('.c-qing-img').width();
-        // $(i).find('.c-qing-img').height(vm.data.authQingWid * 0.5625);
+        
       }
     })
     // $('.c-tab-bd ul li').each(function(v, i) {
@@ -379,10 +372,12 @@ vm.renderAuthorNews = function(data){
 }
 
 //获取作者主页  
-vm.getAuthorPage = function(flag){
+vm.getAuthorPage = function(index, flag){
+  index = index || 0;
+
   $('.c-tab-empty').hide();
   // mock
-
+  // console.log(index, tagListIndex)
   // var res = {
   //   message: "",
   //   result: {
@@ -414,7 +409,7 @@ vm.getAuthorPage = function(flag){
   //       "thumbnailpics": [
   //         "https://qnwww2.autoimg.cn/youchuang/g11/M0B/07/98/autohomecar__wKgH0liix22Acy7HAA7qxSaViaI155.jpg?imageView2/1/w/400/h/225"
   //       ],
-  //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！",
+  //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！" + index,
   //       "userid": 0,
   //       "username": "",
   //       "userpic": ""
@@ -447,6 +442,10 @@ vm.getAuthorPage = function(flag){
   //       statusNote: "",
   //       statusStr: "正常",
   //       thumbnailpics: [
+  //        "https://qnwww2.autoimg.cn/youchuang/g12/M09/9F/E9/autohomecar__wKgH01kbPDuAI3xSAAGNMMeSgqk414.jpg?imageView2/2/w/640",
+  //         "https://qnwww2.autoimg.cn/youchuang/g12/M0C/A9/7B/autohomecar__wKgH4lkbPFSAActaAAF5vXvNJdU798.jpg?imageView2/2/w/640",
+  //         "https://qnwww2.autoimg.cn/youchuang/g12/M09/9F/E9/autohomecar__wKgH01kbPDuAI3xSAAGNMMeSgqk414.jpg?imageView2/2/w/640",
+  //         "https://qnwww2.autoimg.cn/youchuang/g12/M0C/A9/7B/autohomecar__wKgH4lkbPFSAActaAAF5vXvNJdU798.jpg?imageView2/2/w/640"
   //                 ],
   //       title: "",
   //       userid: 0,
@@ -462,7 +461,7 @@ vm.getAuthorPage = function(flag){
   //       isattention: 0,
   //       iscandelete: 0,
   //       mediaid: "8D3C26C16C397BD8",
-  //       mediatype: 3,
+  //       mediatype: 2,
   //       newsid: 91996,
   //       pics: [
           
@@ -663,11 +662,18 @@ vm.getAuthorPage = function(flag){
 
   // }
   // $('body').show();
+
+  // setTimeout(function(){
+  //   tagListIndex = index;
+  //   vm.renderAuthorPage(res.result);
+  //   vm.setImgWithBlur(res.result.userinfo);
+  //   vm.navWatch(res.result.userinfo);
+  // }, 3000)
   // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
-  // vm.renderAuthorPage(res.result);
-  // vm.setImgWithBlur(res.result.userinfo);
-  // vm.navWatch(res.result.userinfo);
+  // // vm.renderAuthorPage(res.result);
+  // // vm.setImgWithBlur(res.result.userinfo);
+  // // vm.navWatch(res.result.userinfo);
   // return;
   
   //mock
@@ -675,6 +681,7 @@ vm.getAuthorPage = function(flag){
   var dt = (vm.data.userId != vm.getParam('userId')) ? 2: 3;
   var vuserid = !!vm.getParam('userId') ? vm.getParam('userId'): '';
 
+  vm.data.authInfo = {};
   vm.ajax({
     url: vm.data.url + '/npnewListforvuser.json',
     type: "GET",
@@ -694,7 +701,6 @@ vm.getAuthorPage = function(flag){
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
       $('body').show();
-      // ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
@@ -714,32 +720,29 @@ vm.getAuthorPage = function(flag){
   
       ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
 
+      ApiBridge.log(index);
+      ApiBridge.log(vm.data.tagListIndex);
+      ApiBridge.log('vm.data.tagListIndex');
+      if(index != tagListIndex && !flag){
+        return;
+      }
 
-
+      tagListIndex = index;
       if(res.result.userinfo){
-        vm.data.authInfo = $.extend({},res.result);
-        vm.renderAuthorPage(res.result);
-        
-        // var icon1 = {
-        //   icon1: res.result.userinfo.isattention ? 'articleplatform_icon_correct' : 'articleplatform_icon_add',
-        //   icon1_p: res.result.userinfo.isattention ? 'articleplatform_icon_correct_p' : 'articleplatform_icon_add_p'
-        // };
+          res.result.userinfo.userpic = res.result.userinfo.userpic + '&hybridCatch = 1'
+          vm.data.authInfo = $.extend({},res.result);
+          vm.renderAuthorPage(res.result);
+          
+          //注册一次
+          if(vm.data.isScrollAuthor){
+            vm.navWatch(vm.data.authInfo);
+          }
+          ApiBridge.log(vm.data.isLoad)
+          ApiBridge.log('vm.data.isLoad')
+          vm.data.isScrollAuthor = false;
+        }   
 
-
-        //设置一次
-        // if(!vm.data.hasUserInfo){
-        //   vm.data.authInfo = $.extend({},res.result);
-        //   vm.setImgWithBlur(res.result.userinfo);
-        // }
-        //注册一次
-        if(vm.data.isScrollAuthor){
-          vm.navWatch(vm.data.authInfo);
-        }
-        ApiBridge.log(vm.data.isLoad)
-        ApiBridge.log('vm.data.isLoad')
-        vm.data.isScrollAuthor = false;
-        // vm.setRightIcon(icon1);
-      }      
+         
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -750,16 +753,18 @@ vm.getAuthorPage = function(flag){
   });
 }
 
-vm.initAuthorTag = function(){
+var tagListIndex = 0;
+vm.initAuthorTag = function(index){
 
-  vm.data.tagListIndex = vm.data.tagListIndex || 0;
+  tagListIndex = tagListIndex || 0;
+  //vm.data.tagListIndex = vm.data.tagListIndex || 0;
   // vm.data.tagListIndex = index || 0;
 
   //to do 本地存储点赞
   vm.data.likes = [];
 
   vm.data.isScrollAuthor = true;
-  vm.getAuthorPage();
+  vm.getAuthorPage(index);
   vm.data.isLoad = true;
 
   //上拉翻页加载
@@ -783,7 +788,7 @@ vm.initAuthorTag = function(){
         });
       }
       if(!!vm.data.isloadmore){
-       vm.getAuthorPage('up');
+       vm.getAuthorPage(index, 'up');
       }
       else{
         $('.c-tab-empty').hide();

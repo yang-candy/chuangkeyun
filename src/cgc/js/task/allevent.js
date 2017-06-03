@@ -332,7 +332,7 @@ vm.getTagContent = function(e) {
 
   //判断是否请求过内容
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
-    vm.initAuthorTag();
+    vm.initAuthorTag($target.index());
   }else{
     $('.c-tab-empty').hide();
   }
