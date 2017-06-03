@@ -165,7 +165,24 @@ vm.setImgWithBlur = function(userinfo){
 
 //渲染作者主页作者信息部分
 vm.renderAuthorInfo = function(data){
-  vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
+  // vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
+
+  // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
+  // var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
+
+  // var pvMap = {
+  //   "eventid": eventid,
+  //   "pagename": pagename,
+  //   "isdata": 1,
+  //   "reportjson": {
+  //       "userid1#1": vm.getParam('userId'),
+  //       "userid2#2": vm.data.userId
+  //   }
+  // };
+  
+  // ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+
+
 
   if(!vm.data.hasUserInfo){
     // vm.data.authInfo = $.extend({},data);
@@ -195,29 +212,6 @@ vm.renderAuthorInfo = function(data){
     vm.data.hasUserInfo = true;
     document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   }
-
-  // //主页展示
-  // var html = '<div class="c-auth-native"></div>'
-  //     + '<div class="c-auth-bg"></div>'
-  //     + '<div class="c-auth-info">'
-  //     +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
-  //     + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
-  //     + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
-  //     + '<p class="c-auth-tips">'
-  //     + '<span class="c-auth-fans">' + userinfo['fanscount'] + '粉丝</span>' 
-  //     + '<span class="c-auth-work">' + userinfo['publishcount'] + '作品</span>' 
-  //     + '</p></div>';
-
-  // if(!vm.data.isAuthor){
-  //   //客页
-  //   html += '<p class="c-auth-f">'
-  //     + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
-  //     + '</p>';
-  // }
-
-  // $('.c-auth-top').html(html);
-
-  // document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   vm.renderAuthorNews(data);
 }
 
@@ -225,7 +219,7 @@ vm.renderAuthorInfo = function(data){
 vm.renderAuthorPage = function(data){
 
   // mock
-  // vm.renderAuthorInfo(data, index);
+  // vm.renderAuthorInfo(data);
 
   //mock
   if (!!data.userinfo) {
@@ -327,8 +321,10 @@ vm.renderAuthorNews = function(data){
          + '</li>';
       }
     })
-
+    
     if (!vm.data.isLoad) {
+      ApiBridge.log(vm.data.tagListIndex);
+      ApiBridge.log('vm.data.tagListIndex')
       $('.c-tab-bd ul').eq(vm.data.tagListIndex).append(html);
       vm.data.isLoad = true;
     } else {
@@ -364,9 +360,6 @@ vm.renderAuthorNews = function(data){
     // })
 
     $('.c-loading').hide();
-    // if(num == 1){
-    //   document.body.scrollTop = 0;
-    // }
   }
   else{
     $('.c-tab-empty').show();
@@ -406,7 +399,9 @@ vm.getAuthorPage = function(flag){
   //       "status": 0,
   //       "statusNote": "",
   //       "statusStr": "待审核",
-  //       "thumbnailpics": [],
+  //       "thumbnailpics": [
+  //         "https://qnwww2.autoimg.cn/youchuang/g11/M0B/07/98/autohomecar__wKgH0liix22Acy7HAA7qxSaViaI155.jpg?imageView2/1/w/400/h/225"
+  //       ],
   //       "title": "大有进步 全新宝马5系IIHS 25%碰撞解析！！！",
   //       "userid": 0,
   //       "username": "",
@@ -655,9 +650,10 @@ vm.getAuthorPage = function(flag){
   //   returncode: 0
 
   // }
+  // $('body').show();
   // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
-  // vm.renderAuthorPage(res.result, index);
+  // vm.renderAuthorPage(res.result);
   // vm.setImgWithBlur(res.result.userinfo);
   // vm.navWatch(res.result.userinfo);
   // return;
@@ -685,8 +681,28 @@ vm.getAuthorPage = function(flag){
       res = JSON.parse(res);
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
+      $('body').show();
+      // ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
-      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+      vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
+
+      var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
+      var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
+      var isdata = res.result.userinfo? 1: 0;
+
+      var pvMap = {
+        "eventid": eventid,
+        "pagename": pagename,
+        "isdata": isdata,
+        "reportjson": {
+            "userid1#1": vm.getParam('userId'),
+            "userid2#2": vm.data.userId
+        }
+      };
+  
+      ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+
+
 
       if(res.result.userinfo){
         vm.data.authInfo = $.extend({},res.result);
@@ -732,11 +748,15 @@ vm.initAuthorTag = function(){
 
   vm.data.isScrollAuthor = true;
   vm.getAuthorPage();
+  vm.data.isLoad = true;
 
   //上拉翻页加载
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
       vm.data.isLoad = false;
+      ApiBridge.log(vm.data.tagListIndex)
+      ApiBridge.log('vm.data.tagList scroll')
+
       $('.c-loading').show();
 
       if (vm.data.tagListIndex !== 3) {
@@ -751,6 +771,7 @@ vm.initAuthorTag = function(){
         });
       }
       if(!!vm.data.isloadmore){
+        
        vm.getAuthorPage('up');
       }
     }
@@ -834,16 +855,13 @@ vm.navWatch = function(data) {
 }
 
 if (/author/.test(window.location.href)) {
+  $('body').hide();
   vm.data.isLoad = true;
   // mock
   // vm.initAuthorTag();
   //mock 
-  // ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
-  //   vm.data.userAuth = user.userAuth;
-  //   vm.data.userId = user.userId;
-  //   vm.initAuthorTag();    
-  // })
 
+  
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
     //未联网
@@ -853,6 +871,7 @@ if (/author/.test(window.location.href)) {
         vm.initAuthorTag();
       })
     } else {
+
       ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
         vm.data.userAuth = user.userAuth;
         vm.data.userId = user.userId;

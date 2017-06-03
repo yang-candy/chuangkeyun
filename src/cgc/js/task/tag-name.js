@@ -38,13 +38,13 @@ vm.initTag = function() {
     }
 
     //记录scrollTop
-    if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
-      document.body.scrollTop = 0;
-    }
-    else{
-      document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
-    }
-    vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
+    // if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
+    //   document.body.scrollTop = 0;
+    // }
+    // else{
+    //   document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
+    // }
+    // vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
 
     vm.data.tagListIndex = Number(index.index);
 
@@ -59,7 +59,7 @@ vm.initTag = function() {
     vm.upScroll(function() {
       if (!!vm.data.isLoad) {
         vm.data.isLoad = false;
-        // $('.c-loading').show();
+        $('.c-loading').show();
 
         if (vm.data.tagListIndex == 3 || vm.data.tagListIndex == 0) {
           ApiBridge.callNative('ClientVideoManager', 'deleteById', {
@@ -83,6 +83,8 @@ vm.initTag = function() {
         if (vm.data.isloadmore) {
           // $('.c-loading').show();
           vm.tagList(vm.data.tagListIndex, 'up');
+        }else{
+          $('.c-loading').hide()
         }
       }
     });
@@ -497,20 +499,16 @@ vm.renderTagList = function(data, index, num) {
               };
 
               if(!vm.data.tagImgwidth){
-                // vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
                 vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width();
               }
 
-              // var $width = $(i).find('.c-auth-info-img').width() + Number($(i).find('.c-auth-info-img').css('margin-right').substr(0,1));
-              $(i).find('.c-auth-info-img').css("height", vm.data.tagImgwidth * 0.5625);
+              $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
 
               if ($(i).attr('mediatype') == 2) {
                 if(!vm.data.tagQingwidth){
-                  // vm.data.tagQingwidth = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
                   vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
                 }
-                // var qingWid = $(i).find('.c-qing-img').width() + Number($(i).find('.c-qing-img').css('margin-right').substr(0,1));
-                $(i).find('.c-qing-img').css('height', vm.data.tagQingwidth * 0.5625);
+                $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
               }
             })
             $('.c-loading').hide();
@@ -568,14 +566,14 @@ vm.renderTagList = function(data, index, num) {
             vm.data.tagImgwidth = $(i).find('.c-auth-info-img').width();
           }
 
-          $(i).find('.c-auth-info-img').css("height", vm.data.tagImgwidth * 0.5625);
+          $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
              
           if ($(i).attr('mediatype') == 2) {
             if(!vm.data.tagQingwidth){
               vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
             }
 
-            $(i).find('.c-qing-img').css('height', vm.data.tagQingwidth * 0.5625);
+            $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
           }
         })
 
