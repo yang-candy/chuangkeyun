@@ -210,6 +210,7 @@ vm.getFollowMoreList = function(id, index) {
         vm.renderFollowMoreList(res.result.users, index);
         $('.c-tab-empty').hide();
       }else{
+        $('.c-loading').hide();
         if(!!vm.data.isLoad){
           $('.c-tab-empty').show();
         }
