@@ -34,10 +34,7 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
-
           vm.getAuthorPage();
-          // $parent.hide();
-
         }
       },
       fail: function(status) {}
@@ -279,7 +276,6 @@ vm.renderAuthorNews = function(data){
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
         if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
-          vm.data.oneQingWid = true;
           qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
         } else {
           v['thumbnailpics'].map(function(k, i) {
@@ -327,12 +323,12 @@ vm.renderAuthorNews = function(data){
     if (!vm.data.isLoad) {
       ApiBridge.log(vm.data.tagListIndex);
       ApiBridge.log('vm.data.tagListIndex')
-      $('.c-tab-bd ul').eq(tagListIndex).append(html);
+      $('.c-tab-bd ul').eq(vm.data.tagListIndex).append(html);
       vm.data.isLoad = true;
     } else {
-      $('.c-tab-bd ul').eq(tagListIndex).html(html);
+      $('.c-tab-bd ul').eq(vm.data.tagListIndex).html(html);
     }
-    $('.c-tab-bd ul').eq(tagListIndex).children('li').each(function(v, i) {
+    $('.c-tab-bd ul').eq(vm.data.tagListIndex).children('li').each(function(v, i) {
       if ($(i).attr('mediatype') == 4) {
         return
       };
@@ -342,13 +338,13 @@ vm.renderAuthorNews = function(data){
       }
 
       $(i).find('.c-auth-info-img').height(vm.data.authImgWid * 0.5625);
+
       if ($(i).attr('mediatype') == 2) {
-        if($(i).find('.c-qing-img').attr('imgnum') < 3){
-          $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
-        } else {
-          $(i).find('.c-qing-img').height((window.innerWidth - 40)/3 * 0.5625);
-        }
-        
+        // if($(i).find('.c-qing-img').attr('imgnum') < 3){
+        //   $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
+        // } else {
+        //   $(i).find('.c-qing-img').height((window.innerWidth - 40)/3 * 0.5625);
+        // }
       }
     })
     // $('.c-tab-bd ul li').each(function(v, i) {
@@ -723,24 +719,22 @@ vm.getAuthorPage = function(index, flag){
       ApiBridge.log(index);
       ApiBridge.log(vm.data.tagListIndex);
       ApiBridge.log('vm.data.tagListIndex');
-      if(index != tagListIndex && !flag){
+      if(!flag && index != tagListIndex){
         return;
       }
 
       tagListIndex = index;
       if(res.result.userinfo){
-          res.result.userinfo.userpic = res.result.userinfo.userpic + '&hybridCatch = 1'
-          vm.data.authInfo = $.extend({},res.result);
-          vm.renderAuthorPage(res.result);
-          
-          //注册一次
-          if(vm.data.isScrollAuthor){
-            vm.navWatch(vm.data.authInfo);
-          }
-          ApiBridge.log(vm.data.isLoad)
-          ApiBridge.log('vm.data.isLoad')
-          vm.data.isScrollAuthor = false;
-        }   
+        res.result.userinfo.userpic = res.result.userinfo.userpic + '&hybridCache=1';
+        vm.data.authInfo = $.extend({},res.result);
+        vm.renderAuthorPage(res.result);
+        
+        //注册一次
+        if(vm.data.isScrollAuthor){
+          vm.navWatch(vm.data.authInfo);
+        }
+        vm.data.isScrollAuthor = false;
+      }   
 
          
     },
@@ -753,7 +747,7 @@ vm.getAuthorPage = function(index, flag){
   });
 }
 
-var tagListIndex = 0;
+
 vm.initAuthorTag = function(index){
 
   tagListIndex = tagListIndex || 0;
@@ -874,6 +868,7 @@ vm.navWatch = function(data) {
 }
 
 if (/author/.test(window.location.href)) {
+  var tagListIndex = 0;
   $('body').hide();
   vm.data.isLoad = true;
   // mock
