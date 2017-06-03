@@ -61,6 +61,7 @@ vm.bindEvent = function() {
 //点击作者头像获取UserId跳转作者主页
 vm.toAuthor = function(userId, userId) {
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+    vm.data.isClicked = false;
     var pagetype = (user.userId == userId) ? 5 : 7;
     // var icon = (user.userId == userId) ? 5 : ;
 
@@ -209,10 +210,16 @@ vm.author2 = function(e) {
   // mock
 
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+    if(!!vm.data.isClicked){
+      return;
+    }
+    vm.data.isClicked = true;
+
     var pagetype = (user.userId == $curTarget.attr('userid')) ? 5 : 7;
     vm.toAuthor(pagetype, $curTarget.attr('userid'));
   })
 }
+vm.data.isClicked = false;
 
 vm.article = function(e) {
   e.stopPropagation();

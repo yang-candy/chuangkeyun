@@ -434,6 +434,7 @@ vm.renderTagList = function(data, index, num) {
         try {
 
           //判断赞
+          ApiBridge.log(vm.data.likes)
           if (vm.data.likes.length) {
             vm.data.likes.map(function(j) {
               if (j == v['userid']) {
@@ -525,6 +526,15 @@ vm.renderTagList = function(data, index, num) {
           })
         } catch (e) {}
       } else {
+        if (vm.data.likes.length) {
+          vm.data.likes.map(function(j) {
+            if (j == v['userid']) {
+              v['zaned'] = 1;
+            } else {
+              v['zaned'] = 0;
+            }
+          })
+        }
         data.map(function(v) {
 
           if (v['mediatype'] == 4) {
