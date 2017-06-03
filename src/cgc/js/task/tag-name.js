@@ -38,13 +38,13 @@ vm.initTag = function() {
     }
 
     //记录scrollTop
-    if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
-      document.body.scrollTop = 0;
-    }
-    else{
-      document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
-    }
-    vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
+    // if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
+    //   document.body.scrollTop = 0;
+    // }
+    // else{
+    //   document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
+    // }
+    // vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
 
     vm.data.tagListIndex = Number(index.index);
 
@@ -464,6 +464,7 @@ vm.renderTagList = function(data, index, num) {
 
                 var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['indexdetail'] + ' sharecontent=' + v['description'] + '>';
                 if (v['thumbnailpics'].length < 3 && v['thumbnailpics'].length > 0) {
+                  vm.data.oneQingWid = true;
                   qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
                 } else {
                   v['thumbnailpics'].map(function(k, i) {
@@ -508,7 +509,15 @@ vm.renderTagList = function(data, index, num) {
                 if(!vm.data.tagQingwidth){
                   vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
                 }
-                $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+                // vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
+                // $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+                // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+
+                if(!!vm.data.oneQingWid){
+                  $(i).find('.c-qing-img').height(vm.data.tagImgwidth * 0.5625);
+                } else {
+                  $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+                }
               }
             })
             $('.c-loading').hide();
@@ -527,6 +536,7 @@ vm.renderTagList = function(data, index, num) {
             var qingImg = '<div class="c-qing-img-wp"  newsid=' + v['newsid'] + ' picurl=' + v['indexdetail'] + ' sharecontent=' + v['description'] + '>';
 
             if (v['thumbnailpics'].length < 3 && !!v['thumbnailpics'].length) {
+              vm.data.oneQingWid = true;
               qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
             } else {
               v['thumbnailpics'].map(function(k, i) {
@@ -573,7 +583,15 @@ vm.renderTagList = function(data, index, num) {
               vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
             }
 
-            $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+            if(!!vm.data.oneQingWid){
+              $(i).find('.c-qing-img').height(vm.data.tagImgwidth * 0.5625);
+            } else {
+              $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+            }
+
+            // vm.data.tagQingwidth = $(i).find('.c-qing-img').width();
+            // $(i).find('.c-qing-img').height(vm.data.tagQingwidth * 0.5625);
+            // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
           }
         })
 

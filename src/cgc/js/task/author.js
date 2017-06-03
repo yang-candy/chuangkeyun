@@ -34,6 +34,7 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
+
           vm.getAuthorPage();
           // $parent.hide();
 
@@ -278,6 +279,7 @@ vm.renderAuthorNews = function(data){
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
         if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
+          vm.data.oneQingWid = true;
           qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
         } else {
           v['thumbnailpics'].map(function(k, i) {
@@ -344,8 +346,16 @@ vm.renderAuthorNews = function(data){
         if(!vm.data.authQingWid){
           vm.data.authQingWid = $(i).find('.c-qing-img').width();
         }
-
-        $(i).find('.c-qing-img').height(vm.data.authQingWid * 0.5625);
+        if(!!vm.data.oneQingWid){
+          ApiBridge.log(vm.data.authImgWid);
+          ApiBridge.log('vm.data.authImgWid');
+          $(i).find('.c-qing-img').height(vm.data.authImgWid * 0.5625);
+        } else {
+          $(i).find('.c-qing-img').height(vm.data.authQingWid * 0.5625);
+        }
+        // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+        // vm.data.authQingWid = $(i).find('.c-qing-img').width();
+        // $(i).find('.c-qing-img').height(vm.data.authQingWid * 0.5625);
       }
     })
     // $('.c-tab-bd ul li').each(function(v, i) {
@@ -362,7 +372,9 @@ vm.renderAuthorNews = function(data){
     $('.c-loading').hide();
   }
   else{
-    $('.c-tab-empty').show();
+    if(!!vm.data.isLoad){
+      $('.c-tab-empty').show();
+    }
   }
 }
 
@@ -758,7 +770,7 @@ vm.initAuthorTag = function(){
       ApiBridge.log('vm.data.tagList scroll')
 
       $('.c-loading').show();
-
+      $('.c-tab-empty').hide();
       if (vm.data.tagListIndex !== 3) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
@@ -771,8 +783,10 @@ vm.initAuthorTag = function(){
         });
       }
       if(!!vm.data.isloadmore){
-        
        vm.getAuthorPage('up');
+      }
+      else{
+        $('.c-tab-empty').hide();
       }
     }
   });
