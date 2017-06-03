@@ -105,7 +105,6 @@ var vm = {
     var $target = $(e.currentTarget);
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
     
-    ApiBridge.log('createMedia start')
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -127,6 +126,7 @@ var vm = {
           vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
           vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
           ApiBridge.log('createMedia net')
+          ApiBridge.log(vm.data.mediaHeight)
           //- document.body.scrollTop;
           if ($target.attr('status') != 0 && $target.attr('status') != 1) {
             ApiBridge.log('createMedia return')

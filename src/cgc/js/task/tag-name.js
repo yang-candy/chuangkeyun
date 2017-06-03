@@ -38,13 +38,13 @@ vm.initTag = function() {
     }
 
     //记录scrollTop
-    // if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
-    //   document.body.scrollTop = 0;
-    // }
-    // else{
-    //   document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
-    // }
-    // vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
+    if(!vm.data.scrollTopArr[vm.data.tagListIndex]){
+      document.body.scrollTop = 0;
+    }
+    else{
+      document.body.scrollTop = vm.data.scrollTopArr[Number(index.index)]
+    }
+    vm.data.scrollTopArr[vm.data.tagListIndex] = document.body.scrollTop;
 
     vm.data.tagListIndex = Number(index.index);
 
