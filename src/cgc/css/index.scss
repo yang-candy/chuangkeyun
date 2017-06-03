@@ -589,10 +589,11 @@ li{
   bottom:0;
   width:5rem;
   background:#f6f6f6;
+  z-index:33;
   overflow-y:scroll;
-  z-index:99;
 }
 .c-att-bar{
+  overflow-y:scroll;
   li{
     line-height:5;
     text-indent:1rem;
