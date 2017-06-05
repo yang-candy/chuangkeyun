@@ -435,14 +435,13 @@ vm.renderTagList = function(data, index, num) {
             }
             data.map(function(v) {
 
-              v['title'] = v['title'].replace(/ /g, '&nbsp;'/);
               if (v['mediatype'] == 4) {
                 html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userid=' + v['userid'] + ' class=media-audio>' + (v['isattention'] == 1 ? '' : '<a class="c-att-t ' + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '>+ 关注</a>') + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img c-auth-audio-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon ' + (v['zaned'] == 1 ? 'on-no-inmation' : '') + '"></span><span class="c-num">' + (v['praisenum']) + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount']) + '</span></span>' + '</p>' + '<span class="c-looked">' + (v['pv'] || 0) + '播放</span><span class="c-media-time">' + v['playtime'] + '</span>' + '</li>';
               } else if (v['mediatype'] == 2) {
 
                 var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['indexdetail'] + ' sharecontent=' + v['description'] + '>';
                 if (v['thumbnailpics'].length < 3 && v['thumbnailpics'].length > 0) {
-                  vm.data.oneQingWid = true;
+                  
                   qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
                 } else {
                   v['thumbnailpics'].map(function(k, i) {
@@ -484,7 +483,14 @@ vm.renderTagList = function(data, index, num) {
               $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
 
               if ($(i).attr('mediatype') == 2) {
-                $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+                // if($(i))
+                
+                if(Number($(i).find('.c-qing-img').attr('imgnum')) < 3){
+                  $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
+                } else {
+                  $(i).find('.c-qing-img').height((window.innerWidth - 55)/3 * 0.5625);
+                }
+                
               }
             })
             $('.c-loading').hide();
@@ -503,7 +509,6 @@ vm.renderTagList = function(data, index, num) {
         }
         data.map(function(v) {
 
-          v['title'] = v['title'].replace(/ /g, '&nbsp;'/);
           if (v['mediatype'] == 4) {
             //if (v[''])
             // var isErrorTip = 
@@ -513,7 +518,7 @@ vm.renderTagList = function(data, index, num) {
             var qingImg = '<div class="c-qing-img-wp"  newsid=' + v['newsid'] + ' picurl=' + v['indexdetail'] + ' sharecontent=' + v['description'] + '>';
 
             if (v['thumbnailpics'].length < 3 && !!v['thumbnailpics'].length) {
-              vm.data.oneQingWid = true;
+              
               qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
             } else {
               v['thumbnailpics'].map(function(k, i) {
@@ -556,7 +561,13 @@ vm.renderTagList = function(data, index, num) {
           $(i).find('.c-auth-info-img').height(vm.data.tagImgwidth * 0.5625);
              
           if ($(i).attr('mediatype') == 2) {
-            $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
+            if(Number($(i).find('.c-qing-img').attr('imgnum')) < 3){
+              $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
+            } else {
+              $(i).find('.c-qing-img').height((window.innerWidth - 55)/3 * 0.5625);
+            }
+
+            // $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
           }
         })
 

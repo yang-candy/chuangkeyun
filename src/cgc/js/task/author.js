@@ -340,11 +340,11 @@ vm.renderAuthorNews = function(data){
       $(i).find('.c-auth-info-img').height(vm.data.authImgWid * 0.5625);
 
       if ($(i).attr('mediatype') == 2) {
-        // if($(i).find('.c-qing-img').attr('imgnum') < 3){
-        //   $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
-        // } else {
-        //   $(i).find('.c-qing-img').height((window.innerWidth - 40)/3 * 0.5625);
-        // }
+        if($(i).find('.c-qing-img').attr('imgnum') < 3){
+          $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
+        } else {
+          $(i).find('.c-qing-img').height((window.innerWidth - 55)/3 * 0.5625);
+        }
       }
     })
     // $('.c-tab-bd ul li').each(function(v, i) {
@@ -659,17 +659,17 @@ vm.getAuthorPage = function(index, flag){
   // }
   // $('body').show();
 
-  // setTimeout(function(){
-  //   tagListIndex = index;
-  //   vm.renderAuthorPage(res.result);
-  //   vm.setImgWithBlur(res.result.userinfo);
-  //   vm.navWatch(res.result.userinfo);
-  // }, 3000)
+  // // setTimeout(function(){
+  // //   tagListIndex = index;
+  // //   vm.renderAuthorPage(res.result);
+  // //   vm.setImgWithBlur(res.result.userinfo);
+  // //   vm.navWatch(res.result.userinfo);
+  // // }, 3000)
   // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
-  // // vm.renderAuthorPage(res.result);
-  // // vm.setImgWithBlur(res.result.userinfo);
-  // // vm.navWatch(res.result.userinfo);
+  // vm.renderAuthorPage(res.result);
+  // vm.setImgWithBlur(res.result.userinfo);
+  // vm.navWatch(res.result.userinfo);
   // return;
   
   //mock
@@ -719,7 +719,7 @@ vm.getAuthorPage = function(index, flag){
       ApiBridge.log(index);
       ApiBridge.log(vm.data.tagListIndex);
       ApiBridge.log('vm.data.tagListIndex');
-      if(!flag && index != tagListIndex){
+      if(!flag && index != vm.data.tagListIndex){
         return;
       }
 
@@ -751,7 +751,7 @@ vm.getAuthorPage = function(index, flag){
 vm.initAuthorTag = function(index){
 
   tagListIndex = tagListIndex || 0;
-  //vm.data.tagListIndex = vm.data.tagListIndex || 0;
+  vm.data.tagListIndex = vm.data.tagListIndex || 0;
   // vm.data.tagListIndex = index || 0;
 
   //to do 本地存储点赞

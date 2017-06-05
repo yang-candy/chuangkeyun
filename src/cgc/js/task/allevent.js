@@ -334,6 +334,7 @@ vm.getTagContent = function(e) {
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
     vm.initAuthorTag($target.index());
   }else{
+    vm.navWatch(vm.data.authInfo);
     $('.c-tab-empty').hide();
   }
 }
