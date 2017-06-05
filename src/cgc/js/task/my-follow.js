@@ -125,6 +125,12 @@ vm.followList = function(data, isType, net, pageinfo) {
         }
       })
     }
+    //判断有无图片
+    data.map(function(v,i){
+      if(v['userpic'] || v['imgurl']){
+        $('.js-follow-list li').eq(i).find('img').css('background', 'none');
+      } 
+    })
   }
 
   //大 v推荐
@@ -135,6 +141,13 @@ vm.followList = function(data, isType, net, pageinfo) {
     })
 
     $('.js-follow-v-list').html(html);
+
+    //判断有无图片
+    data.map(function(v,i){
+      if(v['userpic'] || v['imgurl']){
+        $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+      } 
+    })
   }
   vm.data.isLoad = true;
 }
