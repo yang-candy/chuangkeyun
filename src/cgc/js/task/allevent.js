@@ -225,8 +225,7 @@ vm.article = function(e) {
   e.stopPropagation();
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
-
-  if(e.target.className != 'c-zan' && e.target.className != 'c-att-t' ){
+  if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' ){
     ApiBridge.log('delete audio')
     if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
 
@@ -334,7 +333,7 @@ vm.getTagContent = function(e) {
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
     vm.initAuthorTag($target.index());
   }else{
-    vm.navWatch(vm.data.authInfo);
+    // vm.navWatch(vm.data.authInfo);
     $('.c-tab-empty').hide();
   }
 }

@@ -145,7 +145,7 @@ vm.setNav = function(info, data){
 //高斯模糊设置
 vm.setImgWithBlur = function(userinfo){
   var opt = {
-    url: vm.data.authInfo.userinfo.userpic,
+    url: vm.data.userinfo.userpic,
     set: {
       radius: 32,
       saturationdeltafactor: 1.8
@@ -184,9 +184,18 @@ vm.renderAuthorInfo = function(data){
 
   if(!vm.data.hasUserInfo){
     // vm.data.authInfo = $.extend({},data);
-    vm.setImgWithBlur(vm.data.authInfo.userinfo);
-
     var userinfo = vm.data.authInfo.userinfo;
+
+    vm.data.userinfo = $.extend({}, vm.data.authInfo.userinfo);
+
+    vm.setImgWithBlur(vm.data.userinfo);
+
+    //注册一次
+    if(vm.data.isScrollAuthor){
+      vm.navWatch(vm.data.authInfo);
+    }
+    vm.data.isScrollAuthor = false;
+    
     //主页展示
     var html = '<div class="c-auth-native"></div>'
         + '<div class="c-auth-bg"></div>'
@@ -728,15 +737,7 @@ vm.getAuthorPage = function(index, flag){
         res.result.userinfo.userpic = res.result.userinfo.userpic + '&hybridCache=1';
         vm.data.authInfo = $.extend({},res.result);
         vm.renderAuthorPage(res.result);
-        
-        //注册一次
-        if(vm.data.isScrollAuthor){
-          vm.navWatch(vm.data.authInfo);
-        }
-        vm.data.isScrollAuthor = false;
-      }   
-
-         
+      }            
     },
     fail: function(status) {
       ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
@@ -770,13 +771,14 @@ vm.initAuthorTag = function(index){
 
       $('.c-loading').show();
       $('.c-tab-empty').hide();
+      debugger
       if (vm.data.tagListIndex !== 3) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
       if (vm.data.tagListIndex !== 4) {
-
+        ApiBridge.log('upScroll delete')
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
@@ -829,8 +831,8 @@ vm.navWatch = function(data) {
       vm.data.isIn = false;
 
       var info = {
-        imgurl: vm.data.authInfo.userinfo.userpic,
-        title: vm.data.authInfo.userinfo.name,
+        imgurl: vm.data.userinfo.userpic,
+        title: vm.data.userinfo.name,
         icon2: 'articleplatform_icon_share',
         icon2_p: 'articleplatform_icon_share_p',
         navigationbacktype: 1,
