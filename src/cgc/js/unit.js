@@ -726,6 +726,15 @@ var vm = {
       $(this).addClass('on').siblings().removeClass('on');
       $tb.find('ul').eq($index).show().siblings().hide();
     })
+    // $tb.find('ul').hide();
+    // $tb.find('ul').eq(0).show();
+    // $td.on('click', 'li', function(e) {
+    //   e.stopPropagation();
+    //   $index = $(this).index();
+
+    //   $(this).addClass('on').siblings().removeClass('on');
+    //   $tb.find('ul').eq($index).show().siblings().hide();
+    // })
   },
 
   //图片比例

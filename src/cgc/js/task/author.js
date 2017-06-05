@@ -3,7 +3,7 @@
 //点击删除某条信息
 vm.deleteNewModal = function(e) {
   e.stopPropagation();
-  vm.deleteNew(e);
+  // vm.deleteNew(e);
   ApiBridge.callNative('ClientViewManager', 'showDrawerView', {
     names:["删除"]
   }, function(result){
@@ -34,7 +34,7 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
-          vm.getAuthorPage();
+          vm.getAuthorPage(vm.data.tagListIndex);
         }
       },
       fail: function(status) {}
@@ -162,7 +162,7 @@ vm.setImgWithBlur = function(userinfo){
 }
 
 //渲染作者主页作者信息部分
-vm.renderAuthorInfo = function(data){
+vm.renderAuthorInfo = function(data, index){
   // vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
   // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
@@ -180,7 +180,7 @@ vm.renderAuthorInfo = function(data){
   
   // ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
 
-
+  index = index || 0;
 
   if(!vm.data.hasUserInfo){
     // vm.data.authInfo = $.extend({},data);
@@ -219,14 +219,14 @@ vm.renderAuthorInfo = function(data){
     vm.data.hasUserInfo = true;
     document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   }
-  vm.renderAuthorNews(data);
+  vm.renderAuthorNews(data, index);
 }
 
 //渲染作者主页
-vm.renderAuthorPage = function(data){
-
+vm.renderAuthorPage = function(data, index){
+  index = index || 0;
   // mock
-  // vm.renderAuthorInfo(data);
+  // vm.renderAuthorInfo(data, index);
 
   //mock
   if (!!data.userinfo) {
@@ -243,18 +243,19 @@ vm.renderAuthorPage = function(data){
               }
             })
           }
-          vm.renderAuthorInfo(data);
+          vm.renderAuthorInfo(data, index);
         })
       }catch (e) {}
     }
     else{
-      vm.renderAuthorInfo(data);
+      vm.renderAuthorInfo(data, index);
     }
   } 
 }
 
 //渲染作者主页消息列表
-vm.renderAuthorNews = function(data){
+vm.renderAuthorNews = function(data, index){
+  index = index || 0;
   var userinfo = data.userinfo;
   var html = '';
 
@@ -332,12 +333,12 @@ vm.renderAuthorNews = function(data){
     if (!vm.data.isLoad) {
       ApiBridge.log(vm.data.tagListIndex);
       ApiBridge.log('vm.data.tagListIndex')
-      $('.c-tab-bd ul').eq(vm.data.tagListIndex).append(html);
+      $('.c-tab-bd ul').eq(index).append(html);
       vm.data.isLoad = true;
     } else {
-      $('.c-tab-bd ul').eq(vm.data.tagListIndex).html(html);
+      $('.c-tab-bd ul').eq(index).html(html);
     }
-    $('.c-tab-bd ul').eq(vm.data.tagListIndex).children('li').each(function(v, i) {
+    $('.c-tab-bd ul').eq(index).children('li').each(function(v, i) {
       if ($(i).attr('mediatype') == 4) {
         return
       };
@@ -667,16 +668,17 @@ vm.getAuthorPage = function(index, flag){
 
   // }
   // $('body').show();
-
+  
   // // setTimeout(function(){
-  // //   tagListIndex = index;
+  // //   console.log(index, vm.data.tagListIndex)
+  // //   // tagListIndex = index;
   // //   vm.renderAuthorPage(res.result);
   // //   vm.setImgWithBlur(res.result.userinfo);
   // //   vm.navWatch(res.result.userinfo);
   // // }, 3000)
   // vm.data.authInfo = res.result;
   // vm.data.isloadmore = res.result.isloadmore || '';
-  // vm.renderAuthorPage(res.result);
+  // vm.renderAuthorPage(res.result, index);
   // vm.setImgWithBlur(res.result.userinfo);
   // vm.navWatch(res.result.userinfo);
   // return;
@@ -736,7 +738,7 @@ vm.getAuthorPage = function(index, flag){
       if(res.result.userinfo){
         res.result.userinfo.userpic = res.result.userinfo.userpic + '&hybridCache=1';
         vm.data.authInfo = $.extend({},res.result);
-        vm.renderAuthorPage(res.result);
+        vm.renderAuthorPage(res.result, index);
       }            
     },
     fail: function(status) {
@@ -784,7 +786,7 @@ vm.initAuthorTag = function(index){
         });
       }
       if(!!vm.data.isloadmore){
-       vm.getAuthorPage(index, 'up');
+       vm.getAuthorPage(vm.data.tagListIndex, 'up');
       }
       else{
         $('.c-tab-empty').hide();

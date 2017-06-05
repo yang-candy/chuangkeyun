@@ -5,23 +5,23 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media only screen and (min-width:320px) {
-  html {
-    font-size: 18px !important
-  }
-}
+// @media only screen and (min-width:320px) {
+//   html {
+//     font-size: 18px !important
+//   }
+// }
 
-@media only screen and (min-width:375px) {
-  html {
-    font-size: 21px !important
-  }
-}
+// @media only screen and (min-width:375px) {
+//   html {
+//     font-size: 21px !important
+//   }
+// }
 
-@media only screen and (min-width:410px) {
-  html {
-    font-size: 24px !important
-  }
-}
+// @media only screen and (min-width:410px) {
+//   html {
+//     font-size: 24px !important
+//   }
+// }
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial;
@@ -334,11 +334,12 @@ li{
 }
 .c-tab-title{
   display:flex;
+  border-bottom:1px solid #eee;
   li{
     flex:1;
     text-align:center;
     color:#999;
-    line-height:3;
+    line-height:44px;
     font-size:.77rem;
     &.on{
       position:relative;
@@ -349,10 +350,10 @@ li{
         bottom:0;
         content:'';
         left:50%;
-        margin-left:-.7rem;
-        width:1.5rem;
-        height:.1rem;
-        background:#333;
+        margin-left: -16px;
+        width: 32px;
+        height: 3px;
+        background: #333;
       }
     }
   }
@@ -360,7 +361,7 @@ li{
 .c-tab-ul{
   .c-media-audio{
     overflow:hidden;
-    padding-bottom: .5rem;
+    padding-bottom: 6px;
     
     & + .c-tab-ue{
       margin-top: 0;
@@ -558,11 +559,14 @@ li{
     padding: 3px 7px;
     font-size:10px;
     color:#333;
-    border:1px solid #999;
+    border:1px solid #ccc;
     text-decoration:none;
     &.on{
       border:1px solid #eee;
       color:#ccc;
+    }
+    > span{
+      vertical-align: top;
     }
   }
 
