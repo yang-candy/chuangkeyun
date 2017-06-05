@@ -304,7 +304,13 @@ vm.renderFollowMoreList = function(data, index) {
         } else {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
-
+        //判断有无图片
+        data.map(function(v,i){
+          if(v['userpic']){
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+          } 
+        })
+        
         $('.c-loading').hide();
         vm.data.isLoad = true;
         if (!vm.data.registLoad) {
@@ -358,6 +364,12 @@ vm.renderFollowMoreList = function(data, index) {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
 
+        //判断有无图片
+        data.map(function(v,i){
+          if(v['userpic']){
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+          } 
+        })
         $('.c-loading').hide();
         vm.data.isLoad = true;
 
