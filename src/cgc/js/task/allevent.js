@@ -138,7 +138,7 @@ vm.author2 = function(e) {
                 $($followTarget).html('已关注')
                 ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
-                  msg: '关注成功!'
+                  msg: '关注成功'
                 });
                 //判断流
                 if(/tag-name/.test(window.location.href)){
@@ -149,7 +149,7 @@ vm.author2 = function(e) {
                 $($followTarget).html('+  关注')
                 ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
-                  msg: '取消关注成功!'
+                  msg: '取消关注成功'
                 })
               }
             }
@@ -181,7 +181,7 @@ vm.author2 = function(e) {
               $($followTarget).html('已关注')
               ApiBridge.callNative('ClientViewManager', 'showToastView', {
                 type: 1,
-                msg: '关注成功!'
+                msg: '关注成功'
               })
               //判断流
               if(/tag-name/.test(window.location.href)){
@@ -192,7 +192,7 @@ vm.author2 = function(e) {
               $($followTarget).html('+  关注')
               ApiBridge.callNative('ClientViewManager', 'showToastView', {
                 type: 1,
-                msg: '取消关注成功!'
+                msg: '取消关注成功'
               })
             }
           }

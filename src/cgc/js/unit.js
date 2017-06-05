@@ -404,7 +404,7 @@ var vm = {
                 target.html('已关注')
                 ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
-                  msg: '关注成功!'
+                  msg: '关注成功'
                 });
                 //判断流
                 if (/tag-name/.test(window.location.href)) {
@@ -415,7 +415,7 @@ var vm = {
                 target.html('+  关注')
                 ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
-                  msg: '取消关注成功!'
+                  msg: '取消关注成功'
                 })
               }
             }
@@ -449,7 +449,7 @@ var vm = {
               target.html('已关注')
               ApiBridge.callNative('ClientViewManager', 'showToastView', {
                   type: 1,
-                  msg: '关注成功!'
+                  msg: '关注成功'
                 })
                 //判断流
               if (/tag-name/.test(window.location.href)) {
@@ -460,7 +460,7 @@ var vm = {
               target.html('+  关注')
               ApiBridge.callNative('ClientViewManager', 'showToastView', {
                 type: 1,
-                msg: '取消关注成功!'
+                msg: '取消关注成功'
               })
             }
           }
