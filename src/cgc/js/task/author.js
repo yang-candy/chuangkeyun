@@ -95,7 +95,10 @@ vm.setRightIcon = function (icon, flag){
             logo: shareinfo.sharelogo ||'',
             icon: shareinfo.shareicon ||' ',
             summary: shareinfo.sharesummary ||''
-          }
+          },
+          pagetype: 5,
+          sharepositiontype: 44,
+          objectid: vm.getParam('userId')
         };
         
         ApiBridge.callNative('ClientShareManager', 'shareAction', opt);
@@ -303,7 +306,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
-        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
+        + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
         + '<span class="c-media-time">' + v['playtime'] + '</span>'
         + '</li>';
       } else if (v['mediatype'] == 2) {
@@ -311,13 +314,13 @@ vm.renderAuthorNews = function(data, index){
         var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
 
         if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
-          qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' /></div>'
+          qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" typeId="author" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' seriesids=' + (v['seriesids'] || '') +  ' /></div>'
         } else {
           v['thumbnailpics'].map(function(k, i) {
             if (i > 2) {
               return;
             }
-            qingImg += '<img class="c-qing-img" imgnum=' + v['thumbnailpics'].length + ' src=' + k + ' />'
+            qingImg += '<img class="c-qing-img" typeId="author" imgnum=' + v['thumbnailpics'].length + ' src=' + k + ' seriesids=' + (v['seriesids'] || '') + ' />'
           })
         }
         if (v['thumbnailpics'].length > 3) {
@@ -333,7 +336,7 @@ vm.renderAuthorNews = function(data, index){
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
-        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
+        + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';   
       } else {
 
@@ -350,7 +353,7 @@ vm.renderAuthorNews = function(data, index){
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' 
         + '</p>' 
-        + (v['status'] !== 1 && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
+        + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';
       }
     })
@@ -432,7 +435,7 @@ vm.getAuthorPage = function(index, flag){
   //       "publishtime": "2017-05-22",
   //       "pv": "4",
   //       "replycount": "",
-  //       "seriesids": "",
+  //       "seriesids": "11",
   //       "session_id": "90ff7d26010c4b15b03d423ab3345bc4",
   //       "status": 0,
   //       "statusNote": "",
@@ -467,7 +470,7 @@ vm.getAuthorPage = function(index, flag){
   //       publishtime: "2017-05-17",
   //       pv: '',
   //       replycount: "23",
-  //       seriesids: "",
+  //       seriesids: "ss",
   //       session_id: "81dd865770894ab3bd0b41b1c918c770",
   //       status: 1,
   //       statusNote: "",
@@ -826,6 +829,10 @@ vm.initAuthorTag = function(index){
 
 // ios设置下拉时顶部空白设置
 vm.viewBounces = function(){
+  ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {
+    bounces: 0
+  });
+
   window.addEventListener('scroll', function() {
     if(document.body.scrollTop <= 0){
       ApiBridge.callNative('ClientViewManager', 'setScrollViewBounces', {

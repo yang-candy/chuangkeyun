@@ -288,7 +288,13 @@ vm.tagList = function(index, flag, num) {
   if (flag == 'up') {
     pid = lastpageid;
   }
-  $('.c-loading').show();
+
+  if ($('.js-tag-list').hasClass('on')) {
+    $('.c-loading').hide();
+  } else {
+    $('.c-loading').show();
+  }
+  
   ApiBridge.log(vm.data.isLoad)
   ApiBridge.log('vm.data.isLoad tag name')
 

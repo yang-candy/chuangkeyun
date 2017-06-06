@@ -190,6 +190,8 @@ vm.getFollowMoreList = function(id, index) {
   // return;
 
   // mock
+  $('.c-tab-empty').hide();
+  
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
   vm.ajax({
     url: vm.data.url + '/getUserPageByCategory.json',
@@ -208,7 +210,6 @@ vm.getFollowMoreList = function(id, index) {
 
         vm.data.lastId[index] = res.result.lastId;
         vm.renderFollowMoreList(res.result.users, index);
-        $('.c-tab-empty').hide();
       }else{
         $('.c-loading').hide();
         if(!!vm.data.isLoad){

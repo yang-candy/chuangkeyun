@@ -40,7 +40,11 @@ var vm = {
         newsid: $parent.attr('newsid'),
         index: $target.index(),
         pics: pics,
-        sharecontent: $parent.attr('sharecontent')
+        sharecontent: $parent.attr('sharecontent'),
+        reportjson: {
+          seriesids: $(e.currentTarget).attr('seriesids'),
+          sourcefrom: $(e.currentTarget).attr('typeId') ? 5 : 3 //主页5，标签列表3
+        }
       }
     });
   },
@@ -51,8 +55,9 @@ var vm = {
 
     //vm.data.lastId = '';
     // mock
-    vm.getFollowMoreList($target.attr('ids'), $target.index());
+    // vm.getFollowMoreList($target.attr('ids'), $target.index());
     // mock
+    $('.c-tab-empty').hide();
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
