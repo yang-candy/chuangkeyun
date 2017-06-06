@@ -273,6 +273,7 @@ vm.followAjax = function(url, opt) {
       res = JSON.parse(res);
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastpageid || '';
+      $('.c-loading').hide();
       if (!!res.result.vuserlist.length) {
         $('.js-follow-more').show();
         $('.js-follow-v').hide();
@@ -289,6 +290,7 @@ vm.followAjax = function(url, opt) {
     fail: function(status) {
       $('.js-follow-more').hide();
       $('.js-follow-v').hide();
+      $('.c-loading').hide();
       if (!!vm.data.localData.length) {
         $('.js-follow-more').show();
         //本地有数据，无网络
@@ -477,7 +479,6 @@ vm.init = function() {
 
 //关注上拉翻页
 vm.followMore = function() {
-  $('.c-loading').hide();
   //判断是否联网
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
@@ -502,6 +503,7 @@ vm.followMore = function() {
       } else {
         ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
           //本地数据有
+          $('.c-loading').hide();
           if (!!follow.result.length) {
             //to do
             var ids = [];
