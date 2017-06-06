@@ -225,14 +225,22 @@ vm.article = function(e) {
   e.stopPropagation();
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
+  
+  if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && e.target.className != 'c-auth-follow'){
+    ApiBridge.log('delete audio')
+    if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
 
-  if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
-
-    ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-      mediaid: vm.data.mediaid,
-    });
+      ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+        mediaid: vm.data.mediaid,
+      });
+    }
   }
-  debugger
+  // if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+
+  //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+  //     mediaid: vm.data.mediaid,
+  //   });
+  // }
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){
       return ;
@@ -300,15 +308,16 @@ vm.article = function(e) {
 vm.getTagContent = function(e) {
   e.stopPropagation();
 
+  vm.data.isTagChange = true;
+  vm.data.authInfo = {};
   document.body.scrollTop = 0;
   $('.c-tab-empty').hide();
-  // vm.data.isLoad = true;
-  
+
   $target = $(e.currentTarget);
   ApiBridge.log(vm.data.tagListIndex)
   ApiBridge.log('vm.data.tagList')
   vm.data.tagListIndex = $target.index();
-  debugger
+  
   if ($target.index() !== 3 || $target.index() !== 0) {
     ApiBridge.callNative('ClientVideoManager', 'deleteById', {
       mediaid: vm.data.mediaid,
@@ -323,7 +332,10 @@ vm.getTagContent = function(e) {
 
   //判断是否请求过内容
   if($('.c-tab-bd ul').eq($target.index()).html() == ''){
-    vm.initAuthorTag();
+    vm.initAuthorTag($target.index());
+  }else{
+    // vm.navWatch(vm.data.authInfo);
+    $('.c-tab-empty').hide();
   }
 }
 

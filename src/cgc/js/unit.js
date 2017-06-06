@@ -40,7 +40,11 @@ var vm = {
         newsid: $parent.attr('newsid'),
         index: $target.index(),
         pics: pics,
-        sharecontent: $parent.attr('sharecontent')
+        sharecontent: $parent.attr('sharecontent'),
+        reportjson: {
+          seriesids: $(e.currentTarget).attr('seriesids'),
+          sourcefrom: $(e.currentTarget).attr('typeId') ? 5 : 3 //主页5，标签列表3
+        }
       }
     });
   },
@@ -50,7 +54,10 @@ var vm = {
     var $target = $(e.target);
 
     //vm.data.lastId = '';
-
+    // mock
+    // vm.getFollowMoreList($target.attr('ids'), $target.index());
+    // mock
+    $('.c-tab-empty').hide();
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -105,7 +112,6 @@ var vm = {
     var $target = $(e.currentTarget);
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
     
-    ApiBridge.log('createMedia start')
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -127,6 +133,7 @@ var vm = {
           vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
           vm.data.mediaY = $(e.currentTarget).find('img')[0].y - borderWidth;
           ApiBridge.log('createMedia net')
+          ApiBridge.log(vm.data.mediaHeight)
           //- document.body.scrollTop;
           if ($target.attr('status') != 0 && $target.attr('status') != 1) {
             ApiBridge.log('createMedia return')
@@ -726,6 +733,15 @@ var vm = {
       $(this).addClass('on').siblings().removeClass('on');
       $tb.find('ul').eq($index).show().siblings().hide();
     })
+    // $tb.find('ul').hide();
+    // $tb.find('ul').eq(0).show();
+    // $td.on('click', 'li', function(e) {
+    //   e.stopPropagation();
+    //   $index = $(this).index();
+
+    //   $(this).addClass('on').siblings().removeClass('on');
+    //   $tb.find('ul').eq($index).show().siblings().hide();
+    // })
   },
 
   //图片比例
