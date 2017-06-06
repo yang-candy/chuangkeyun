@@ -228,7 +228,6 @@ vm.renderFollowMoreList = function(data, index) {
   // mock
   // var html = '';
 
-
   //     try{
   //           data.map(function(v) {
   //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
@@ -304,7 +303,13 @@ vm.renderFollowMoreList = function(data, index) {
         } else {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
-
+        //判断有无图片
+        data.map(function(v,i){
+          if(v['userpic']){
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+          } 
+        })
+        
         $('.c-loading').hide();
         vm.data.isLoad = true;
         if (!vm.data.registLoad) {
@@ -358,6 +363,12 @@ vm.renderFollowMoreList = function(data, index) {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
 
+        //判断有无图片
+        data.map(function(v,i){
+          if(v['userpic']){
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+          } 
+        })
         $('.c-loading').hide();
         vm.data.isLoad = true;
 

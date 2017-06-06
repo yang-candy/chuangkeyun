@@ -226,7 +226,7 @@ vm.article = function(e) {
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
   
-  if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img'){
+  if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && e.target.className != 'c-auth-follow'){
     ApiBridge.log('delete audio')
     if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
 

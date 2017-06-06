@@ -50,7 +50,9 @@ var vm = {
     var $target = $(e.target);
 
     //vm.data.lastId = '';
-
+    // mock
+    vm.getFollowMoreList($target.attr('ids'), $target.index());
+    // mock
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 

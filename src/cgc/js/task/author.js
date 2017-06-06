@@ -3,7 +3,9 @@
 //点击删除某条信息
 vm.deleteNewModal = function(e) {
   e.stopPropagation();
+  // mock
   // vm.deleteNew(e);
+  // mock
   ApiBridge.callNative('ClientViewManager', 'showDrawerView', {
     names:["删除"]
   }, function(result){
@@ -20,11 +22,20 @@ vm.deleteNew = function(e) {
   var $parent = $target.parent();
   var newsid = $target.attr('newsid');
 
+  // $('.c-tab-bd ul').each(function(index, par) {
+  //   $(par).children('li').each(function(v, i) {
+  //     if ($(i).attr('newsid') == $parent.attr('newsid')) {
+  //       $(i).hide();
+  //     };
+  //   })
+    
+  // })
   // $parent.hide();
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     vm.ajax({
       url: 'https://chejiahaoopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
       type: "POST",
+      isJson: true,
       data: {
         _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
         pcpopclub: user.userAuth,
@@ -34,7 +45,20 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
+          // vm.data.isLoad = true;
           vm.getAuthorPage(vm.data.tagListIndex);
+
+          $('.c-tab-bd ul').each(function(index, par) {
+            $(par).children('li').each(function(v, i) {
+              if ($(i).attr('newsid') == $parent.attr('newsid')) {
+                $(par).splice(v, 1);
+              };
+            })
+            if($(par).html == ''){
+              $('.c-tab-empty').show();
+            }
+
+          })
         }
       },
       fail: function(status) {}
@@ -163,6 +187,7 @@ vm.setImgWithBlur = function(userinfo){
 
 //渲染作者主页作者信息部分
 vm.renderAuthorInfo = function(data, index){
+
   // vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
   // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
@@ -397,7 +422,7 @@ vm.getAuthorPage = function(index, flag){
   //       "imagewidth": 0,
   //       "indexdetail": [],
   //       "isattention": 0,
-  //       "iscandelete": 0,
+  //       "iscandelete": 1,
   //       "mediaid": "04D323D5A73A6932",
   //       "mediatype": 4,
   //       "newsid": 195275,
