@@ -85,9 +85,8 @@ var vm = {
       fn && fn();
     } else {
       ApiBridge.callNative("ClientDataManager", "getWifiState", {}, function(state) {
-        ApiBridge.log(state)
+        state = JSON.parse(state);
         if (!state.result) {
-           ApiBridge.log('isCreatePlayer if')
           ApiBridge.callNative('ClientDataManager', 'getVideoShowAlertState', {}, function(data) {
            
             if (!data.result) {
@@ -101,7 +100,6 @@ var vm = {
             }
           })
         }else{
-          ApiBridge.log('isCreatePlayer else')
           fn && fn();
         }
       })
@@ -157,7 +155,9 @@ var vm = {
             y: vm.data.mediaY,
             status: $target.attr('status'),
             playtime: $target.attr('playtime'),
-            thumbnailpics: $target.attr('thumbnailpics').split(',')
+            thumbnailpics: $target.attr('thumbnailpics').split(','),
+            session_id: $target.attr('session_id'),
+            pageType: !!$target.attr('pageType') ? 5 : 3
           }
 
           if (vm.data.mediatype == 3) {
@@ -758,4 +758,4 @@ vm.data.isLoad = true;
 
 //tab切换
 vm.tab('.js-td', '.js-tb');
-ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+// ApiBridge.callNative('ClientViewManager', 'hideLoadingView');

@@ -271,9 +271,13 @@ vm.followAjax = function(url, opt) {
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
+
+      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+
       vm.data.isloadmore = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastpageid || '';
       $('.c-loading').hide();
+      
       if (!!res.result.vuserlist.length) {
         $('.js-follow-more').show();
         $('.js-follow-v').hide();
@@ -318,6 +322,8 @@ vm.getV = function() {
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
+      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+      
       if (!!res.result.vuserlist.length) {
         $('.js-follow-more').hide();
         $('.js-follow-v').show();
