@@ -106,7 +106,7 @@ vm.author2 = function(e) {
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       //已登录
       if (!!Number(user.userId)) {
-        if (!type) {
+        if (!$type) {
           var $url = 'https://chejiahaoopen.api.autohome.com.cn/OpenUserService.svc/Follow';
         } else {
           var $url = 'https://chejiahaoopen.api.autohome.com.cn/OpenUserService.svc/UnFollow';

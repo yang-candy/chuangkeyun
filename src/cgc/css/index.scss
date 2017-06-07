@@ -102,6 +102,7 @@ li{
   bottom:0;
   z-index:33;
   overflow:scroll;
+  background:#fff;
   img{
     margin-left: -3.4rem;
   }
@@ -605,7 +606,7 @@ li{
 }
 
 .c-att-fixed{
-  position:fixed;
+  position:absolute;
   left:0;
   top:0;
   bottom:0;
