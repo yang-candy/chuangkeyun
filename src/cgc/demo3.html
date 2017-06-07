@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <!--link rel="stylesheet" href="css/index.css" -->
+  <script src="js/dist.js"></script>
+  <script src="js/kerkee.js"></script>
+  <title>测试</title>
+</head>
+<body>
+  <p id="app"></p>
+  <p id="app1"></p>
+  <p id="ajax"></p>
+  <button id="btn0" type="button">获取常量</button>
+  <button id="btn1" type="button">设置导航标题</button>
+  <button id="btn2" type="button">转厂普通页(我的关注)</button>
+  <button id="btn3" type="button">转厂普通页(全部关注)</button>
+  <button id="btn4" type="button">转厂普通页(个人主页)</button>
+  <button id="btn5" type="button">转厂详情页</button>
+  <button id="btn6" type="button">获取当前用户信息</button>
+  <button id="btn7" type="button">获取当前大v信息</button>
+  <button id="btn8" type="button">隐藏加载效果</button>
+  <button id="btn9" type="button">显示加载效果</button>
+  <button id="btn10" type="button">显示加载失败</button>
+  <button id="btn11" type="button">获取本地关注数据</button>
+  <button id="btn12" type="button">添加本地关注数据</button>
+  <button id="btn13" type="button">取消本地关注数据</button>
+  <button id="btn14" type="button">本地关注数据是否存在</button>
+  <button id="btn15" type="button">蓝条提示条</button>
+  <button id="btn16" type="button">网络失败提示条</button>
+  <button id="btn17" type="button">是否联网</button>
+  <button id="btn18" type="button">设置电池条白色</button>
+  <button id="btn19" type="button">设置电池条默认色</button>
+  <button id="btn20" type="button">设置用户头像</button>
+  <button id="btn21" type="button">提示框(不带有任何图片)</button>
+  <button id="btn22" type="button">提示框(成功)</button>
+  <button id="btn23" type="button">提示框(失败)</button>
+  <button id="btn24" type="button">提示框(Alert)</button>
+  <button id="btn25" type="button">提示框(Processing)</button>
+  <button id="btn26" type="button">测试高斯模糊图片</button>
+  <button id="btn27" type="button">分享</button>
+  <button id="btn28" type="button">底部功能导航</button>
+  <button id="btn29" type="button">是否wifi</button>
+  <button id="btn30" type="button">视频播放切换网络标记</button>
+  <button id="btn31" type="button">视频播放切换网络标记NO</button>
+  <button id="btn32" type="button">视频播放切换网络是否弹出框</button>
+  <button id="btn33" type="button">Alert</button>
+  <button id="btn34" type="button">Alert(Video)</button>
+  <button id="btn35" type="button">空数据页</button>
+  <button id="btn36" type="button">清除据页</button>
+  <button id="btnGet" type="button">发送ajax Get</button>
+  <button id="btnPost" type="button">发送ajax POST</button>
+  <button id="btnClean" type="button">清空本地数据库关注信息</button>
+  <script>
+var app = document.getElementById('app');
+var app1 = document.getElementById('app1');
+var btnGet = document.getElementById('btnGet');
+var btnPost = document.getElementById('btnPost');
+var ajax = document.getElementById('ajax');
+window.test = function(arg){
+  app.textContent = arg;
+}
+
+btn0.onclick = function(){
+    ApiBridge.callNative("ClientDataManager", "getSystemConstant", {
+                         
+                         }, function (arg){
+                         alert(JSON.stringify(arg));
+                         app1.textContent = '' + arg;
+                         ApiBridge.log(arg,Math.random());
+                         });
+}
+btn1.onclick = function(){
+    ApiBridge.callNative("ClientViewManager", "setNavigationTabBarTitle", {
+                         title:"我的关注"
+                         }, function (arg){
+                         alert(JSON.stringify(arg));
+                         app1.textContent = '' + arg; 
+                         ApiBridge.log(arg,Math.random());
+                         });
+}
+
+btn2.onclick = function(){
+    ApiBridge.callNative("ClientViewManager", "pushViewController", {
+                         pagetype:8,
+                         animationtype:1,
+                         set:{
+                            modename:"my-follow",
+                            title:"我的关注"
+                         },
+                         param:{
+                         
+                            }
+                         }, function (arg){
+                            alert(JSON.stringify(arg));
+                            app1.textContent = '' + arg;
+                            ApiBridge.log(arg,Math.random());
+                         });
+}
+  btn3.onclick = function(){//关注更多
+      ApiBridge.callNative("ClientViewManager", "pushViewController", {
+                           pagetype:7,
+                           animationtype:1,
+                           set:{
+                            modename:"follow-more-tab",
+                            title:"关注更多",
+                           navigationtype:2
+                            }
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn4.onclick = function(){//个人主页
+      ApiBridge.callNative("ClientViewManager", "pushViewController", {
+                           pagetype:5,
+                           animationtype:1,
+                           set:{
+                           modename:"author",
+                           navigationtype:1
+                           },
+                           param:{
+                           userid:38879376
+                           }
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+btn5.onclick = function(){
+    ApiBridge.callNative("ClientViewManager", "pushViewController", {
+                         pagetype:2,
+                         animationtype:2,
+                         param:{
+                                idd:"99182",
+                                type:3
+                            }
+                         }, function (arg){
+                            alert(JSON.stringify(arg));
+                            app1.textContent = '' + arg;
+                            ApiBridge.log(arg,Math.random());
+                         });
+}
+  btn6.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getUserInfo", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn7.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getVUserInfo", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn8.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "hideLoadingView");
+  }
+  btn9.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "showLoadingView");
+  }
+  btn10.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "loadingFailed", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn11.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + JSON.stringify(arg);
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn12.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "addLocalDataForFollow", {
+                           "imgurl": "https://qnwww2.autoimg.cn/youchuang/g15/M0A/78/2A/autohomecar__wKgH1lcwiPSAKDiRAA6O0AK3DUQ738.jpg?imageView2/1/w/120/h/120",
+                           "time": "5-5",
+                           "iid": 599116,
+                           "title": "",
+                           "isFollow": 1,
+                           "description": "简介",
+                           "name": "gentspy"
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn13.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "deletLocalDataForFollow", {
+                           "iid": 599116
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn14.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "existsLocalDataForFollow", {
+                           "iid": 599116
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn15.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "showErrorTipsView_blue", {
+                           msg: "当前网络不可用，请检查网络设置",
+                           top: 44+20
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn16.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "showErrorTipsViewForNoNetWork", {
+                           top: 44+20
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn17.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getNetworkState", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn18.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "setStatusBarStyle", {
+                           statusBarStyle:1
+                           });
+  }
+  btn19.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "setStatusBarStyle", {
+                           statusBarStyle:0
+                           });
+  }
+  btn20.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "addNavigationTabBarUserHead", {
+                           usernamemaxword:5,
+                           user: {
+                            userid:599116,
+                            username:"老大测试的数据呀",
+                            imgurl: "https://qnwww2.autoimg.cn/youchuang/g15/M0A/78/2A/autohomecar__wKgH1lcwiPSAKDiRAA6O0AK3DUQ738.jpg?imageView2/1/w/120/h/120",
+                           }
+                           });
+  }
+  btn21.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "tipStatusView", {
+                           msg:"不带图片",
+                           tipstatustype:1
+                           });
+  }
+  btn22.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "tipStatusView", {
+                           msg:"成功",
+                           tipstatustype:2
+                           });
+  }
+  btn23.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "tipStatusView", {
+                           msg:"失败",
+                           tipstatustype:3
+                           });
+  }
+  btn24.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "tipStatusView", {
+                           msg:"Alert",
+                           tipstatustype:4
+                           });
+  }
+  btn25.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "tipStatusView", {
+                           msg:"Processing",
+                           tipstatustype:5
+                           });
+  }
+  btn26.onclick = function(){
+      ApiBridge.callNative("ClientImageManager", "getImageWithBlur", {
+                           url:"https://qnwww2.autoimg.cn/youchuang/g13/M00/8F/41/autohomecar__wKgH41gZhyiACABHAAW3TKVeWfw117.jpg?imageView2/0/w/640/h/320",
+                           set:{
+                           radius:"32",
+                           saturationdeltafactor:"1.8"
+                           }
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn27.onclick = function(){
+      ApiBridge.callNative("ClientShareManager", "shareAction", {
+                           "share":{
+                           "title":"adasas",
+                           "summary":"asdas",
+                           "url":"",
+                           "logo":""
+                           }
+                           }, function (arg){
+                           
+                           });
+  }
+  btn28.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "showDrawerView", {
+                           names:[
+                           "删除"
+                           ]
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btnClean.onclick = function(){
+      ApiBridge.callNative("ArticlePlatformCleanAttentionManger", "cleanLocal", {
+                           
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+
+  btn29.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getWifiState", {
+
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+                           btn30.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getVideoShowAlertState", {
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn31.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "setVideoShowAlertStateForNo", {
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn32.onclick = function(){
+      ApiBridge.callNative("ClientDataManager", "getMediaPlayShowAlertByNoWifi", {
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn33.onclick = function(){
+      ApiBridge.callNative("ClientToastManager", "showAlert", {
+                           msg:"您正在使用非wifi网络，播放将会产生流量费用"
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn34.onclick = function(){
+      ApiBridge.callNative("ClientToastManager", "showAlertForVideoPlayAlertForNoWifi", {
+
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  
+  btn35.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "showEmptyDataWithMessage", {
+                           top:400,
+                           msg:"暂无数据"
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  btn36.onclick = function(){
+      ApiBridge.callNative("ClientViewManager", "hideEmptyDataWithMessage", {
+                           }, function (arg){
+                           alert(JSON.stringify(arg));
+                           app1.textContent = '' + arg;
+                           ApiBridge.log(arg,Math.random());
+                           });
+  }
+  //http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json?pm=1&dt=0&au=
+  //http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json?pm=1&dt=1&au=a44fb2b2ef86402aa5a7b519768356cd0037f7de
+btnGet.onclick = function(){
+  vm.ajax({
+    url: "http://news.app.autohome.com.cn/chejiahao_v1.0.0/newspf/npgetvuserlist.json?pm=1&dt=1&au=a44fb2b2ef86402aa5a7b519768356cd0037f7de",              //请求地址
+    type: "GET",                       //请求方式
+    data: {
+
+    },        //请求参数
+    dataType: "json",
+    success: function (res, xml) {
+      console.log(res)
+        ajax.textContent = res;
+    },
+    fail: function (sta) {
+      console.log(sta)
+        ajax.textContent = sta;
+    }
+
+  });
+}
+btnPost.onclick = function(){
+  vm.ajax({
+    url: "https://youchuangopen.api.autohome.com.cn/OpenUserService.svc/Follow",              //请求地址
+    type: "POST",                       //请求方式
+    data: { userId: "2342868" },        //请求参数
+    dataType: "json",
+    success: function (res, xml) {
+      console.log(res)
+        ajax.textContent = res;
+    },
+    fail: function (sta) {
+      console.log(sta)
+        ajax.textContent = sta;
+    }
+
+  });
+}
+
+  </script>
+  
+</body>
+</html>

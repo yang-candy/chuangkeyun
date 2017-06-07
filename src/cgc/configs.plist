@@ -4,6 +4,14 @@
 <dict>
 	<key>htmlVersionl</key>
 	<string>1.0.0</string>
+	<key>htmls</key>
+	<array>
+		<string>article</string>
+		<string>author</string>
+		<string>follow-more-tab</string>
+		<string>my-follow</string>
+		<string>tag-name</string>
+	</array>
 	<key>tagPageForTagNames</key>
 	<array>
 		<string>全部</string>
