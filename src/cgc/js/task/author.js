@@ -1,6 +1,7 @@
 'use strict';
 
 //点击删除某条信息
+vm.data.isloadmore = [];
 vm.deleteNewModal = function(e) {
   e.stopPropagation();
   // mock
@@ -45,7 +46,6 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
-          // vm.data.isLoad = true;
           vm.getAuthorPage(vm.data.tagListIndex);
 
           $('.c-tab-bd ul').each(function(index, par) {
@@ -149,25 +149,6 @@ vm.setNav = function(info, data){
     };
     vm.setRightIcon(icon2, 'icon2');
   }
-
-  // ApiBridge.callNative('ClientNavigationManager', 'setRightIcon', {
-  //   righticons: icon
-  // }, function(res) {
-
-  //   var opt = {
-  //     share: {
-  //       url: shareinfo.shareurl ||'',
-  //       title: shareinfo.sharetitle ||'',
-  //       logo: shareinfo.sharelogo ||'',
-  //       icon: shareinfo.shareicon ||'',
-  //       summary: shareinfo.sharesummary ||''
-  //     }
-  //   };
-  //   ApiBridge.callNative('ClientShareManager', 'shareAction', opt, function(){
-
-  //   });
-  //   //to do share
-  // })
 }
 //高斯模糊设置
 vm.setImgWithBlur = function(userinfo){
@@ -190,24 +171,6 @@ vm.setImgWithBlur = function(userinfo){
 
 //渲染作者主页作者信息部分
 vm.renderAuthorInfo = function(data, index){
-
-  // vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
-
-  // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
-  // var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
-
-  // var pvMap = {
-  //   "eventid": eventid,
-  //   "pagename": pagename,
-  //   "isdata": 1,
-  //   "reportjson": {
-  //       "userid1#1": vm.getParam('userId'),
-  //       "userid2#2": vm.data.userId
-  //   }
-  // };
-  
-  // ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
-
   index = index || 0;
 
   if(!vm.data.hasUserInfo){
@@ -299,7 +262,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' session_id=' + v['session_id'] + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img  c-auth-audio-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
 
         + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
@@ -332,7 +295,7 @@ vm.renderAuthorNews = function(data, index){
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' session_id=' + v['session_id'] + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
@@ -345,7 +308,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'long' : 'short') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + ' session_id=' + v['session_id'] + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
@@ -379,8 +342,11 @@ vm.renderAuthorNews = function(data, index){
 
       if ($(i).attr('mediatype') == 2) {
         if($(i).find('.c-qing-img').attr('imgnum') < 3){
+          ApiBridge.log('imgnum < 3')
           $(i).find('.c-qing-img').height((window.innerWidth - 40) * 0.5625);
+          ApiBridge.log($(i).find('.c-qing-img').height())
         } else {
+          ApiBridge.log('imgnum > 3')
           $(i).find('.c-qing-img').height((window.innerWidth - 55)/3 * 0.5625);
         }
       }
@@ -705,7 +671,7 @@ vm.getAuthorPage = function(index, flag){
   // //   vm.navWatch(res.result.userinfo);
   // // }, 3000)
   // vm.data.authInfo = res.result;
-  // vm.data.isloadmore = res.result.isloadmore || '';
+  // vm.data.isloadmore[index] = res.result.isloadmore || '';
   // vm.renderAuthorPage(res.result, index);
   // vm.setImgWithBlur(res.result.userinfo);
   // vm.navWatch(res.result.userinfo);
@@ -733,9 +699,11 @@ vm.getAuthorPage = function(index, flag){
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
-      vm.data.isloadmore = res.result.isloadmore || '';
+      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+      
+      vm.data.isloadmore[index] = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
-      $('body').show();
+      // $('body').show();
 
       vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
@@ -795,28 +763,30 @@ vm.initAuthorTag = function(index){
   //上拉翻页加载
   vm.upScroll(function() {
     if (!!vm.data.isLoad) {
-      vm.data.isLoad = false;
+      
       ApiBridge.log(vm.data.tagListIndex)
       ApiBridge.log('vm.data.tagList scroll')
 
       $('.c-loading').show();
       $('.c-tab-empty').hide();
-      debugger
+      
       if (vm.data.tagListIndex !== 3) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
       if (vm.data.tagListIndex !== 4) {
-        ApiBridge.log('upScroll delete')
         ApiBridge.callNative('ClientAudioManager', 'deleteById', {
           mediaid: vm.data.mediaid,
         });
       }
-      if(!!vm.data.isloadmore){
-       vm.getAuthorPage(vm.data.tagListIndex, 'up');
+      if(!!vm.data.isloadmore[vm.data.tagListIndex]){
+        vm.data.isLoad = false;
+        ApiBridge.log('vm.data.tagList index')
+        vm.getAuthorPage(vm.data.tagListIndex, 'up');
       }
       else{
+        vm.data.isLoad = true;
         $('.c-tab-empty').hide();
       }
     }
@@ -850,12 +820,9 @@ vm.viewBounces = function(){
 
 //监听顶部导航
 vm.navWatch = function(data) {
-  // vm.data.authInfo = $.extend({},data);
-  
   vm.setNav({}, vm.data.authInfo);
   
   window.addEventListener('scroll', function() {
-
     var $scrollTop = document.body.scrollTop;
     var $titleHeight = $('.c-auth-title').height();
 
@@ -905,13 +872,12 @@ vm.navWatch = function(data) {
 
 if (/author/.test(window.location.href)) {
   var tagListIndex = 0;
-  $('body').hide();
+  // $('body').hide();
   vm.data.isLoad = true;
   // mock
   // vm.initAuthorTag();
   //mock 
 
-  
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
     //未联网
