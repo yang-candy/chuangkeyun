@@ -156,8 +156,12 @@ var vm = {
             status: $target.attr('status'),
             playtime: $target.attr('playtime'),
             thumbnailpics: $target.attr('thumbnailpics').split(','),
-            session_id: $target.attr('session_id'),
-            pageType: !!$target.attr('pageType') ? 5 : 3
+            reportJson: {
+              newsid: $target.attr('newsid'),
+              seriesids: $target.attr('seriesids'),
+              session_id: $target.attr('session_id'),
+              pageType: !!$target.attr('pageType') ? 5 : 3
+            }
           }
 
           if (vm.data.mediatype == 3) {
