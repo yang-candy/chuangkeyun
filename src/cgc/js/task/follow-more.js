@@ -99,7 +99,7 @@ vm.getFollowMoreList = function(id, index) {
   //     "userdesc": "",
   //     "userid": 6098853,
   //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
   //   },{
   //     "createtime": "2017-04-24 04:41:27",
   //     "fansnum": "",
@@ -205,6 +205,8 @@ vm.getFollowMoreList = function(id, index) {
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
+      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+      
       if (!!res.result.users.length) {
         vm.data.loadMore = res.result.loadMore;
 
@@ -267,6 +269,12 @@ vm.renderFollowMoreList = function(data, index) {
   //             }
   //           })
 
+  //           data.map(function(v,i){
+  //             if(v['userpic']){
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
+  //             } 
+  //           })
+
   //         }catch(e){
   //         }
 
@@ -307,7 +315,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
           } 
         })
         
@@ -367,7 +375,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background', 'none');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
           } 
         })
         $('.c-loading').hide();
