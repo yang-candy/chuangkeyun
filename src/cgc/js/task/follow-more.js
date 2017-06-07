@@ -206,7 +206,7 @@ vm.getFollowMoreList = function(id, index) {
     success: function(res, xml) {
       res = JSON.parse(res);
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
-      
+
       if (!!res.result.users.length) {
         vm.data.loadMore = res.result.loadMore;
 
@@ -271,7 +271,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //           data.map(function(v,i){
   //             if(v['userpic']){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
   //             } 
   //           })
 
@@ -315,7 +315,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
           } 
         })
         
@@ -375,7 +375,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
           } 
         })
         $('.c-loading').hide();
