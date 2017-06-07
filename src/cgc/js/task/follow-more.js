@@ -233,7 +233,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //     try{
   //           data.map(function(v) {
-  //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+  //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
   //           })
   //           if (!vm.data.isLoad) {
   //             $('.js-follow-more-list ul').eq(index).append(html);
@@ -271,7 +271,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //           data.map(function(v,i){
   //             if(v['userpic']){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'transparent');
   //             } 
   //           })
 
@@ -304,7 +304,7 @@ vm.renderFollowMoreList = function(data, index) {
           })
         }
         data.map(function(v) {
-          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         });
 
         if (!vm.data.isLoad) {
@@ -315,7 +315,10 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
+            ApiBridge.log('background')
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
+            ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+            ApiBridge.log('image');
           } 
         })
         
@@ -364,7 +367,7 @@ vm.renderFollowMoreList = function(data, index) {
     } else {
       try {
         data.map(function(v) {
-          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li userid=' + v['userid'] + '> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         })
         if (!vm.data.isLoad) {
           $('.js-follow-more-list ul').eq(index).append(html);
@@ -375,7 +378,8 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
+            ApiBridge.log('background')
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'transparent');
           } 
         })
         $('.c-loading').hide();

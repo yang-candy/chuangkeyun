@@ -269,6 +269,7 @@ vm.article = function(e) {
   }
 
   if(e.target.className == 'c-att-delete'){
+    
     vm.deleteNewModal(e);
     return;
   }

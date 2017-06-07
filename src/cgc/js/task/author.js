@@ -40,6 +40,7 @@ vm.deleteNew = function(e) {
       data: {
         _appid: vm.mobileType() == 'iOS' ? 'app' : 'app_android',
         pcpopclub: user.userAuth,
+        // autohomeua: user.userAgent,
         infoId: newsid
       },
       dataType: "json",
