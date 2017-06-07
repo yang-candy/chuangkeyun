@@ -112,11 +112,10 @@ li{
   .c-att-ul .c-att-href{
     top:1rem;
   }
-  .c-att-info{
-    width:97%;
+  .c-att-ul .c-att-info{
+    // width:97%;
     margin-left: 6px;
-    position: relative;
-    top: -12px;
+    margin-right: 6px;
   }
 }
 .c-att-ul{
@@ -186,12 +185,12 @@ li{
   }
   .c-att-fans{
     height:.8rem;
-    margin-top:.2rem;
+    margin-top:2px;
     color:#C3C3C3;
     font-size:.6rem;
   }
   .c-att-info{
-    margin-top:.2rem;
+    margin-top:2px;
     margin-right:45px;
     // padding-left:6px;
     color:#999;
@@ -211,9 +210,12 @@ li{
   text-align:center;
   text-decoration:none;
   span{
-    font-size:1.2rem;
-    font-weight:normal;
-    line-height:1.3;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background: url(../image/follow.png) no-repeat;
+    background-size: 100%;
+    vertical-align: -2px;
   }
 }
 

@@ -158,7 +158,7 @@ vm.getFollowMoreList = function(id, index) {
   //     "fansnum": "",
   //     "isattention": 1,
   //     "title": "",
-  //     "userdesc": "",
+  //     "userdesc": "无限试驾无限试驾无限试驾无限试驾无限试驾",
   //     "userid": 6098853,
   //     "username": "无限试驾",
   //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
