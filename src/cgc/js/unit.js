@@ -85,7 +85,6 @@ var vm = {
       fn && fn();
     } else {
       ApiBridge.callNative("ClientDataManager", "getWifiState", {}, function(state) {
-        state = JSON.parse(state);
         if (!state.result) {
           ApiBridge.callNative('ClientDataManager', 'getVideoShowAlertState', {}, function(data) {
            
@@ -156,11 +155,11 @@ var vm = {
             status: $target.attr('status'),
             playtime: $target.attr('playtime'),
             thumbnailpics: $target.attr('thumbnailpics').split(','),
-            reportJson: {
-              newsid: $target.attr('newsid'),
-              seriesids: $target.attr('seriesids'),
-              session_id: $target.attr('session_id'),
-              pageType: !!$target.attr('pageType') ? 5 : 3
+            reportjson: {
+              newsid: Number($target.attr('newsid')) || 0,
+              seriesids: $target.attr('seriesids') || '',
+              session_id: $target.attr('session_id') || '',
+              pagetype: !!$target.attr('pageType') ? 5 : 3
             }
           }
 

@@ -271,7 +271,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //           data.map(function(v,i){
   //             if(v['userpic']){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
   //             } 
   //           })
 
@@ -315,7 +315,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
           } 
         })
         
@@ -375,7 +375,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', '');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-image', url(''));
           } 
         })
         $('.c-loading').hide();
