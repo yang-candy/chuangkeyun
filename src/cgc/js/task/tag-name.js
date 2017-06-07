@@ -299,8 +299,6 @@ vm.tagList = function(index, flag, num) {
     $('.c-loading').show();
   }
   
-  ApiBridge.log(vm.data.isLoad)
-  ApiBridge.log('vm.data.isLoad tag name')
 
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
 
@@ -320,7 +318,6 @@ vm.tagList = function(index, flag, num) {
       dataType: "json",
       success: function(res, xml) {
         vm.data.hasReFresh = false;
-        ApiBridge.log('vm.data.isLoad tag name succ')
         ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
         res = JSON.parse(res);
@@ -336,7 +333,6 @@ vm.tagList = function(index, flag, num) {
         }
       },
       fail: function(status) {
-        ApiBridge.log('vm.data.isLoad tag name fail')
         $('.c-loading').hide();
         ApiBridge.callNative('ClientViewManager', 'loadingFailed', {}, function() {
           ApiBridge.callNative('ClientViewManager', 'showLoadingView');
@@ -421,14 +417,15 @@ vm.renderTagList = function(data, index, num) {
         try {
 
           //判断赞
-          ApiBridge.log(vm.data.likes)
           if (vm.data.likes.length) {
             vm.data.likes.map(function(j) {
-              if (j == v['userid']) {
-                v['zaned'] = 1;
-              } else {
-                v['zaned'] = 0;
-              }
+              data.map(function(v) {
+                if (j == v['userid']) {
+                  v['zaned'] = 1;
+                } else {
+                  v['zaned'] = 0;
+                }
+              })
             })
           }
 
@@ -509,18 +506,21 @@ vm.renderTagList = function(data, index, num) {
           })
         } catch (e) {}
       } else {
+
         if (vm.data.likes.length) {
           vm.data.likes.map(function(j) {
-            if (j == v['userid']) {
-              v['zaned'] = 1;
-            } else {
-              v['zaned'] = 0;
-            }
+            data.map(function(v) {
+              if (j == v['userid']) {
+                v['zaned'] = 1;
+              } else {
+                v['zaned'] = 0;
+              }
+            })
           })
         }
         data.map(function(v) {
-
           v['title'] = v['title'].replace(/\s/g, '&nbsp;');
+
           if (v['mediatype'] == 4) {
             //if (v[''])
             // var isErrorTip = 
@@ -553,7 +553,7 @@ vm.renderTagList = function(data, index, num) {
           }
         })
         vm.data.isRender = true;
-
+        
         if (!vm.data.isLoad) {
           $('.c-tab-bd ul').eq(index).append(html);
         } else {
