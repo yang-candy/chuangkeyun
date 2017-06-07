@@ -12,6 +12,61 @@ vm.getFollowMoreBar = function() {
   //             "name": "全部",
   //                 "sortnum": 1,
   //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
+  //   },{
+  //         "id": 2,
+  //             "name": "全部",
+  //                 "sortnum": 1,
+  //                     "usercount": 59
   //   },{                  
   //             "name": "自媒体",
   //                 "sortnum": 2,
@@ -92,60 +147,6 @@ vm.getFollowMoreList = function(id, index) {
   //   "lastId": "100000000|2017/4/27 14:00:05|18759205",
   //   "loadMore": true,
   //   "users": [{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
-  //     "createtime": "2017-04-24 04:41:27",
-  //     "fansnum": "",
-  //     "isattention": 1,
-  //     "title": "",
-  //     "userdesc": "",
-  //     "userid": 6098853,
-  //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
-  //   },{
   //     "fansnum": "",
   //     "isattention": 1,
   //     "title": "",
@@ -247,7 +248,7 @@ vm.renderFollowMoreList = function(data, index) {
   //           if(!vm.data.registLoad){
   //             return;
   //           }
-  //           $('.js-follow-v-list').on('scroll',function(e){
+  //           $('.js-follow-more-list').on('scroll',function(e){
   //             vm.data.registLoad = false;
 
   //             var $target = e.currentTarget;
@@ -255,6 +256,12 @@ vm.renderFollowMoreList = function(data, index) {
   //             var $scrollHeight = $($target)[0].scrollHeight;
   //             var $height = $($target).height();
   //             var $scrollTop = $target.scrollTop; 
+  //             $docScrollTop =  document.body.scrollTop
+  //             if(vm.mobileType() == 'iOS'){
+  //               if($scrollTop == 0){
+  //                 $(window).scrollTop($docScrollTop)
+  //               }
+  //             }
 
   //             if($height + $scrollTop >= $scrollHeight){
   //               if(!!vm.data.isLoad){
@@ -333,6 +340,13 @@ vm.renderFollowMoreList = function(data, index) {
           var $height = $($target).height();
           var $scrollTop = $target.scrollTop;
 
+          $docScrollTop =  document.body.scrollTop
+          if(vm.mobileType() == 'iOS'){
+            if($scrollTop == 0){
+              $(window).scrollTop($docScrollTop)
+            }
+          }
+
           if ($height + $scrollTop >= $scrollHeight) {
             //断网
             ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
@@ -393,6 +407,12 @@ vm.renderFollowMoreList = function(data, index) {
           var $height = $($target).height();
           var $scrollTop = $target.scrollTop;
 
+          $docScrollTop =  document.body.scrollTop
+          if(vm.mobileType() == 'iOS'){
+            if($scrollTop == 0){
+              $(window).scrollTop($docScrollTop)
+            }
+          }
           if ($height + $scrollTop >= $scrollHeight) {
 
             ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
@@ -432,6 +452,7 @@ vm.renderFollowMoreList = function(data, index) {
   })
 }
 
+var $docScrollTop;
 if (/follow-more-tab/.test(window.location.href)) {
   //vm.data.isFollowMore = true;
   vm.data.isLoad = true;
@@ -441,4 +462,23 @@ if (/follow-more-tab/.test(window.location.href)) {
 
   vm.data.lastId = [];
 
+  var $touchY;
+  $('.js-follow-more-list').on('touchstart',function(e){
+    var touch = e.touches[0];
+    
+    $touchY = touch.pageY;
+  })
+  $('.js-follow-more-list').on('touchmove',function(e){
+    var touch = e.touches[0];
+
+    if($('.js-follow-more-list').scrollTop() == 0){
+      if($touchY - touch.pageY < 0 || $('.js-follow-more-list ul').eq(vm.data.followMoreIndex).find('li').length < 6){
+        return false;
+      }
+    } 
+  })
+
+  $('.c-att-fixed').on('touchend',function(){
+    $docScrollTop = document.body.scrollTop;
+  })
 }
