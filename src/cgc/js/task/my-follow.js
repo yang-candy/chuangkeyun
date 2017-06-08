@@ -505,8 +505,11 @@ vm.followMore = function() {
             dt: 1,
             au: user.userAuth
           })
+        } else{
+          $('.c-loading').hide();
         }
       } else {
+        $('.c-loading').hide();
         ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
           //本地数据有
           $('.c-loading').hide();
@@ -535,6 +538,8 @@ if (/my-follow/.test(window.location.href)) {
       vm.data.isLoad = false;
       $('.c-loading').show();
       vm.followMore();
+    }else{
+      $('.c-loading').hide();
     }
   });
 }

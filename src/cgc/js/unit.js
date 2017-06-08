@@ -85,11 +85,11 @@ var vm = {
       fn && fn();
     } else {
       ApiBridge.callNative("ClientDataManager", "getWifiState", {}, function(state) {
-        if (!state.result) {
+        if (state.result == '0') {
           ApiBridge.callNative('ClientDataManager', 'getVideoShowAlertState', {}, function(data) {
            
             if (!data.result) {
-              ApiBridge.callNative('ClientToastManager', 'showAlert', {}, function(info) {
+              ApiBridge.callNative('ClientToastManager', 'showAlertForVideoPlayAlertForNoWifi', {}, function(info) {
                 if (!!info.result) {
                   fn && fn();
                 }
@@ -107,6 +107,7 @@ var vm = {
   createMedia: function(e) {
     e.stopPropagation();
     var $target = $(e.currentTarget);
+
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
     
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
@@ -124,7 +125,7 @@ var vm = {
           vm.data.mediaStatus = true;
           vm.data.mediaid = $(e.currentTarget).attr('mediaid');
           vm.data.mediatype = $(e.currentTarget).attr('mediatype');
-          vm.data.mediatitle = $(e.currentTarget).attr('title');
+          vm.data.mediatitle = $(e.currentTarget).attr('title').replace(/\\u0020/g, ' ');;
           vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
           vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
           vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
@@ -159,12 +160,11 @@ var vm = {
               newsid: Number($target.attr('newsid')) || 0,
               seriesids: $target.attr('seriesids') || '',
               session_id: $target.attr('session_id') || '',
-              pagetype: !!$target.attr('pageType') ? 5 : 3
+              pagetype: !!$target.attr('pagetype') ? $target.attr('pagetype') : 3
             }
           }
 
           if (vm.data.mediatype == 3) {
-            ApiBridge.log('createMedia 3')
             ApiBridge.callNative('ClientVideoManager', 'createById', postData);
           }
           if (vm.data.mediatype == 4) {
@@ -762,3 +762,7 @@ vm.data.isLoad = true;
 //tab切换
 vm.tab('.js-td', '.js-tb');
 // ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
+
+// window.ontouchstart = function(e) { 
+//   e.preventDefault(); 
+// };

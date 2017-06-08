@@ -278,7 +278,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //           data.map(function(v,i){
   //             if(v['userpic']){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'transparent');
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
   //             } 
   //           })
 
@@ -322,10 +322,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            ApiBridge.log('background')
             $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
-            ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
-            ApiBridge.log('image');
           } 
         })
         
@@ -392,8 +389,10 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            ApiBridge.log('background')
-            $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'transparent');
+            ApiBridge.log('background');
+            ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background'));
+            
+            $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
           } 
         })
         $('.c-loading').hide();

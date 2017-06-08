@@ -3,7 +3,16 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  // pointer-events: none;
 }
+
 
 // @media only screen and (min-width:320px) {
 //   html {
@@ -28,6 +37,13 @@ body {
   font-size: .8rem;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 textarea, input, label, div{
@@ -131,6 +147,7 @@ li{
     .c-att-title{
       margin-top:.2rem;
       margin-right:5rem;
+
     }
     .c-att-info{
       // margin-top:.6rem;
@@ -151,7 +168,7 @@ li{
     border-radius:200px;
     background: url(../image/pic_head.png) no-repeat;
     background-size:100% 100%;
-    background-color:#fff;
+    // background-color:#fff;
     overflow: hidden;
     border:1px solid #ccc;
   } 
@@ -182,6 +199,7 @@ li{
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: PingFangSC-Regular;
+    font-weight: 400;
   }
   .c-att-fans{
     height:.8rem;
@@ -567,6 +585,7 @@ li{
     font-size: 14px;
     vertical-align: middle;
     font-family: PingFangSC-Regular;
+    font-weight: 400;
   }
   .c-att-t{
     position:absolute;
@@ -653,7 +672,7 @@ li{
         width:20px;
         background:url(../image/zan.png) center no-repeat;
         background-size:100% auto;
-        vertical-align:2px;
+        // vertical-align:2px;
       }
       .c-add1{
         position:absolute;
@@ -675,10 +694,11 @@ li{
       }
       .c-num{
         position:absolute;
-        top:0px;
+        top:-3px;
         left:15px;
         line-height:1;
         background:#fff;
+        padding: 1px;
       }
     }
     &.c-common{
@@ -687,7 +707,7 @@ li{
       .c-num{
         position:absolute;
         top:-2px;
-        left:15px;
+        left:16px;
         padding:0px;
         line-height:1;
         background:#fff;

@@ -263,7 +263,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 5) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img  c-auth-audio-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
 
         + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
@@ -296,7 +296,7 @@ vm.renderAuthorNews = function(data, index){
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 5) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
         + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
@@ -309,7 +309,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'long' : 'short') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
-        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' class="c-tag-media" pageType="5">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
+        + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 6) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
         + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '')
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
@@ -320,6 +320,12 @@ vm.renderAuthorNews = function(data, index){
         + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';
       }
+
+      data.map(function(v,i){
+        if(v['userpic']){
+          $('.c-tab-list li').eq(i).find('img').css('background', 'transparent');
+        } 
+      })
     })
     
     if (!vm.data.isLoad) {
