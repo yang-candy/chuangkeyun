@@ -88,9 +88,9 @@ var vm = {
         if (state.result == '0') {
           ApiBridge.callNative('ClientDataManager', 'getVideoShowAlertState', {}, function(data) {
            
-            if (!data.result) {
+            if (data.result == '1') {
               ApiBridge.callNative('ClientToastManager', 'showAlertForVideoPlayAlertForNoWifi', {}, function(info) {
-                if (!!info.result) {
+                if (info.result == '1') {
                   fn && fn();
                 }
               })
@@ -125,7 +125,8 @@ var vm = {
           vm.data.mediaStatus = true;
           vm.data.mediaid = $(e.currentTarget).attr('mediaid');
           vm.data.mediatype = $(e.currentTarget).attr('mediatype');
-          vm.data.mediatitle = $(e.currentTarget).attr('title').replace(/\\u0020/g, ' ');;
+          vm.data.mediatitle = $(e.currentTarget).attr('title');
+
           vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
           vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
           vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;

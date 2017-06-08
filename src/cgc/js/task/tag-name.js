@@ -442,7 +442,8 @@ vm.renderTagList = function(data, index, num) {
               })
             }
             data.map(function(v) {
-              v['title'] = v['title'].replace(/\s/g, '\\u0020');
+              v['title'] = v['title'].replace(/\s/g, '&nbsp');
+
               if (v['mediatype'] == 4) {
                 html += '<li newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userid=' + v['userid'] + ' class=media-audio>' + (v['isattention'] == 1 ? '' : '<a class="c-att-t' + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertime=' + (v['publishtime'] || '') + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '><span>+</span> 关注</a>') + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + v['userpic'] + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + v['username'] + '</p></div>' + '<div class="c-media-audio">' + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + (v['thumbnailpics'].length > 0 ? '<img class="c-auth-info-img c-auth-audio-img" src=' + v['thumbnailpics'][0] + ' alt="">' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' + '<p class="span c-tab-ue">' + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon' + (v['zaned'] == 1 ? 'on-no-inmation' : '') + '"></span><span class="c-num">' + (v['praisenum']) + '</span></span>' + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + (v['replycount']) + '</span></span>' + '</p>' + '<span class="c-looked">' + (v['pv'] || 0) + '播放</span><span class="c-media-time">' + v['playtime'] + '</span>' + '</li>';
               } else if (v['mediatype'] == 2) {
@@ -525,7 +526,7 @@ vm.renderTagList = function(data, index, num) {
           })
         }
         data.map(function(v) {
-          v['title'] = v['title'].replace(/\s/g, '\\u0020');
+          v['title'] = v['title'].replace(/\s/g, '&nbsp');
 
           if (v['mediatype'] == 4) {
             //if (v[''])

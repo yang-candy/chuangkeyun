@@ -153,7 +153,7 @@ vm.getFollowMoreList = function(id, index) {
   //     "userdesc": "",
   //     "userid": 6098853,
   //     "username": "无限试驾",
-  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
   //   },{
   //     "fansnum": "",
   //     "isattention": 1,
@@ -278,7 +278,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //           data.map(function(v,i){
   //             if(v['userpic']){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
+  //               $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
   //             } 
   //           })
 
@@ -322,7 +322,7 @@ vm.renderFollowMoreList = function(data, index) {
         //判断有无图片
         data.map(function(v,i){
           if(v['userpic']){
-            $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
           } 
         })
         
@@ -392,7 +392,8 @@ vm.renderFollowMoreList = function(data, index) {
             ApiBridge.log('background');
             ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background'));
             
-            $('.js-follow-v-list li').eq(i).find('img').css('background', 'transparent');
+            $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
+
           } 
         })
         $('.c-loading').hide();

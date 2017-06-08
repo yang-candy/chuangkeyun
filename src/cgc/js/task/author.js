@@ -173,6 +173,8 @@ vm.setImgWithBlur = function(userinfo){
 //渲染作者主页作者信息部分
 vm.renderAuthorInfo = function(data, index){
   index = index || 0;
+  
+  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
   if(!vm.data.hasUserInfo){
     // vm.data.authInfo = $.extend({},data);
@@ -256,6 +258,8 @@ vm.renderAuthorNews = function(data, index){
   if (!!data.length) {
     data.map(function(v) {
       v['pv'] = v['pv'] || 0;
+
+      v['title'] = v['title'].replace(/\s/g, '&nbsp');
 
       if (v['mediatype'] == 4) {
         html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
@@ -706,8 +710,7 @@ vm.getAuthorPage = function(index, flag){
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
-      ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
-
+      
       vm.data.isloadmore[index] = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
       // $('body').show();
