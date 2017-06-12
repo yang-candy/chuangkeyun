@@ -63,7 +63,7 @@ vm.chejiahaoClick = function(pvMap){
   ApiBridge.callNative('ClientPvManager', 'pageClick', {
     "eventid":  pvMap.eventid,
     "pagename": pvMap.pagename,
-    "reportjson": reportjson
+    "reportjson": pvMap.reportjson
   });
 }
 
@@ -246,11 +246,7 @@ vm.article = function(e) {
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
   
-  if (e.target.className == 'c-zan' && !!$target.attr('hasZan')) {
-    return;
-  }
-
-  if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && e.target.className != 'c-auth-follow'){
+  if(e.target.className != 'c-zan' && !$(e.target).hasClass('zan-icon') && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && !$(e.target).hasClass('c-auth-follow')){
     ApiBridge.log('delete audio')
     if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
 
@@ -327,6 +323,20 @@ vm.article = function(e) {
   if (e.target.tagName != 'LI' && e.target.className != 'c-qing-img' && e.target.className != 'c-auth-info-img' && (e.target.className != 'c-tab-jj ' && e.target.className != 'c-tab-jj short' && e.target.className != 'c-tab-jj long') && e.target.className != 'c-media-audio') {
     return;
   }
+
+  var pvMap = {
+    "eventid":  'chejiahao_list_detail_click',
+    "pagename": 'chejiahao_list_detail',
+    "reportjson": {
+      "userid#1": vm.data.userId,
+      "typeid#2": $($curTarget).attr('mediatype'),
+      "objectid#3": $($curTarget).attr('newsid'),
+      "position#4": $($curTarget).attr('position')
+        
+    }
+  };
+  vm.chejiahaoClick(pvMap);
+    
   $target = $(e.currentTarget);
   ApiBridge.callNative('ClientViewManager', 'pushViewController', {
     pagetype: 2,

@@ -110,6 +110,7 @@ var vm = {
 
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
     
+    debugger
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -125,8 +126,7 @@ var vm = {
           vm.data.mediaStatus = true;
           vm.data.mediaid = $(e.currentTarget).attr('mediaid');
           vm.data.mediatype = $(e.currentTarget).attr('mediatype');
-          vm.data.mediatitle = $(e.currentTarget).attr('title');
-
+          vm.data.mediatitle = $(e.currentTarget).attr('title').replace(/&nbsp/g, ' ');
           vm.data.mediaWidth = $(e.currentTarget).find('img').width() + 2 * borderWidth;
           vm.data.mediaHeight = $(e.currentTarget).find('img').height() + 2 * borderWidth;
           vm.data.mediaX = $(e.currentTarget).find('img')[0].x - borderWidth;
@@ -334,6 +334,17 @@ var vm = {
     if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
       return;
     };
+    //pv
+    var pvMap = {
+      "eventid":  'chejiahao_praise_click',
+      "pagename": 'chejiahao_praise',
+      "reportjson": {
+        "userid#1": vm.data.userId,
+        "objectid#2": $target.attr('newsid'),
+        "typeid#3": $target.attr('typeid')
+      }
+    };
+    vm.chejiahaoClick(pvMap);
 
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       if (!Number(user.userId)) {
@@ -362,6 +373,17 @@ var vm = {
   tagCommon: function(e) {
     e.stopPropagation();
     $target = $(e.currentTarget);
+    //pv
+    var pvMap = {
+      "eventid":  'chejiahao_praise_click',
+      "pagename": 'chejiahao_praise',
+      "reportjson": {
+        "userid#1": vm.data.userId,
+        "objectid#2": $target.attr('newsid')
+      }
+    };
+    vm.chejiahaoClick(pvMap);
+
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: 2,
       animationtype: 2,
@@ -378,6 +400,18 @@ var vm = {
   // 关注不关注
   followToggle: function(userid, type, info, target) {
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      var pvMap = {
+      "eventid":  'chejiahao_cancelorattention_click',
+      "pagename": 'chejiahao_cancelorattention',
+      "reportjson": {
+        "userid#1": user.userId || '',
+        "typeid#2": !type? '1': '2',
+        "userid2#3": target.attr('userid') || '',
+        "objecttypeid#4": target.attr('objecttypeid') || ''
+      }
+    };
+    vm.chejiahaoClick(pvMap);
+
       //已登录
       if (Number(user.userId)) {
         if (!type) {

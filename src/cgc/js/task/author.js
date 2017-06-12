@@ -214,7 +214,7 @@ vm.renderAuthorInfo = function(data, index){
     if(!vm.data.isAuthor){
       //客页
       html += '<p class="c-auth-f">'
-        + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
+        + '<a href="javascript:;" class="c-auth-follow ' + (userinfo['isattention'] == 1 ? 'on' : '') + '" userid=' + vm.getParam('userId') + ' objecttypeid=' + (vm.data.isAuthor ? '7' : '8') + ' username=' + userinfo['name'] + ' userpic=' + userinfo['userpic'] + ' userdesc=' + userinfo['desc'] + '>'+ (userinfo['isattention'] == 1 ?'已关注' :'<span>＋</span> 关注') + '</a>'
         + '</p>';
     }
 
@@ -283,14 +283,14 @@ vm.renderAuthorNews = function(data, index){
 
         + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</span></div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + ' typeid=' + (vm.data.isAuthor ? 4 : 3 ) + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
         + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
         + '<span class="c-media-time">' + v['playtime'] + '</span>'
         + '</li>';
       } else if (v['mediatype'] == 2) {
 
-        var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['thumbnailpics'] + ' sharecontent=' + v['description'] +  '>';
+        var qingImg = '<div class="c-qing-img-wp" newsid=' + v['newsid'] + ' picurl=' + v['pics'] + ' sharecontent=' + v['description'] +  '>';
 
         if (v['thumbnailpics'].length > 0 && v['thumbnailpics'].length < 3) {
           qingImg = '<div class="c-qing-img-one"><img class="c-qing-img" typeId="author" imgnum=' + v['thumbnailpics'].length + ' src=' + v['thumbnailpics'][0] + ' seriesids=' + (v['seriesids'] || '') +  ' /></div>'
@@ -313,7 +313,7 @@ vm.renderAuthorNews = function(data, index){
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 5) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + ' typeid=' + (vm.data.isAuthor ? 4 : 3 ) + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' + '</p>' 
         + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
          + '</li>';   
@@ -329,7 +329,7 @@ vm.renderAuthorNews = function(data, index){
         + (v['mediatype'] == 3? '<span class="c-media-time">' + v['playtime'] + '</span>' : '')
         + '</div>' 
         + '<p class="span c-tab-ue">' 
-        + '<span class="c-zan" newsid=' + v['newsid'] + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
+        + '<span class="c-zan" newsid=' + v['newsid'] + ' typeid=' + (vm.data.isAuthor ? 4 : 3 ) + '><span class="zan-icon"></span><span class="c-num">' + v['praisenum'] + '</span></span>' 
         + '<span class="c-common" newsid=' + v['newsid'] + ' type=' + v['mediatype'] + '><span class="c-num">' + v['replycount'] + '</span></span>' 
         + '</p>' 
         + ((v['status'] == 2 || v['status'] == 100 || v['status'] == 101 ) && vm.data.isAuthor ? '<span class="c-error-tip">' + v['statusStr'] + ' </span>' : '<span class="c-looked">' + (v['pv'] || 0) + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '播放' : '浏览') + '</span>') 
