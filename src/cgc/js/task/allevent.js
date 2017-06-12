@@ -58,12 +58,22 @@ vm.bindEvent = function() {
   // $('.js-tag-list').on('click', '.c-auth-img', vm.author2);
 }
 
+// pv
+vm.chejiahaoClick = function(pvMap){
+  ApiBridge.callNative('ClientPvManager', 'pageClick', {
+    "eventid":  pvMap.eventid,
+    "pagename": pvMap.pagename,
+    "reportjson": reportjson
+  });
+}
+
 //点击作者头像获取UserId跳转作者主页
-vm.toAuthor = function(userId, userId) {
+vm.toAuthor = function(pagetype, $curTarget) {
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     vm.data.isClicked = false;
+
+    var userId = $curTarget.attr('userid');
     var pagetype = (user.userId == userId) ? 5 : 7;
-    // var icon = (user.userId == userId) ? 5 : ;
 
     ApiBridge.callNative('ClientViewManager', 'pushViewController', {
       pagetype: pagetype,
@@ -83,6 +93,16 @@ vm.toAuthor = function(userId, userId) {
       }
     });
 
+    // pv
+    var pvMap = {
+      "eventid":  'chejiahao_list_bigvuser_click',
+      "pagename": 'chejiahao_list_bigvuser',
+      "reportjson": {
+        "userid1#1": user.userId,
+        "userid2#2": userId
+      }
+    };
+    vm.chejiahaoClick(pvMap);
   })
 }
 
@@ -216,7 +236,7 @@ vm.author2 = function(e) {
     vm.data.isClicked = true;
 
     var pagetype = (user.userId == $curTarget.attr('userid')) ? 5 : 7;
-    vm.toAuthor(pagetype, $curTarget.attr('userid'));
+    vm.toAuthor(pagetype, $curTarget);
   })
 }
 vm.data.isClicked = false;
@@ -226,6 +246,10 @@ vm.article = function(e) {
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
   
+  if (e.target.className == 'c-zan' && !!$target.attr('hasZan')) {
+    return;
+  }
+
   if(e.target.className != 'c-zan' && e.target.className != 'zan-icon' && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && e.target.className != 'c-auth-follow'){
     ApiBridge.log('delete audio')
     if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
@@ -235,19 +259,14 @@ vm.article = function(e) {
       });
     }
   }
-  // if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
 
-  //   ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-  //     mediaid: vm.data.mediaid,
-  //   });
-  // }
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){
       return ;
     }
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       var pagetype = (user.userId == $($curTarget).attr('userid')) ? 5 : 7;
-      vm.toAuthor(pagetype, $($curTarget).attr('userid'));
+      vm.toAuthor(pagetype, $($curTarget));
     })
     return;
   }
@@ -262,6 +281,20 @@ vm.article = function(e) {
         autoscrolltocomment: 0
       }
     });
+
+    var pvMap = {
+      "eventid":  'chejiahao_list_detail_click',
+      "pagename": 'chejiahao_list_detail',
+      "reportjson": {
+        "userid#1": vm.data.userId,
+        "typeid#2": $($curTarget).attr('mediatype'),
+        "objectid#3": $($curTarget).attr('newsid'),
+        "position#4": $($curTarget).attr('position')
+          
+      }
+    };
+    vm.chejiahaoClick(pvMap);
+
     return;
   }
   if (e.target.tagName != 'LI' && e.target.className == 'c-qing-img' &&  $(e.target).attr('imgnum') >= 3) {

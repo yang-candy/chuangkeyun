@@ -290,6 +290,23 @@ vm.followAjax = function(url, opt) {
           $('.c-tab-empty').show();
         }
       }
+
+      // 添加pv
+      var eventid ='chejiahao_myattention_page_pv';
+      var pagename ='chejiahao_myattention_page';
+      var isdata = !!res.result.vuserlist.length? 1: 0;
+      
+      var pvMap = {
+        "eventid": eventid,
+        "pagename": pagename,
+        "isdata": isdata,
+        "reportjson": {
+            "userid#1": vm.data.userId
+        }
+      };
+  
+      ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+
     },
     fail: function(status) {
       $('.js-follow-more').hide();
@@ -448,6 +465,7 @@ vm.init = function() {
     //联网
     if (!!Number(vm.data.isNet)) {
       ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+        vm.data.userId = user.userId;
 
         if (Number(user.userId)) {
           //已登录

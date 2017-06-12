@@ -219,6 +219,24 @@ vm.getFollowMoreList = function(id, index) {
           $('.c-tab-empty').show();
         }
       }
+
+      // 添加pv
+      
+      ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+        var eventid ='chejiahao_allbigvlist_page_pv';
+        var pagename ='chejiahao_allbigvlist_page';
+        var isdata = !!res.result.users.length? 1: 0;
+      
+        var pvMap = {
+          "eventid": eventid,
+          "pagename": pagename,
+          "isdata": isdata,
+          "reportjson": {
+              "userid1#1": user.userId
+          }
+        };
+        ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+      })
     },
     fail: function(status) {}
   });
@@ -234,7 +252,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //     try{
   //           data.map(function(v) {
-  //             html += '<li > <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+  //             html += '<li> <a class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img class="c-att-img" src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
   //           })
   //           if (!vm.data.isLoad) {
   //             $('.js-follow-more-list ul').eq(index).append(html);
@@ -277,9 +295,14 @@ vm.renderFollowMoreList = function(data, index) {
   //           })
 
   //           data.map(function(v,i){
-  //             if(v['userpic']){
+  //             $('.js-follow-v-list li').eq(i).find('img').load(function(){
   //               $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-  //             } 
+  //             })
+  //             // if(v['userpic']){
+  //             //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
+  //             //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+  //             //   ApiBridge.log('11111111111111111111')
+  //             // } 
   //           })
 
   //         }catch(e){
@@ -295,6 +318,7 @@ vm.renderFollowMoreList = function(data, index) {
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     var html = '';
 
+    // vm.data.userId = user.userId;
     //未登录 
     if (!Number(user.userId)) {
       ApiBridge.callNative("ClientDataManager", "getLocalDataForFollow", {}, function(follow) {
@@ -320,12 +344,19 @@ vm.renderFollowMoreList = function(data, index) {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
         //判断有无图片
+        // $('.js-follow-v-list').find('img').css('background-size', '0');
         data.map(function(v,i){
-          if(v['userpic']){
+          $('.js-follow-v-list li').eq(i).find('img').load(function(){
             $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-          } 
+          })
+          // if(v['userpic']){
+          //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
+          //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+          //   ApiBridge.log('11111111111111111111')
+          // } 
         })
-        
+        ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+
         $('.c-loading').hide();
         vm.data.isLoad = true;
         if (!vm.data.registLoad) {
@@ -387,15 +418,22 @@ vm.renderFollowMoreList = function(data, index) {
         }
 
         //判断有无图片
-        data.map(function(v,i){
-          if(v['userpic']){
-            ApiBridge.log('background');
-            ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background'));
+        // $('.js-follow-v-list').find('img').css('background-size', '0');
             
+        data.map(function(v,i){
+          $('.js-follow-v-list li').eq(i).find('img').load(function(){
             $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-
-          } 
+          })
+          // if(v['userpic']){
+          //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
+            
+          //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+          //   ApiBridge.log('11111111111111111111')
+          // } 
         })
+
+        ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
+
         $('.c-loading').hide();
         vm.data.isLoad = true;
 

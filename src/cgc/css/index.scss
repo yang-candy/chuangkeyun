@@ -119,11 +119,22 @@ li{
   z-index:33;
   overflow:scroll;
   background:#fff;
-  img{
-    margin-left: -3.4rem;
-  }
-  .c-att-ul li{
+
+  .trans-bg{
     padding-left: 3.9rem;
+    &:before{
+      content: '';
+      position: absolute;
+      left: 9999px;
+      width: 2.9rem;
+      height: 2.9rem;
+      border-radius: 200px;
+      background: url(../image/pic_head.png) no-repeat;
+      background-size: 100% 100%;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      z-index: -1;;
+    }
   }
   .c-att-ul .c-att-href{
     top:1rem;
@@ -168,7 +179,6 @@ li{
     border-radius:200px;
     background: url(../image/pic_head.png) no-repeat;
     background-size:100% 100%;
-    // background-color:#fff;
     overflow: hidden;
     border:1px solid #ccc;
   } 
@@ -345,6 +355,10 @@ li{
   color:#333;
   text-decoration:none;
   font-size:12px;
+  &.on{
+    color:#ccc;
+    border:1px solid #eee;
+  }
   span{
     font-size:.7rem;
   }
@@ -694,11 +708,11 @@ li{
       }
       .c-num{
         position:absolute;
-        top:-3px;
-        left:15px;
+        top: -2px;
+        left: 16px;
         line-height:1;
         background:#fff;
-        padding: 1px;
+        // padding: 2px;
       }
     }
     &.c-common{
@@ -706,9 +720,9 @@ li{
       background-size:100% auto;
       .c-num{
         position:absolute;
-        top:-2px;
-        left:16px;
-        padding:0px;
+        top:-4px;
+        left:15px;
+        padding:2px;
         line-height:1;
         background:#fff;
       }
@@ -1081,4 +1095,12 @@ li{
 
 .author-body{
   background: #fff;
+}
+
+.c-wp{
+  .transparent-bg{
+    background: transparent;
+    background-image: none;
+    background-size: 0;
+  }
 }

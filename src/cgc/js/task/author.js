@@ -1,5 +1,19 @@
 'use strict';
 
+vm.chejiahaoPv = function(data){
+  var pvMap = {
+    "eventid": data.eventid,
+    "pagename": data.pagename,
+    "isdata": data.isdata,
+    "reportjson": {
+        "userid1#1": vm.data.userId,
+        "userid2#2": vm.getParam('userId')
+    }
+  };
+
+  ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+}
+
 //点击删除某条信息
 vm.data.isloadmore = [];
 vm.deleteNewModal = function(e) {
@@ -23,15 +37,6 @@ vm.deleteNew = function(e) {
   var $parent = $target.parent();
   var newsid = $target.attr('newsid');
 
-  // $('.c-tab-bd ul').each(function(index, par) {
-  //   $(par).children('li').each(function(v, i) {
-  //     if ($(i).attr('newsid') == $parent.attr('newsid')) {
-  //       $(i).hide();
-  //     };
-  //   })
-    
-  // })
-  // $parent.hide();
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
     vm.ajax({
       url: 'https://chejiahaoopen.api.autohome.com.cn/OpenInfoService.svc/DeleteForUserSelf',
@@ -52,10 +57,13 @@ vm.deleteNew = function(e) {
           $('.c-tab-bd ul').each(function(index, par) {
             $(par).children('li').each(function(v, i) {
               if ($(i).attr('newsid') == $parent.attr('newsid')) {
-                $(par).splice(v, 1);
+                $(i).remove();
               };
             })
-            if($(par).html == ''){
+            ApiBridge.log($(par).html());
+            if($(par).html() == ''){
+              ApiBridge.log($(par).html());
+              $(par).html('');
               $('.c-tab-empty').show();
             }
 
@@ -156,8 +164,10 @@ vm.setImgWithBlur = function(userinfo){
   var opt = {
     url: vm.data.userinfo.userpic,
     set: {
-      radius: 32,
-      saturationdeltafactor: 1.8
+      radius: vm.mobileType() == 'iOS' ? 10 : 30,
+      saturationdeltafactor: vm.mobileType() == 'iOS' ? 1 : 1.8,
+      outwidth: '375',
+      leftrightmargin: '30'
     }
   };
 
@@ -174,7 +184,6 @@ vm.setImgWithBlur = function(userinfo){
 vm.renderAuthorInfo = function(data, index){
   index = index || 0;
   
-  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
   if(!vm.data.hasUserInfo){
     // vm.data.authInfo = $.extend({},data);
@@ -194,7 +203,7 @@ vm.renderAuthorInfo = function(data, index){
     var html = '<div class="c-auth-native"></div>'
         + '<div class="c-auth-bg"></div>'
         + '<div class="c-auth-info">'
-        +'<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
+        + '<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
         + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
         + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
         + '<p class="c-auth-tips">'
@@ -219,6 +228,7 @@ vm.renderAuthorInfo = function(data, index){
 //渲染作者主页
 vm.renderAuthorPage = function(data, index){
   index = index || 0;
+
   // mock
   // vm.renderAuthorInfo(data, index);
 
@@ -250,19 +260,20 @@ vm.renderAuthorPage = function(data, index){
 //渲染作者主页消息列表
 vm.renderAuthorNews = function(data, index){
   index = index || 0;
+  
   var userinfo = data.userinfo;
   var html = '';
 
   data = data.newslist;
 
   if (!!data.length) {
-    data.map(function(v) {
+    data.map(function(v, i) {
       v['pv'] = v['pv'] || 0;
 
       v['title'] = v['title'].replace(/\s/g, '&nbsp');
 
       if (v['mediatype'] == 4) {
-        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
@@ -296,7 +307,7 @@ vm.renderAuthorNews = function(data, index){
         } else {
           qingImg += '</div>'
         }
-        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
@@ -308,7 +319,7 @@ vm.renderAuthorNews = function(data, index){
          + '</li>';   
       } else {
 
-        html += '<li page="author" newsid=' + v['newsid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
@@ -380,6 +391,8 @@ vm.renderAuthorNews = function(data, index){
       $('.c-tab-empty').show();
     }
   }
+
+  ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 }
 
 //获取作者主页  
@@ -401,7 +414,7 @@ vm.getAuthorPage = function(index, flag){
   //       "imageheight": 0,
   //       "imagewidth": 0,
   //       "indexdetail": [],
-  //       "isattention": 0,
+  //       "isattention": 1,
   //       "iscandelete": 1,
   //       "mediaid": "04D323D5A73A6932",
   //       "mediatype": 4,
@@ -660,7 +673,7 @@ vm.getAuthorPage = function(index, flag){
   //       bgimg: "https://x.autoimg.cn/app/image/pnvideodefult_small.jpg",
   //       desc: "胡永平，当年胡姐姐，今日丈母娘。不评车，只搞笑，只做3分钟……的视频。开心就好。",
   //       fanscount: "5.0万",
-  //       isattention: 0,
+  //       isattention: 1,
   //       name: "丈母娘唠车丈母娘唠车丈母娘唠车丈",
   //       publishcount: "18",
   //       session_id: "43839fda8db54f3097e94c0534e44922",
@@ -713,25 +726,31 @@ vm.getAuthorPage = function(index, flag){
       
       vm.data.isloadmore[index] = res.result.isloadmore || '';
       vm.data.lastpageid = res.result.lastid || '';
-      // $('body').show();
 
       vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
-      var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
-      var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
-      var isdata = res.result.userinfo? 1: 0;
-
       var pvMap = {
-        "eventid": eventid,
-        "pagename": pagename,
-        "isdata": isdata,
-        "reportjson": {
-            "userid1#1": vm.getParam('userId'),
-            "userid2#2": vm.data.userId
-        }
+        eventid: vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv',
+        pagename: vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser',
+        isdata: res.result.userinfo? 1: 0
       };
+
+      vm.chejiahaoPv(pvMap);
+      // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
+      // var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
+      // var isdata = res.result.userinfo? 1: 0;
+      
+      // var pvMap = {
+      //   "eventid": eventid,
+      //   "pagename": pagename,
+      //   "isdata": isdata,
+      //   "reportjson": {
+      //       "userid1#1": vm.getParam('userId'),
+      //       "userid2#2": vm.data.userId
+      //   }
+      // };
   
-      ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
+      // ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
 
       ApiBridge.log(index);
       ApiBridge.log(vm.data.tagListIndex);
@@ -824,8 +843,7 @@ vm.viewBounces = function(){
         bounces: 1
       });
     }
-  })
-  
+  })  
 }
 
 //监听顶部导航
@@ -882,7 +900,6 @@ vm.navWatch = function(data) {
 
 if (/author/.test(window.location.href)) {
   var tagListIndex = 0;
-  // $('body').hide();
   vm.data.isLoad = true;
   // mock
   // vm.initAuthorTag();
