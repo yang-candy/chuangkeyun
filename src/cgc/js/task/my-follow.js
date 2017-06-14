@@ -244,7 +244,7 @@ vm.followAjax = function(url, opt) {
   //   if (opt.au) {
   //     vm.getV();
   //   } else {
-  //     $('.c-tab-empty').show();
+  //     $('.c-empty').show();
   //   }
   // }
   // mock
@@ -287,7 +287,7 @@ vm.followAjax = function(url, opt) {
         if (opt.au) {
           vm.getV(opt.au);
         } else {
-          $('.c-tab-empty').show();
+          $('.c-empty').show();
         }
       }
 

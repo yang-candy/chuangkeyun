@@ -129,7 +129,7 @@ vm.author2 = function(e) {
         "pagename": 'chejiahao_cancelorattention',
         "reportjson": {
           "userid#1": user.userId || '',
-          "typeid#2": !type? '1': '2',
+          "typeid#2": !$type ? '1': '2',
           "userid2#3": $curTarget.attr('userid') || '',
           "objecttypeid#4": $curTarget.attr('objecttypeid') || ''
         }
@@ -303,13 +303,15 @@ vm.article = function(e) {
       }
     });
 
+    var typeid = $($curTarget).attr('mediatype');
+    var odjectid = (Number(typeid) == 3 || Number(typeid) == 4) ? $($curTarget).attr('mediaid') : $($curTarget).attr('newsid');
     var pvMap = {
       "eventid":  'chejiahao_list_detail_click',
       "pagename": 'chejiahao_list_detail',
       "reportjson": {
         "userid#1": vm.data.userId,
         "typeid#2": $($curTarget).attr('mediatype'),
-        "objectid#3": $($curTarget).attr('newsid'),
+        "objectid#3": odjectid,
         "position#4": $($curTarget).attr('position')
           
       }

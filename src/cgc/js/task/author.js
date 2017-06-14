@@ -69,6 +69,7 @@ vm.deleteNew = function(e) {
 
             if((index == 0 || index == vm.data.tagListIndex) && $(par).html() == ''){
               // $(par).html('');
+              $('.c-tab-empty').height(vm.data.emptyHeight);
               $('.c-tab-empty').show();
             }
           })
@@ -226,6 +227,8 @@ vm.renderAuthorInfo = function(data, index){
     vm.data.hasUserInfo = true;
     document.styleSheets[0].addRule('.c-auth-bg::before','background-image: url(' + userinfo['bgimg'] + ')');
   }
+
+  vm.data.emptyHeight = window.innerHeight - $('.c-tab-title').offset().top -$('.c-tab-title').height();
   vm.renderAuthorNews(data, index);
 }
 
@@ -267,7 +270,7 @@ vm.renderAuthorNews = function(data, index){
   
   var userinfo = data.userinfo;
   var html = '';
-
+  
   data = data.newslist;
 
   if (!!data.length) {
@@ -277,7 +280,7 @@ vm.renderAuthorNews = function(data, index){
       v['title'] = v['title'].replace(/\s/g, '&nbsp');
 
       if (v['mediatype'] == 4) {
-        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
@@ -311,7 +314,7 @@ vm.renderAuthorNews = function(data, index){
         } else {
           qingImg += '</div>'
         }
-        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
@@ -323,7 +326,7 @@ vm.renderAuthorNews = function(data, index){
          + '</li>';   
       } else {
 
-        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
+        html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
         + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
@@ -380,6 +383,7 @@ vm.renderAuthorNews = function(data, index){
   }
   else{
     if(!!vm.data.isLoad){
+      $('.c-tab-empty').height(vm.data.emptyHeight);
       $('.c-tab-empty').show();
     }
   }
@@ -729,25 +733,7 @@ vm.getAuthorPage = function(index, flag){
       };
 
       vm.chejiahaoPv(pvMap);
-      // var eventid = vm.data.isAuthor ? 'chejiahao_bigvuser_pv': 'chejiahao_mainbigvuser_pv';
-      // var pagename = vm.data.isAuthor ? 'chejiahao_bigvuser': 'chejiahao_mainbigvuser';
-      // var isdata = res.result.userinfo? 1: 0;
-      
-      // var pvMap = {
-      //   "eventid": eventid,
-      //   "pagename": pagename,
-      //   "isdata": isdata,
-      //   "reportjson": {
-      //       "userid1#1": vm.getParam('userId'),
-      //       "userid2#2": vm.data.userId
-      //   }
-      // };
-  
-      // ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
 
-      ApiBridge.log(index);
-      ApiBridge.log(vm.data.tagListIndex);
-      ApiBridge.log('vm.data.tagListIndex');
       if(!flag && index != vm.data.tagListIndex){
         return;
       }
