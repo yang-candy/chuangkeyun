@@ -109,8 +109,8 @@ var vm = {
     var $target = $(e.currentTarget);
 
     vm.data.mediaid = $(e.currentTarget).attr('mediaid');
+    vm.data.mediatype = $(e.currentTarget).attr('mediatype');
     
-    debugger
     ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
       vm.data.isNet = state.result;
 
@@ -282,8 +282,8 @@ var vm = {
     $target.append(html);
 
     //记录点赞
-    vm.data.likes.push($target.parents('li').attr('userid'));
-    vm.setLs('tagliked', vm.data.likes)
+    vm.data.likes.push($target.parents('li').attr('newsid'));
+    vm.setLs('tagliked', vm.data.likes);
 
     setTimeout(function() {
       $('.c-add1').remove();
@@ -334,6 +334,7 @@ var vm = {
     if ($target.find('.zan-icon').hasClass('on-no-inmation')) {
       return;
     };
+
     //pv
     var pvMap = {
       "eventid":  'chejiahao_praise_click',
@@ -375,8 +376,8 @@ var vm = {
     $target = $(e.currentTarget);
     //pv
     var pvMap = {
-      "eventid":  'chejiahao_praise_click',
-      "pagename": 'chejiahao_praise',
+      "eventid":  'chejiahao_comment_click',
+      "pagename": 'chejiahao_comment',
       "reportjson": {
         "userid#1": vm.data.userId,
         "objectid#2": $target.attr('newsid')
@@ -401,16 +402,16 @@ var vm = {
   followToggle: function(userid, type, info, target) {
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
       var pvMap = {
-      "eventid":  'chejiahao_cancelorattention_click',
-      "pagename": 'chejiahao_cancelorattention',
-      "reportjson": {
-        "userid#1": user.userId || '',
-        "typeid#2": !type? '1': '2',
-        "userid2#3": target.attr('userid') || '',
-        "objecttypeid#4": target.attr('objecttypeid') || ''
-      }
-    };
-    vm.chejiahaoClick(pvMap);
+        "eventid":  'chejiahao_cancelorattention_click',
+        "pagename": 'chejiahao_cancelorattention',
+        "reportjson": {
+          "userid#1": user.userId || '',
+          "typeid#2": !type? '1': '2',
+          "userid2#3": target.attr('userid') || '',
+          "objecttypeid#4": target.attr('objecttypeid') || ''
+        }
+      };
+      vm.chejiahaoClick(pvMap);
 
       //已登录
       if (Number(user.userId)) {
@@ -440,8 +441,6 @@ var vm = {
                 };
 
                 vm.setRightIcon(icon1);
-
-                //target = !!$('.c-att-href').length ? $('.c-att-href') : $('.c-auth-follow');
               }
 
               if (!type) {

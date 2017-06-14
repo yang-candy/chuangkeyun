@@ -124,6 +124,18 @@ vm.author2 = function(e) {
 
     //单独拿出来vivo7使用
     ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+      var pvMap = {
+        "eventid":  'chejiahao_cancelorattention_click',
+        "pagename": 'chejiahao_cancelorattention',
+        "reportjson": {
+          "userid#1": user.userId || '',
+          "typeid#2": !type? '1': '2',
+          "userid2#3": $curTarget.attr('userid') || '',
+          "objecttypeid#4": $curTarget.attr('objecttypeid') || ''
+        }
+      };
+      vm.chejiahaoClick(pvMap);
+
       //已登录
       if (!!Number(user.userId)) {
         if (!$type) {
@@ -246,15 +258,28 @@ vm.article = function(e) {
   var $followTarget = e.target;
   var $curTarget = e.currentTarget;
   
-  if(e.target.className != 'c-zan' && !$(e.target).hasClass('zan-icon') && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && !$(e.target).hasClass('c-auth-follow')){
-    ApiBridge.log('delete audio')
-    if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
-
-      ApiBridge.callNative('ClientAudioManager', 'deleteById', {
-        mediaid: vm.data.mediaid,
-      });
+  ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
+    //未登录 
+    if (!Number(user.userId)) {
+      if(e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && !$(e.target).hasClass('c-auth-follow') && !$(e.target).hasClass('c-tab-ue')){
+        ApiBridge.log('delete audio')
+        if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+          ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+      }
+    } else {
+      if(e.target.className != 'c-zan' && !$(e.target).hasClass('zan-icon') && e.target.className != 'c-att-t' && e.target.className != 'c-tag-media' && e.target.className != 'c-tag-video' && e.target.className != 'c-auth-info-img' && !$(e.target).hasClass('c-auth-follow') && !$(e.target).hasClass('c-tab-ue')){
+        ApiBridge.log('delete audio')
+        if (vm.data.tagListIndex == 0 || vm.data.tagListIndex == 4) {
+          ApiBridge.callNative('ClientAudioManager', 'deleteById', {
+            mediaid: vm.data.mediaid,
+          });
+        }
+      }
     }
-  }
+  })
 
   if(e.target.className == 'c-auth-img' || e.target.className == 'c-auth-title'){
     if($($curTarget).attr('page') == 'author'){

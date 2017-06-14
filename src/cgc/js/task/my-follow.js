@@ -285,7 +285,7 @@ vm.followAjax = function(url, opt) {
       } else {
         //已登录本地数据没有
         if (opt.au) {
-          vm.getV();
+          vm.getV(opt.au);
         } else {
           $('.c-tab-empty').show();
         }
@@ -327,14 +327,14 @@ vm.followAjax = function(url, opt) {
 }
 
 //取大v
-vm.getV = function() {
+vm.getV = function(au) {
   vm.ajax({
     url: vm.data.url + "/npgetvuserlist.json",
     type: "GET",
     data: {
       pm: vm.mobileType() == 'iOS' ? 1 : 2,
       dt: 0,
-      au: ''
+      au: au || ''
     },
     dataType: "json",
     success: function(res, xml) {
@@ -408,7 +408,7 @@ vm.followList = function(data, isType, net, pageinfo) {
   if (!isType && !!data.length) {
     var html = '';
     data.map(function(v) {
-      html += '<li userid=' + v['userid'] + '><a objecttypeid="9" class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+      html += '<li objecttypeid="9" userid=' + v['userid'] + '><a objecttypeid="9" class="c-att-href" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>＋关注</a> <img src="' + v['userpic'] + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
     })
 
     $('.js-follow-v-list').html(html);

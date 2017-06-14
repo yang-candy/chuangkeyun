@@ -88,7 +88,6 @@ vm.getFollowMoreBar = function() {
     dataType: "json",
     success: function(res, xml) {
       res = JSON.parse(res);
-      ApiBridge.log(res.result)
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       if (!!res.result.length) {
@@ -113,16 +112,11 @@ vm.renderFollowMoreBar = function(data) {
   data.map(function(v) {
     v['name'] = v['name'].slice(0, 4);
     html += '<li ids=' + v['id'] + '>' + v['name'] + '</li>';
-    ApiBridge.log(html);
     htmlUl += '<ul class="c-att-ul js-follow-v-list"></ul>'
-    ApiBridge.log(htmlUl);
   })
-  ApiBridge.log(window.innerHeight)
   htmlUl = htmlUl + '<div class="c-loading"><span class="loading-icon"></span><p>加载中...</p></div>'
 
   $('.js-follow-more-bar').html(html);
-  ApiBridge.log(html)
-  ApiBridge.log(htmlUl)
   $('.js-follow-more-bar li').eq(0).addClass('on');
   
   htmlUl += '<div class="c-tab-empty"><img src="./image/pic_empty.png"><p>暂无内容</p></div>';
@@ -147,6 +141,46 @@ vm.getFollowMoreList = function(id, index) {
   //   "lastId": "100000000|2017/4/27 14:00:05|18759205",
   //   "loadMore": true,
   //   "users": [{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
   //     "fansnum": "",
   //     "isattention": 1,
   //     "title": "",
@@ -232,7 +266,7 @@ vm.getFollowMoreList = function(id, index) {
           "pagename": pagename,
           "isdata": isdata,
           "reportjson": {
-              "userid1#1": user.userId
+              "userid#1": user.userId
           }
         };
         ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
@@ -252,7 +286,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //     try{
   //           data.map(function(v) {
-  //             html += '<li> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img class="c-att-img" src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+  //             html += '<li objecttypeid="10"> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img class="c-att-img" src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
   //           })
   //           if (!vm.data.isLoad) {
   //             $('.js-follow-more-list ul').eq(index).append(html);
@@ -267,6 +301,7 @@ vm.renderFollowMoreList = function(data, index) {
   //             return;
   //           }
   //           $('.js-follow-more-list').on('scroll',function(e){
+
   //             vm.data.registLoad = false;
 
   //             var $target = e.currentTarget;
@@ -335,7 +370,7 @@ vm.renderFollowMoreList = function(data, index) {
           })
         }
         data.map(function(v) {
-          html += '<li userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         });
 
         if (!vm.data.isLoad) {
@@ -355,7 +390,6 @@ vm.renderFollowMoreList = function(data, index) {
           //   ApiBridge.log('11111111111111111111')
           // } 
         })
-        ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
 
         $('.c-loading').hide();
         vm.data.isLoad = true;
@@ -363,6 +397,7 @@ vm.renderFollowMoreList = function(data, index) {
           return;
         }
         $('.js-follow-more-list').on('scroll', function(e) {
+          ApiBridge.log('js-follow-more-list');
           vm.data.registLoad = false;
 
           var $target = e.currentTarget;
@@ -379,6 +414,7 @@ vm.renderFollowMoreList = function(data, index) {
           }
 
           if ($height + $scrollTop >= $scrollHeight) {
+            ApiBridge.log('js-follow-more-list scrollHeight');
             //断网
             ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
               vm.data.isNet = state.result;
@@ -392,10 +428,14 @@ vm.renderFollowMoreList = function(data, index) {
                   })
                 }
               } else {
+                ApiBridge.log('vm.data.isLoad else');
+                ApiBridge.log(vm.data.isLoad);
                 if (!!vm.data.isLoad) {
+                  ApiBridge.log('vm.data.isLoad');
                   vm.data.isLoad = false;
                   $('.c-loading').show();
                   if (!!vm.data.loadMore) {
+                    ApiBridge.log('vm.data.loadMore');
                     vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
                   } else {
                     $('.c-loading').hide();
@@ -409,7 +449,7 @@ vm.renderFollowMoreList = function(data, index) {
     } else {
       try {
         data.map(function(v) {
-          html += '<li userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         })
         if (!vm.data.isLoad) {
           $('.js-follow-more-list ul').eq(index).append(html);
@@ -431,8 +471,6 @@ vm.renderFollowMoreList = function(data, index) {
           //   ApiBridge.log('11111111111111111111')
           // } 
         })
-
-        ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
 
         $('.c-loading').hide();
         vm.data.isLoad = true;
@@ -505,25 +543,28 @@ if (/follow-more-tab/.test(window.location.href)) {
   vm.data.lastId = [];
 
   if(vm.mobileType() == 'iOS'){
-    var $touchY;
-    $('.js-follow-more-list').on('touchstart',function(e){
-      var touch = e.touches[0];
+    // var $touchY;
+    // $('.js-follow-more-list').on('touchstart',function(e){
+    //   var touch = e.touches[0];
 
-      $touchY = touch.pageY;
-    })
-    $('.js-follow-more-list').on('touchmove',function(e){
+    //   $touchY = touch.pageY;
+    // })
+    // $('.js-follow-more-list').on('touchmove',function(e){
 
-      var touch = e.touches[0];
+    //   var touch = e.touches[0];
 
-      if($('.js-follow-more-list').scrollTop() == 0){
-        if($touchY - touch.pageY < 0 || $('.js-follow-more-list ul').eq(vm.data.followMoreIndex).find('li').length < 6){
-          return false;
-        }
-      } 
-    })
+    //   if($('.js-follow-more-list ul').eq(vm.data.followMoreIndex).find('li').length < 6){
+    //     return false;
+    //   } 
+    //   // if($('.js-follow-more-list').scrollTop() == 0){
+    //   //   if($touchY - touch.pageY < 0 || $('.js-follow-more-list ul').eq(vm.data.followMoreIndex).find('li').length < 6){
+    //   //     return false;
+    //   //   }
+    //   // } 
+    // })
 
-    $('.c-att-fixed').on('touchend',function(){
-      $docScrollTop = document.body.scrollTop;
-    })
+    // $('.c-att-fixed').on('touchend',function(){
+    //   $docScrollTop = document.body.scrollTop;
+    // })
   }
 }

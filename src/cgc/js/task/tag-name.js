@@ -120,7 +120,8 @@ vm.initTag = function() {
     beforePull: function() {
       $('.c-loading').hide();
       console.log('beforePull')
-
+    },
+    onRefresh: function() {
       if (vm.data.tagListIndex == 3 || vm.data.tagListIndex == 0) {
         ApiBridge.callNative('ClientVideoManager', 'deleteById', {
           mediaid: vm.data.mediaid,
@@ -132,8 +133,7 @@ vm.initTag = function() {
           mediaid: vm.data.mediaid,
         });
       }
-    },
-    onRefresh: function() {
+      
       if (!vm.data.isRender) {
         return;
       }
@@ -370,7 +370,7 @@ vm.renderTagList = function(data, index, num) {
     //  //判断赞
     //  if (vm.getLs('tagLiked') && vm.getLs('tagLiked').length) {
     //    vm.getLs('tagLiked').map(function(j) {
-    //      if (j == v['userid']) {
+    //      if (j == v['newsid']) {
     //        v['zaned'] = 1;
     //      } else {
     //        v['zaned'] = 0;
@@ -436,7 +436,7 @@ vm.renderTagList = function(data, index, num) {
           if (vm.data.likes.length) {
             vm.data.likes.map(function(j) {
               data.map(function(v) {
-                if (j == v['userid']) {
+                if (j == v['newsid']) {
                   v['zaned'] = 1;
                 } else {
                   v['zaned'] = 0;
@@ -533,7 +533,7 @@ vm.renderTagList = function(data, index, num) {
         if (vm.data.likes.length) {
           vm.data.likes.map(function(j) {
             data.map(function(v) {
-              if (j == v['userid']) {
+              if (j == v['newsid']) {
                 v['zaned'] = 1;
               } else {
                 v['zaned'] = 0;

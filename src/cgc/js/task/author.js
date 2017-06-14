@@ -13,7 +13,7 @@ vm.chejiahaoPv = function(data){
 
   ApiBridge.callNative('ClientPvManager', 'pagePv', pvMap)
 }
-
+ 
 //点击删除某条信息
 vm.data.isloadmore = [];
 vm.deleteNewModal = function(e) {
@@ -52,6 +52,11 @@ vm.deleteNew = function(e) {
       success: function(res, xml) {
         res = JSON.parse(res);
         if (res.result == 1) {
+          if (vm.data.mediatype == 3) {
+            ApiBridge.callNative('ClientVideoManager', 'deleteById', {
+              mediaid: vm.data.mediaid,
+            });
+          }
           vm.getAuthorPage(vm.data.tagListIndex);
 
           $('.c-tab-bd ul').each(function(index, par) {
@@ -61,12 +66,11 @@ vm.deleteNew = function(e) {
               };
             })
             ApiBridge.log($(par).html());
-            if($(par).html() == ''){
-              ApiBridge.log($(par).html());
-              $(par).html('');
+
+            if((index == 0 || index == vm.data.tagListIndex) && $(par).html() == ''){
+              // $(par).html('');
               $('.c-tab-empty').show();
             }
-
           })
         }
       },
@@ -232,7 +236,7 @@ vm.renderAuthorPage = function(data, index){
   // mock
   // vm.renderAuthorInfo(data, index);
 
-  //mock
+  // mock
   if (!!data.userinfo) {
     //未登录 
     if (!Number(vm.data.userId)) {
@@ -344,8 +348,6 @@ vm.renderAuthorNews = function(data, index){
     })
     
     if (!vm.data.isLoad) {
-      ApiBridge.log(vm.data.tagListIndex);
-      ApiBridge.log('vm.data.tagListIndex')
       $('.c-tab-bd ul').eq(index).append(html);
       vm.data.isLoad = true;
     } else {
@@ -373,16 +375,6 @@ vm.renderAuthorNews = function(data, index){
         }
       }
     })
-    // $('.c-tab-bd ul li').each(function(v, i) {
-    //   if ($(i).attr('mediatype') == 4) {
-    //     return
-    //   };
-    //   debugger
-    //   $(i).find('.c-auth-info-img').height($(i).find('.c-auth-info-img').width() * 0.5625);
-    //   if ($(i).attr('mediatype') == 2) {
-    //     $(i).find('.c-qing-img').height($(i).find('.c-qing-img').width() * 0.5625);
-    //   }
-    // })
 
     $('.c-loading').hide();
   }
@@ -471,7 +463,8 @@ vm.getAuthorPage = function(index, flag){
   //         "https://qnwww2.autoimg.cn/youchuang/g12/M09/9F/E9/autohomecar__wKgH01kbPDuAI3xSAAGNMMeSgqk414.jpg?imageView2/2/w/640",
   //         "https://qnwww2.autoimg.cn/youchuang/g12/M0C/A9/7B/autohomecar__wKgH4lkbPFSAActaAAF5vXvNJdU798.jpg?imageView2/2/w/640"
   //                 ],
-  //       title: "",
+  //       title: "大有进步 全新宝马5系IIHS 25%碰撞解",
+  //       description: "大有进步 全新宝马5系IIHS 25%碰撞解",
   //       userid: 0,
   //       username: "",
   //       userpic: ""
@@ -701,7 +694,7 @@ vm.getAuthorPage = function(index, flag){
   // vm.navWatch(res.result.userinfo);
   // return;
   
-  //mock
+  // mock
   var pid = flag ? vm.data.lastpageid : '';
   var dt = (vm.data.userId != vm.getParam('userId')) ? 2: 3;
   var vuserid = !!vm.getParam('userId') ? vm.getParam('userId'): '';
@@ -903,7 +896,7 @@ if (/author/.test(window.location.href)) {
   vm.data.isLoad = true;
   // mock
   // vm.initAuthorTag();
-  //mock 
+  // mock 
 
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;
