@@ -784,6 +784,10 @@ var vm = {
   //图片比例
   resizeImg: function(img) {
     $(this).height($(img).width() * 0.5625);
+  },
+
+  setBagImg: function(e) {
+    e.style.backgroundImage ='none' ;
   }
 };
 

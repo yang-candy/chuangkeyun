@@ -22,51 +22,6 @@ vm.getFollowMoreBar = function() {
   //             "name": "全部",
   //                 "sortnum": 1,
   //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
-  //   },{
-  //         "id": 2,
-  //             "name": "全部",
-  //                 "sortnum": 1,
-  //                     "usercount": 59
   //   },{                  
   //             "name": "自媒体",
   //                 "sortnum": 2,
@@ -286,7 +241,7 @@ vm.renderFollowMoreList = function(data, index) {
 
   //     try{
   //           data.map(function(v) {
-  //             html += '<li objecttypeid="10"> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img class="c-att-img" src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+  //             html += '<li objecttypeid="10"> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img class="c-att-img" src="' + (v['userpic'] || './image/pic_head.png') + '" alt="" onload="vm.setBagImg(this)"> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + v['fansnum'] + '粉丝</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
   //           })
   //           if (!vm.data.isLoad) {
   //             $('.js-follow-more-list ul').eq(index).append(html);
@@ -328,17 +283,15 @@ vm.renderFollowMoreList = function(data, index) {
   //               }
   //             }
   //           })
-
-  //           data.map(function(v,i){
-  //             $('.js-follow-v-list li').eq(i).find('img').load(function(){
-  //               $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-  //             })
-  //             // if(v['userpic']){
-  //             //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
-  //             //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
-  //             //   ApiBridge.log('11111111111111111111')
-  //             // } 
-  //           })
+  //           // debugger
+  //           // data.map(function(v,i){
+  //           //   if(v['userpic']){
+  //           //     debugger
+  //           //     $('.js-follow-v-list li').eq(i).find('img').load(function(){
+  //           //       $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'none');
+  //           //     })
+  //           //   }
+  //           // })
 
   //         }catch(e){
   //         }
@@ -370,7 +323,7 @@ vm.renderFollowMoreList = function(data, index) {
           })
         }
         data.map(function(v) {
-          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt="" onload="vm.setBagImg(this)"> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         });
 
         if (!vm.data.isLoad) {
@@ -378,18 +331,6 @@ vm.renderFollowMoreList = function(data, index) {
         } else {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
-        //判断有无图片
-        // $('.js-follow-v-list').find('img').css('background-size', '0');
-        data.map(function(v,i){
-          $('.js-follow-v-list li').eq(i).find('img').load(function(){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-          })
-          // if(v['userpic']){
-          //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
-          //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
-          //   ApiBridge.log('11111111111111111111')
-          // } 
-        })
 
         $('.c-loading').hide();
         vm.data.isLoad = true;
@@ -449,28 +390,13 @@ vm.renderFollowMoreList = function(data, index) {
     } else {
       try {
         data.map(function(v) {
-          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt=""> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
+          html += '<li objecttypeid="10" userid=' + v['userid'] + '> <a objecttypeid="10" class="c-att-href ' + (v['isattention'] == '1' ? 'on' : '') + '" userid=' + v['userid'] + ' username=' + v['username'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['userdesc'] + ' href="javascript:;" usertime=' + v['createtime'] + '>' + (!!v['isattention'] ? '已关注' : '+ 关注') + '</a> <img src="' + (v['userpic'] || './image/pic_head.png') + '" alt="" onload="vm.setBagImg(this)"> <h3 class="c-att-title">' + v['username'] + '</h3> <p class="c-att-fans">' + (!!v['fansnum'] ? (v['fansnum'] + '粉丝') : '') + '</p> <p class="c-att-info">' + v['userdesc'] + '</p> </li>';
         })
         if (!vm.data.isLoad) {
           $('.js-follow-more-list ul').eq(index).append(html);
         } else {
           $('.js-follow-more-list ul').eq(index).html(html);
         }
-
-        //判断有无图片
-        // $('.js-follow-v-list').find('img').css('background-size', '0');
-            
-        data.map(function(v,i){
-          $('.js-follow-v-list li').eq(i).find('img').load(function(){
-            $('.js-follow-v-list li').eq(i).find('img').css('background-size', '0');
-          })
-          // if(v['userpic']){
-          //   $('.js-follow-v-list li').eq(i).find('img').css('background-image', 'url(' + v['userpic']+ ')');
-            
-          //   ApiBridge.log($('.js-follow-v-list li').eq(i).find('img').css('background-image'));
-          //   ApiBridge.log('11111111111111111111')
-          // } 
-        })
 
         $('.c-loading').hide();
         vm.data.isLoad = true;

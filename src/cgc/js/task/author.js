@@ -208,7 +208,7 @@ vm.renderAuthorInfo = function(data, index){
     var html = '<div class="c-auth-native"></div>'
         + '<div class="c-auth-bg"></div>'
         + '<div class="c-auth-info">'
-        + '<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' />'
+        + '<img id="c-auth-img" class="c-auth-img" userId=' + userinfo['userid'] + ' src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' onload="vm.setBagImg(this)" />'
         + '<h3 class="c-auth-title">' + userinfo['name'] + '</h3>'
         + '<p class="c-auth-jj">' + userinfo['desc'] + '</p>'
         + '<p class="c-auth-tips">'
@@ -282,7 +282,7 @@ vm.renderAuthorNews = function(data, index){
       if (v['mediatype'] == 4) {
         html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-audio>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="" onload="vm.setBagImg(this)">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 5) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
@@ -316,7 +316,7 @@ vm.renderAuthorNews = function(data, index){
         }
         html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' class=media-qing>' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="" onload="vm.setBagImg(this)">' + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<div class="c-media-audio">' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 5) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') + '</div><span class="c-tab-jj ">' + ((v['mediatype'] == 3 || v['mediatype'] == 4 || v['mediatype'] == 1) ? v['title'] : v['description']) + '</span>' + qingImg + '</div>' 
         + '<p class="span c-tab-ue">' 
@@ -328,7 +328,7 @@ vm.renderAuthorNews = function(data, index){
 
         html += '<li page="author" newsid=' + v['newsid'] + ' position=' + (i + 1) + ' mediaid=' + v['mediaid'] + ' mediatype=' + v['mediatype'] + ' userId=' + v['userid'] + ' >' 
         + (vm.data.isAuthor && v['iscandelete'] == 1 ? '<a class="c-att-delete" newsid=' + v['newsid'] + ' userid=' + userinfo['userid'] + ' username=' + userinfo['name'] + ' userpic=' + v['userpic'] + ' usertitle=' + v['title'] + ' userdesc=' + v['description'] + '></a>' : '')
-        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="">' 
+        + '<div userid=' + v['userid'] + ' class="c-media-info"><img userId=' + v['userid'] + ' class="c-auth-img" src=' + (userinfo['userpic'] ? userinfo['userpic'] : './image/pic_head.png') + ' alt="" onload="vm.setBagImg(this)">' 
         + '<p userId=' + v['userid'] + ' class="c-auth-title">' + userinfo['name'] + '</p></div>' 
         + '<p class="c-tab-jj ' + (v['mediatype'] == 1 ? 'long' : 'short') + '">' + ((v['mediatype'] == 1 || v['mediatype'] == 4 || v['mediatype'] == 3) ? v['title'] : v['description']) + '</p>' 
         + '<div mediatype=' + v['mediatype'] + ' title=' + v['title'] + ' thumbnailpics=' + v['thumbnailpics'] + ' playtime=' + v['playtime'] + ' status=' + v['status'] + ' mediaid=' + v['mediaid'] + (v['session_id'] ? ' session_id=' + v['session_id'] : '') + (v['newsid'] ? ' newsid=' + v['newsid'] : '') + (v['seriesids'] ? ' seriesids=' + v['seriesids'] : '') + ' pagetype=' + (vm.data.isAuthor ? 4 : 6) + ' class="c-tag-media">' + ((v['mediatype'] == 3 || v['mediatype'] == 4) ? '<span class="c-tag-video"></span>' : '') 
