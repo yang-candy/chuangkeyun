@@ -52,7 +52,7 @@ var vm = {
   getFollowMore: function(e) {
     e.stopPropagation();
     var $target = $(e.target);
-
+    
     //vm.data.lastId = '';
     // mock
     // vm.getFollowMoreList($target.attr('ids'), $target.index());

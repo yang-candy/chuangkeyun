@@ -291,20 +291,11 @@ vm.article = function(e) {
     })
     return;
   }
+  
   //头像空白页跳转到最终页
   if(e.target.className == 'c-media-info'){
-    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
-      pagetype: 2,
-      animationtype: 2,
-      param: {
-        newsid: $($followTarget).parent('li').attr('newsid'),
-        type: $($followTarget).parent('li').attr('mediatype'),
-        autoscrolltocomment: 0
-      }
-    });
-
     var typeid = $($curTarget).attr('mediatype');
-    var odjectid = (Number(typeid) == 3 || Number(typeid) == 4) ? $($curTarget).attr('mediaid') : $($curTarget).attr('newsid');
+    var odjectid = (typeid == '3' || typeid == '4') ? $($curTarget).attr('mediaid') : $($curTarget).attr('newsid');
     var pvMap = {
       "eventid":  'chejiahao_list_detail_click',
       "pagename": 'chejiahao_list_detail',
@@ -316,7 +307,18 @@ vm.article = function(e) {
           
       }
     };
+
     vm.chejiahaoClick(pvMap);
+
+    ApiBridge.callNative('ClientViewManager', 'pushViewController', {
+      pagetype: 2,
+      animationtype: 2,
+      param: {
+        newsid: $($curTarget).attr('newsid'),
+        type: $($curTarget).attr('mediatype'),
+        autoscrolltocomment: 0
+      }
+    });
 
     return;
   }
@@ -351,13 +353,15 @@ vm.article = function(e) {
     return;
   }
 
+  var typeid = $($curTarget).attr('mediatype');
+  var odjectid = (typeid == '3' || typeid == '4') ? $($curTarget).attr('mediaid') : $($curTarget).attr('newsid');
   var pvMap = {
     "eventid":  'chejiahao_list_detail_click',
     "pagename": 'chejiahao_list_detail',
     "reportjson": {
       "userid#1": vm.data.userId,
       "typeid#2": $($curTarget).attr('mediatype'),
-      "objectid#3": $($curTarget).attr('newsid'),
+      "objectid#3": odjectid,
       "position#4": $($curTarget).attr('position')
         
     }

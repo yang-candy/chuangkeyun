@@ -74,7 +74,7 @@ vm.renderFollowMoreBar = function(data) {
   $('.js-follow-more-bar').html(html);
   $('.js-follow-more-bar li').eq(0).addClass('on');
   
-  htmlUl += '<div class="c-tab-empty"><img src="./image/pic_empty.png"><p>暂无内容</p></div>';
+  htmlUl += '<div class="c-empty"><img src="./image/pic_empty.png"><p>暂无内容</p></div>';
   $('.js-follow-more-list').html(htmlUl);
   $('.js-follow-more-list ul').eq(0).show();
 
@@ -158,6 +158,86 @@ vm.getFollowMoreList = function(id, index) {
   //     "userdesc": "",
   //     "userid": 6098853,
   //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "无限试驾无限试驾无限试驾无限试驾无限试驾",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://qnwww2.autoimg.cn/youchuang/g23/M11/38/89/autohomecar__wKgFXFjpvNiAZOtqAAtdS-yQuhw839.png?imageView2/1/w/120/h/120"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "无限试驾无限试驾无限试驾无限试驾无限试驾",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
+  //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
+  //   },{
+  //     "fansnum": "",
+  //     "isattention": 1,
+  //     "title": "",
+  //     "userdesc": "",
+  //     "userid": 6098853,
+  //     "username": "无限试驾",
   //     "userpic": "https://www2.autoimg.cn/youchuang/g8/M03/72/85/autohomecar__wKjBz1j-ueuAOxqEAALIEZP3Ens630.jpg"
   //   },  {
   //     "fansnum": "",
@@ -173,14 +253,14 @@ vm.getFollowMoreList = function(id, index) {
   // },
   // "returncode": 0
   // }
-  // vm.data.loadMore = res.result.loadMore;
+  // vm.data.loadMore[index] = res.result.loadMore;
   // index = index || 0;
   // vm.data.lastId[index] = res.result.lastId;
   // vm.renderFollowMoreList(res.result.users, index);
   // return;
 
   // mock
-  $('.c-tab-empty').hide();
+  $('.c-empty').hide();
   
   ApiBridge.callNative("ClientDataManager", "getUserInfo", {}, function(user) {
   vm.ajax({
@@ -198,14 +278,14 @@ vm.getFollowMoreList = function(id, index) {
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       if (!!res.result.users.length) {
-        vm.data.loadMore = res.result.loadMore;
+        vm.data.loadMore[index] = res.result.loadMore;
 
         vm.data.lastId[index] = res.result.lastId;
         vm.renderFollowMoreList(res.result.users, index);
       }else{
         $('.c-loading').hide();
         if(!!vm.data.isLoad){
-          $('.c-tab-empty').show();
+          $('.c-empty').show();
         }
       }
 
@@ -272,10 +352,12 @@ vm.renderFollowMoreList = function(data, index) {
   //             }
 
   //             if($height + $scrollTop >= $scrollHeight){
+                
   //               if(!!vm.data.isLoad){
   //               vm.data.isLoad = false;
   //                 $('.c-loading').show();
-  //                 if(!!vm.data.loadMore){
+                  
+  //                 if(!!vm.data.loadMore[vm.data.followMoreIndex]){
   //                   vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
   //                 }else{
   //                   $('.c-loading').hide();
@@ -375,7 +457,7 @@ vm.renderFollowMoreList = function(data, index) {
                   ApiBridge.log('vm.data.isLoad');
                   vm.data.isLoad = false;
                   $('.c-loading').show();
-                  if (!!vm.data.loadMore) {
+                  if (!!vm.data.loadMore[vm.data.followMoreIndex]) {
                     ApiBridge.log('vm.data.loadMore');
                     vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
                   } else {
@@ -436,7 +518,7 @@ vm.renderFollowMoreList = function(data, index) {
                 if (!!vm.data.isLoad) {
                   vm.data.isLoad = false;
                   $('.c-loading').show();
-                  if (!!vm.data.loadMore) {
+                  if (!!vm.data.loadMore[vm.data.followMoreIndex]) {
                     vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
                   } else {
                     $('.c-loading').hide();
@@ -459,6 +541,7 @@ vm.renderFollowMoreList = function(data, index) {
 }
 
 var $docScrollTop;
+vm.data.loadMore = [];
 if (/follow-more-tab/.test(window.location.href)) {
   //vm.data.isFollowMore = true;
   vm.data.isLoad = true;
@@ -469,6 +552,7 @@ if (/follow-more-tab/.test(window.location.href)) {
   vm.data.lastId = [];
 
   if(vm.mobileType() == 'iOS'){
+    vm.viewBounces();
     // var $touchY;
     // $('.js-follow-more-list').on('touchstart',function(e){
     //   var touch = e.touches[0];
