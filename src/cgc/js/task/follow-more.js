@@ -85,8 +85,8 @@ vm.renderFollowMoreBar = function(data) {
 
 //获取关注更多第一个的关注列表
 vm.getFollowMoreList = function(id, index) {
-  vm.data.followMoreId = id;
-  vm.data.followMoreIndex = index || 0;
+  // vm.data.followMoreId = id;
+  vm.data.followMoreIndex = vm.data.followMoreIndex || 0;
   index = index || 0;
 
   //mock
@@ -278,7 +278,7 @@ vm.getFollowMoreList = function(id, index) {
       ApiBridge.callNative('ClientViewManager', 'hideLoadingView');
 
       if (!!res.result.users.length) {
-        vm.data.loadMore[index] = res.result.loadMore;
+        vm.data.loadMore[vm.data.followMoreIndex] = res.result.loadMore;
 
         vm.data.lastId[index] = res.result.lastId;
         vm.renderFollowMoreList(res.result.users, index);
@@ -457,6 +457,10 @@ vm.renderFollowMoreList = function(data, index) {
                   ApiBridge.log('vm.data.isLoad');
                   vm.data.isLoad = false;
                   $('.c-loading').show();
+                  ApiBridge.log('##################')
+                  ApiBridge.log(vm.data.loadMore);
+                  ApiBridge.log(vm.data.followMoreIndex);
+                  ApiBridge.log(vm.data.loadMore[vm.data.followMoreIndex])
                   if (!!vm.data.loadMore[vm.data.followMoreIndex]) {
                     ApiBridge.log('vm.data.loadMore');
                     vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
@@ -518,6 +522,10 @@ vm.renderFollowMoreList = function(data, index) {
                 if (!!vm.data.isLoad) {
                   vm.data.isLoad = false;
                   $('.c-loading').show();
+                  ApiBridge.log('##################')
+                  ApiBridge.log(vm.data.loadMore);
+                  ApiBridge.log(vm.data.followMoreIndex);
+                  ApiBridge.log(vm.data.loadMore[vm.data.followMoreIndex])
                   if (!!vm.data.loadMore[vm.data.followMoreIndex]) {
                     vm.getFollowMoreList(vm.data.followMoreId, vm.data.followMoreIndex);
                   } else {
