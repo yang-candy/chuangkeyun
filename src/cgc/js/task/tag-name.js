@@ -287,7 +287,7 @@ vm.tagList = function(index, flag, num) {
   // return;
 
   //mock
-  var lastpageid = vm.data.lastpageid || '';
+  var lastpageid = vm.data.lastpageid[index] || '';
   var pid = '';
 
   if (flag == 'up') {
@@ -321,7 +321,7 @@ vm.tagList = function(index, flag, num) {
         res = JSON.parse(res);
         vm.data.isloadmore[index] = res.result.isloadmore || '';
 
-        vm.data.lastpageid = res.result.lastid || '';
+        vm.data.lastpageid[index] = res.result.lastid || '';
 
         if (!!res.result.newslist.length) {
           vm.renderTagList(res.result.newslist, index, num);
@@ -615,6 +615,7 @@ if (/tag-name/.test(window.location.href)) {
 
   // vm.initTag()
   //mock
+  vm.data.lastpageid = [];
   vm.data.isLoad = true;
   ApiBridge.callNative("ClientDataManager", "getNetworkState", {}, function(state) {
     vm.data.isNet = state.result;

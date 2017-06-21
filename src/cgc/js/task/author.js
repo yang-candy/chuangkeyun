@@ -15,6 +15,7 @@ vm.chejiahaoPv = function(data){
 }
  
 //点击删除某条信息
+vm.data.lastpageid = [];
 vm.data.isloadmore = [];
 vm.deleteNewModal = function(e) {
   e.stopPropagation();
@@ -699,7 +700,7 @@ vm.getAuthorPage = function(index, flag){
   // return;
   
   // mock
-  var pid = flag ? vm.data.lastpageid : '';
+  var pid = flag ? vm.data.lastpageid[index] : '';
   var dt = (vm.data.userId != vm.getParam('userId')) ? 2: 3;
   var vuserid = !!vm.getParam('userId') ? vm.getParam('userId'): '';
 
@@ -722,7 +723,7 @@ vm.getAuthorPage = function(index, flag){
       res = JSON.parse(res);
       
       vm.data.isloadmore[index] = res.result.isloadmore || '';
-      vm.data.lastpageid = res.result.lastid || '';
+      vm.data.lastpageid[index] = res.result.lastid || '';
 
       vm.data.isAuthor = (vm.data.userId == vm.getParam('userId')) ? true: false;
 
